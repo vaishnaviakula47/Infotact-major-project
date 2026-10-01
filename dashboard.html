@@ -818,6 +818,10 @@ td {
 
 <script>
 
+/* =========================================================
+   AUTOSYNC CITY DATA
+   ========================================================= */
+
 const cities = [
     "Baltimore",
     "Denver",
@@ -827,13 +831,17 @@ const cities = [
 ];
 
 
-/*
-    Dataset is stored on the vaishnavi branch.
-*/
+/* =========================================================
+   GITHUB DATA LOCATION
+   ========================================================= */
 
 const DATA_URL =
     "https://raw.githubusercontent.com/vaishnaviakula47/Infotact-major-project/vaishnavi/data/";
 
+
+/* =========================================================
+   TEMPERATURE FILES
+   ========================================================= */
 
 const tempFiles = [
     "baltimore_temp.csv",
@@ -844,6 +852,10 @@ const tempFiles = [
 ];
 
 
+/* =========================================================
+   HUMIDITY FILES
+   ========================================================= */
+
 const humidityFiles = [
     "baltimore_rh.csv",
     "denver_rh.csv",
@@ -853,7 +865,15 @@ const humidityFiles = [
 ];
 
 
+/* =========================================================
+   CSV PARSER
+   ========================================================= */
+
 function parseCSV(text) {
+
+    if (!text || !text.trim()) {
+        return [];
+    }
 
     const lines =
         text.trim().split(/\r?\n/);
@@ -863,7 +883,13 @@ function parseCSV(text) {
     }
 
     const headers =
-        lines[0].split(",");
+        lines[0]
+        .split(",")
+        .map(header =>
+            header
+                .trim()
+                .replace(/^"|"$/g, "")
+        );
 
     return lines.slice(1).map(line => {
 
@@ -872,12 +898,14 @@ function parseCSV(text) {
 
         const row = {};
 
-        headers.forEach((header,index) => {
+        headers.forEach((header, index) => {
 
-            row[header.trim()] =
+            row[header] =
                 values[index]
-                ? values[index].trim()
-                : "";
+                    ? values[index]
+                        .trim()
+                        .replace(/^"|"$/g, "")
+                    : "";
 
         });
 
@@ -888,6 +916,10 @@ function parseCSV(text) {
 }
 
 
+/* =========================================================
+   EXTRACT NUMERIC SENSOR VALUES
+   ========================================================= */
+
 function getSensorNumbers(rows) {
 
     const values = [];
@@ -895,10 +927,10 @@ function getSensorNumbers(rows) {
     rows.forEach(row => {
 
         Object.entries(row).forEach(
-            ([key,value]) => {
+            ([key, value]) => {
 
                 const lowerKey =
-                    key.toLowerCase();
+                    key.toLowerCase().trim();
 
                 if (
                     lowerKey.includes("date") ||
@@ -911,7 +943,10 @@ function getSensorNumbers(rows) {
                 const number =
                     parseFloat(value);
 
-                if (!isNaN(number)) {
+                if (
+                    !isNaN(number) &&
+                    isFinite(number)
+                ) {
 
                     values.push(number);
 
@@ -927,43 +962,66 @@ function getSensorNumbers(rows) {
 }
 
 
+/* =========================================================
+   AVERAGE
+   ========================================================= */
+
 function average(values) {
 
-    if (!values.length) {
-        return 0;
+    if (
+        !values ||
+        values.length === 0
+    ) {
+        return null;
     }
 
     return values.reduce(
-        (sum,value) => sum + value,
+        (sum, value) => sum + value,
         0
     ) / values.length;
 
 }
 
 
+/* =========================================================
+   LOAD FILE
+   ========================================================= */
+
 async function loadFile(filename) {
 
     const url =
-        DATA_URL + filename;
+        DATA_URL +
+        encodeURIComponent(filename);
 
     try {
 
         const response =
-            await fetch(url);
+            await fetch(url, {
+                cache: "no-store"
+            });
 
         if (!response.ok) {
 
             throw new Error(
-                "Unable to load " + filename
+                "HTTP " +
+                response.status +
+                " - " +
+                filename
             );
 
         }
 
         return await response.text();
 
-    } catch(error) {
+    }
 
-        console.error(error);
+    catch(error) {
+
+        console.error(
+            "Error loading:",
+            filename,
+            error
+        );
 
         return "";
 
@@ -972,9 +1030,18 @@ async function loadFile(filename) {
 }
 
 
+/* =========================================================
+   LOAD DASHBOARD
+   ========================================================= */
+
 async function loadDashboard() {
 
     const cityData = [];
+
+    const cityElements =
+        document.querySelectorAll(
+            ".city-value"
+        );
 
 
     for (
@@ -1023,34 +1090,46 @@ async function loadDashboard() {
             average(humidityNumbers);
 
 
+        console.log(
+            cities[i],
+            "Temperature:",
+            temperature,
+            "Humidity:",
+            humidity
+        );
+
+
         cityData.push({
 
-            city: cities[i],
+            city:
+                cities[i],
 
-            temperature: temperature,
+            temperature:
+                temperature,
 
-            humidity: humidity
+            humidity:
+                humidity
 
         });
 
 
-        const cityElement =
-            document.querySelectorAll(
-                ".city-value"
-            )[i];
+        if (cityElements[i]) {
 
+            if (
+                temperature !== null
+            ) {
 
-        if (cityElement) {
-
-            if (temperature !== 0) {
-
-                cityElement.textContent =
+                cityElements[i]
+                    .textContent =
                     temperature.toFixed(1)
                     + " °C";
 
-            } else {
+            }
 
-                cityElement.textContent =
+            else {
+
+                cityElements[i]
+                    .textContent =
                     "No data";
 
             }
@@ -1060,14 +1139,20 @@ async function loadDashboard() {
     }
 
 
+    /* =====================================================
+       VALID CITIES
+       ===================================================== */
+
     const validCities =
         cityData.filter(
             city =>
-                city.temperature !== 0
+                city.temperature !== null
         );
 
 
-    if (!validCities.length) {
+    if (
+        validCities.length === 0
+    ) {
 
         document.getElementById(
             "avgTemp"
@@ -1098,15 +1183,14 @@ async function loadDashboard() {
     }
 
 
+    /* =====================================================
+       TEMPERATURE
+       ===================================================== */
+
     const temperatures =
         validCities.map(
-            city => city.temperature
-        );
-
-
-    const humidities =
-        validCities.map(
-            city => city.humidity
+            city =>
+                city.temperature
         );
 
 
@@ -1114,22 +1198,50 @@ async function loadDashboard() {
         average(temperatures);
 
 
-    const averageHumidity =
-        average(humidities);
+    /* =====================================================
+       HUMIDITY
+       ===================================================== */
 
+    const humidityValues =
+        validCities
+            .map(
+                city =>
+                    city.humidity
+            )
+            .filter(
+                value =>
+                    value !== null
+            );
+
+
+    const averageHumidity =
+        average(humidityValues);
+
+
+    /* =====================================================
+       CLIMATE DIFFERENCE
+       ===================================================== */
 
     const minimumTemperature =
-        Math.min(...temperatures);
+        Math.min(
+            ...temperatures
+        );
 
 
     const maximumTemperature =
-        Math.max(...temperatures);
+        Math.max(
+            ...temperatures
+        );
 
 
     const climateDifference =
         maximumTemperature -
         minimumTemperature;
 
+
+    /* =====================================================
+       UPDATE CARDS
+       ===================================================== */
 
     document.getElementById(
         "avgTemp"
@@ -1141,8 +1253,10 @@ async function loadDashboard() {
     document.getElementById(
         "avgHumidity"
     ).textContent =
-        averageHumidity.toFixed(1)
-        + " %";
+        averageHumidity !== null
+            ? averageHumidity.toFixed(1)
+              + " %"
+            : "No data";
 
 
     document.getElementById(
@@ -1151,6 +1265,10 @@ async function loadDashboard() {
         climateDifference.toFixed(1)
         + " °C";
 
+
+    /* =====================================================
+       OPPORTUNITIES
+       ===================================================== */
 
     const opportunities =
         calculateOpportunities(
@@ -1164,10 +1282,18 @@ async function loadDashboard() {
         opportunities.length;
 
 
+    /* =====================================================
+       CREATE CHART
+       ===================================================== */
+
     createChart(
         validCities
     );
 
+
+    /* =====================================================
+       UPDATE TABLE
+       ===================================================== */
 
     updateOpportunityTable(
         opportunities
@@ -1175,6 +1301,10 @@ async function loadDashboard() {
 
 }
 
+
+/* =========================================================
+   OPPORTUNITY CALCULATION
+   ========================================================= */
 
 function calculateOpportunities(
     cityData
@@ -1198,7 +1328,6 @@ function calculateOpportunities(
             const cityA =
                 cityData[i];
 
-
             const cityB =
                 cityData[j];
 
@@ -1210,11 +1339,21 @@ function calculateOpportunities(
                 );
 
 
-            const humidityDifference =
-                Math.abs(
-                    cityA.humidity -
-                    cityB.humidity
-                );
+            let humidityDifference = 0;
+
+
+            if (
+                cityA.humidity !== null &&
+                cityB.humidity !== null
+            ) {
+
+                humidityDifference =
+                    Math.abs(
+                        cityA.humidity -
+                        cityB.humidity
+                    );
+
+            }
 
 
             const score =
@@ -1224,9 +1363,11 @@ function calculateOpportunities(
 
             opportunities.push({
 
-                cityA: cityA.city,
+                cityA:
+                    cityA.city,
 
-                cityB: cityB.city,
+                cityB:
+                    cityB.city,
 
                 temperatureDifference:
                     temperatureDifference,
@@ -1234,7 +1375,8 @@ function calculateOpportunities(
                 humidityDifference:
                     humidityDifference,
 
-                score: score
+                score:
+                    score
 
             });
 
@@ -1251,7 +1393,13 @@ function calculateOpportunities(
 }
 
 
-function createChart(cityData) {
+/* =========================================================
+   CREATE CHART
+   ========================================================= */
+
+function createChart(
+    cityData
+) {
 
     const ctx =
         document.getElementById(
@@ -1259,136 +1407,157 @@ function createChart(cityData) {
         );
 
 
-    new Chart(ctx, {
+    if (
+        window.autosyncChart
+    ) {
 
-        type: "bar",
+        window.autosyncChart.destroy();
 
-
-        data: {
-
-            labels:
-                cityData.map(
-                    city => city.city
-                ),
+    }
 
 
-            datasets: [
+    window.autosyncChart =
+        new Chart(
+            ctx,
+            {
 
-                {
+                type: "bar",
 
-                    label:
-                        "Average Temperature °C",
+                data: {
 
-                    data:
+                    labels:
                         cityData.map(
                             city =>
-                                city.temperature
+                                city.city
                         ),
 
-                    backgroundColor:
-                        "rgba(66,232,212,0.65)",
+                    datasets: [
 
-                    borderColor:
-                        "#42e8d4",
+                        {
 
-                    borderWidth: 1
+                            label:
+                                "Average Temperature °C",
+
+                            data:
+                                cityData.map(
+                                    city =>
+                                        city.temperature
+                                ),
+
+                            backgroundColor:
+                                "rgba(66,232,212,0.65)",
+
+                            borderColor:
+                                "#42e8d4",
+
+                            borderWidth: 1
+
+                        },
+
+
+                        {
+
+                            label:
+                                "Average Humidity %",
+
+                            data:
+                                cityData.map(
+                                    city =>
+                                        city.humidity !== null
+                                            ? city.humidity
+                                            : 0
+                                ),
+
+                            backgroundColor:
+                                "rgba(139,124,255,0.55)",
+
+                            borderColor:
+                                "#8b7cff",
+
+                            borderWidth: 1
+
+                        }
+
+                    ]
 
                 },
 
 
-                {
+                options: {
 
-                    label:
-                        "Average Humidity %",
+                    responsive: true,
 
-                    data:
-                        cityData.map(
-                            city =>
-                                city.humidity
-                        ),
-
-                    backgroundColor:
-                        "rgba(139,124,255,0.55)",
-
-                    borderColor:
-                        "#8b7cff",
-
-                    borderWidth: 1
-
-                }
-
-            ]
-
-        },
+                    maintainAspectRatio: false,
 
 
-        options: {
+                    plugins: {
 
-            responsive: true,
+                        legend: {
 
-            maintainAspectRatio: false,
+                            labels: {
 
+                                color:
+                                    "#a9bad0"
 
-            plugins: {
+                            }
 
-                legend: {
-
-                    labels: {
-
-                        color: "#a9bad0"
-
-                    }
-
-                }
-
-            },
-
-
-            scales: {
-
-                x: {
-
-                    ticks: {
-
-                        color: "#7f93ab"
+                        }
 
                     },
 
-                    grid: {
 
-                        color:
-                            "rgba(255,255,255,.05)"
+                    scales: {
 
-                    }
+                        x: {
 
-                },
+                            ticks: {
+
+                                color:
+                                    "#7f93ab"
+
+                            },
+
+                            grid: {
+
+                                color:
+                                    "rgba(255,255,255,.05)"
+
+                            }
+
+                        },
 
 
-                y: {
+                        y: {
 
-                    ticks: {
+                            ticks: {
 
-                        color: "#7f93ab"
+                                color:
+                                    "#7f93ab"
 
-                    },
+                            },
 
-                    grid: {
+                            grid: {
 
-                        color:
-                            "rgba(255,255,255,.05)"
+                                color:
+                                    "rgba(255,255,255,.05)"
+
+                            }
+
+                        }
 
                     }
 
                 }
 
             }
-
-        }
-
-    });
+        );
 
 }
 
+
+/* =========================================================
+   UPDATE OPPORTUNITY TABLE
+   ========================================================= */
 
 function updateOpportunityTable(
     opportunities
@@ -1403,86 +1572,120 @@ function updateOpportunityTable(
     table.innerHTML = "";
 
 
+    if (
+        opportunities.length === 0
+    ) {
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td colspan="5">
+
+                    No climate opportunities
+                    detected.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
     opportunities
-        .slice(0,10)
-        .forEach(opportunity => {
+        .slice(0, 10)
+        .forEach(
+            opportunity => {
+
+                let status =
+                    "LOW";
+
+                let className =
+                    "low";
 
 
-            let status =
-                "LOW";
+                if (
+                    opportunity.score >= 8
+                ) {
+
+                    status =
+                        "HIGH";
+
+                    className =
+                        "high";
+
+                }
+
+                else if (
+                    opportunity.score >= 4
+                ) {
+
+                    status =
+                        "MEDIUM";
+
+                    className =
+                        "medium";
+
+                }
 
 
-            let className =
-                "low";
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
 
 
-            if (
-                opportunity.score >= 8
-            ) {
+                row.innerHTML = `
 
-                status =
-                    "HIGH";
+                    <td>
+                        ${opportunity.cityA}
+                        → 
+                        ${opportunity.cityB}
+                    </td>
 
-                className =
-                    "high";
+                    <td>
+                        ${opportunity.temperatureDifference.toFixed(2)}
+                        °C
+                    </td>
 
-            }
+                    <td>
+                        ${opportunity.humidityDifference.toFixed(2)}
+                        %
+                    </td>
 
-            else if (
-                opportunity.score >= 4
-            ) {
+                    <td>
+                        ${opportunity.score.toFixed(2)}
+                    </td>
 
-                status =
-                    "MEDIUM";
+                    <td>
 
-                className =
-                    "medium";
+                        <span
+                            class="status ${className}">
+                            ${status}
+                        </span>
 
-            }
+                    </td>
+
+                `;
 
 
-            const row =
-                document.createElement(
-                    "tr"
+                table.appendChild(
+                    row
                 );
 
-
-            row.innerHTML = `
-
-                <td>
-                    ${opportunity.cityA}
-                    → ${opportunity.cityB}
-                </td>
-
-                <td>
-                    ${opportunity.temperatureDifference.toFixed(2)}
-                    °C
-                </td>
-
-                <td>
-                    ${opportunity.humidityDifference.toFixed(2)}
-                    %
-                </td>
-
-                <td>
-                    ${opportunity.score.toFixed(2)}
-                </td>
-
-                <td>
-                    <span class="status ${className}">
-                        ${status}
-                    </span>
-                </td>
-
-            `;
-
-
-            table.appendChild(row);
-
-        });
+            }
+        );
 
 }
 
+
+/* =========================================================
+   START
+   ========================================================= */
 
 loadDashboard();
 
