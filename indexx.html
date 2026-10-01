@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autosync | Micro-Climate Arbitrage Analytics</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: #07111f;
+    color: #eaf2ff;
+    min-height: 100vh;
+}
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 240px;
+    height: 100vh;
+    background: #0b1728;
+    border-right: 1px solid #1b3048;
+    padding: 25px 18px;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    color: #42e8d4;
+    margin-bottom: 8px;
+}
+
+.logo span {
+    color: #8b7cff;
+}
+
+.subtitle {
+    color: #8094ad;
+    font-size: 11px;
+    margin-bottom: 35px;
+}
+
+.nav-title {
+    color: #60758f;
+    font-size: 11px;
+    text-transform: uppercase;
+    margin: 20px 10px 10px;
+}
+
+.nav-item {
+    padding: 13px 12px;
+    border-radius: 10px;
+    color: #9eb1c8;
+    margin-bottom: 6px;
+    cursor: pointer;
+}
+
+.nav-item.active,
+.nav-item:hover {
+    background: #152942;
+    color: #42e8d4;
+}
+
+.main {
+    margin-left: 240px;
+    padding: 28px 35px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-size: 28px;
+}
+
+.header p {
+    color: #7f93ab;
+    margin-top: 7px;
+}
+
+.live {
+    background: rgba(40, 220, 175, 0.12);
+    border: 1px solid #1d8d78;
+    color: #42e8d4;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.live-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    background: #42e8d4;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.card {
+    background: linear-gradient(145deg, #0d1d31, #0a1626);
+    border: 1px solid #1b3048;
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.18);
+}
+
+.card-label {
+    color: #8094ad;
+    font-size: 13px;
+}
+
+.card-value {
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 12px;
+}
+
+.card-small {
+    color: #42e8d4;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    margin-bottom: 22px;
+}
+
+.panel {
+    background: #0b192b;
+    border: 1px solid #1b3048;
+    border-radius: 16px;
+    padding: 22px;
+}
+
+.panel h2 {
+    font-size: 17px;
+    margin-bottom: 5px;
+}
+
+.panel-desc {
+    color: #71859d;
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+
+.chart-box {
+    height: 300px;
+}
+
+.city-list {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.city {
+    background: #101f33;
+    padding: 15px;
+    border-radius: 11px;
+    border: 1px solid #1b3048;
+}
+
+.city-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.city-name {
+    font-weight: bold;
+}
+
+.city-value {
+    color: #42e8d4;
+}
+
+.bar {
+    height: 6px;
+    background: #1c3047;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    border-radius: 5px;
+    background: linear-gradient(90deg, #42e8d4, #8174ff);
+}
+
+.table-panel {
+    margin-bottom: 22px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th {
+    text-align: left;
+    color: #71859d;
+    font-size: 12px;
+    padding: 13px;
+    border-bottom: 1px solid #20364e;
+}
+
+td {
+    padding: 15px 13px;
+    border-bottom: 1px solid #172a40;
+    font-size: 13px;
+}
+
+.status {
+    padding: 5px 9px;
+    border-radius: 15px;
+    font-size: 11px;
+}
+
+.high {
+    background: rgba(255, 91, 115, .15);
+    color: #ff7188;
+}
+
+.medium {
+    background: rgba(255, 190, 70, .15);
+    color: #ffca65;
+}
+
+.low {
+    background: rgba(66, 232, 212, .12);
+    color: #42e8d4;
+}
+
+.pipeline {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.stage {
+    text-align: center;
+    padding: 17px 8px;
+    background: #101f33;
+    border: 1px solid #1b3048;
+    border-radius: 12px;
+    font-size: 11px;
+    color: #9eb1c8;
+}
+
+.stage-number {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto auto 9px;
+    border-radius: 50%;
+    background: #182e47;
+    color: #42e8d4;
+    font-weight: bold;
+}
+
+.footer {
+    text-align: center;
+    padding: 25px;
+    color: #536981;
+    font-size: 11px;
+}
+
+@media(max-width: 1000px) {
+    .sidebar {
+        width: 190px;
+    }
+
+    .main {
+        margin-left: 190px;
+    }
+
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pipeline {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media(max-width: 700px) {
+    .sidebar {
+        display: none;
+    }
+
+    .main {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+    <div class="logo">AUTO<span>SYNC</span></div>
+    <div class="subtitle">MICRO-CLIMATE ANALYTICS</div>
+
+    <div class="nav-title">Workspace</div>
+
+    <div class="nav-item active">▣ Dashboard</div>
+    <div class="nav-item">◉ Climate Analysis</div>
+    <div class="nav-item">⌖ Locations</div>
+    <div class="nav-item">◆ Opportunities</div>
+    <div class="nav-item">▤ Data Explorer</div>
+
+    <div class="nav-title">System</div>
+
+    <div class="nav-item">⚙ Analytics Engine</div>
+    <div class="nav-item">✓ Data Quality</div>
+</aside>
+
+<main class="main">
+
+    <header class="header">
+        <div>
+            <h1>Micro-Climate Analytics</h1>
+            <p>Real-time climate comparison and arbitrage opportunity analysis</p>
+        </div>
+
+        <div class="live">
+            <span class="live-dot"></span>
+            ANALYTICS ACTIVE
+        </div>
+    </header>
+
+    <section class="cards">
+
+        <div class="card">
+            <div class="card-label">Average Temperature</div>
+            <div class="card-value" id="avgTemp">-- °C</div>
+            <div class="card-small">Across monitored locations</div>
+        </div>
+
+        <div class="card">
+            <div class="card-label">Average Humidity</div>
+            <div class="card-value" id="avgHumidity">-- %</div>
+            <div class="card-small">Environmental moisture</div>
+        </div>
+
+        <div class="card">
+            <div class="card-label">Climate Difference</div>
+            <div class="card-value" id="climateDiff">--</div>
+            <div class="card-small">Cross-location variation</div>
+        </div>
+
+        <div class="card">
+            <div class="card-label">Opportunities</div>
+            <div class="card-value" id="opportunities">--</div>
+            <div class="card-small">Detected climate differences</div>
+        </div>
+
+    </section>
+
+    <section class="grid">
+
+        <div class="panel">
+            <h2>Temperature & Humidity Trend</h2>
+            <div class="panel-desc">
+                Climate variation across monitored locations
+            </div>
+
+            <div class="chart-box">
+                <canvas id="climateChart"></canvas>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2>Location Comparison</h2>
+            <div class="panel-desc">
+                Average temperature by city
+            </div>
+
+            <div class="city-list">
+
+                <div class="city">
+                    <div class="city-top">
+                        <span class="city-name">Baltimore</span>
+                        <span class="city-value">-- °C</span>
+                    </div>
+                    <div class="bar">
+                        <div class="bar-fill" style="width:72%"></div>
+                    </div>
+                </div>
+
+                <div class="city">
+                    <div class="city-top">
+                        <span class="city-name">Denver</span>
+                        <span class="city-value">-- °C</span>
+                    </div>
+                    <div class="bar">
+                        <div class="bar-fill" style="width:60%"></div>
+                    </div>
+                </div>
+
+                <div class="city">
+                    <div class="city-top">
+                        <span class="city-name">Las Vegas</span>
+                        <span class="city-value">-- °C</span>
+                    </div>
+                    <div class="bar">
+                        <div class="bar-fill" style="width:90%"></div>
+                    </div>
+                </div>
+
+                <div class="city">
+                    <div class="city-top">
+                        <span class="city-name">Los Angeles</span>
+                        <span class="city-value">-- °C</span>
+                    </div>
+                    <div class="bar">
+                        <div class="bar-fill" style="width:78%"></div>
+                    </div>
+                </div>
+
+                <div class="city">
+                    <div class="city-top">
+                        <span class="city-name">Miami</span>
+                        <span class="city-value">-- °C</span>
+                    </div>
+                    <div class="bar">
+                        <div class="bar-fill" style="width:85%"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+    <section class="panel table-panel">
+
+        <h2>Climate Opportunity Analysis</h2>
+
+        <div class="panel-desc">
+            Locations showing measurable micro-climate differences
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>LOCATION</th>
+                    <th>TEMPERATURE Δ</th>
+                    <th>HUMIDITY Δ</th>
+                    <th>SCORE</th>
+                    <th>STATUS</th>
+                </tr>
+            </thead>
+
+            <tbody id="opportunityTable">
+
+                <tr>
+                    <td>Baltimore → Denver</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td><span class="status medium">ANALYZING</span></td>
+                </tr>
+
+                <tr>
+                    <td>Denver → Las Vegas</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td><span class="status high">ANALYZING</span></td>
+                </tr>
+
+                <tr>
+                    <td>Los Angeles → Miami</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td><span class="status low">ANALYZING</span></td>
+                </tr>
+
+            </tbody>
+        </table>
+
+    </section>
+
+    <section class="panel">
+
+        <h2>Autosync Analytics Pipeline</h2>
+
+        <div class="panel-desc">
+            End-to-end data processing workflow
+        </div>
+
+        <div class="pipeline">
+
+            <div class="stage">
+                <div class="stage-number">1</div>
+                Dataset
+            </div>
+
+            <div class="stage">
+                <div class="stage-number">2</div>
+                Data Cleaning
+            </div>
+
+            <div class="stage">
+                <div class="stage-number">3</div>
+                Climate Analysis
+            </div>
+
+            <div class="stage">
+                <div class="stage-number">4</div>
+                Difference
+            </div>
+
+            <div class="stage">
+                <div class="stage-number">5</div>
+                Opportunity
+            </div>
+
+            <div class="stage">
+                <div class="stage-number">6</div>
+                Dashboard
+            </div>
+
+        </div>
+
+    </section>
+
+    <div class="footer">
+        Autosync • Micro-Climate Arbitrage Analytics • Infotact Solutions
+    </div>
+
+</main>
+
+<script>
+
+const cities = [
+    "Baltimore",
+    "Denver",
+    "Las Vegas",
+    "Los Angeles",
+    "Miami"
+];
+
+const tempFiles = [
+    "data/baltimore_temp.csv",
+    "data/denver_temp.csv",
+    "data/las_vegas_temp.csv",
+    "data/los_angeles_temp.csv",
+    "data/miami_temp.csv"
+];
+
+const humidityFiles = [
+    "data/baltimore_rh.csv",
+    "data/denver_rh.csv",
+    "data/las_vegas_rh.csv",
+    "data/los_angeles_rh.csv",
+    "data/miami_rh.csv"
+];
+
+function parseCSV(text) {
+
+    const lines = text.trim().split(/\r?\n/);
+
+    if (lines.length < 2) return [];
+
+    const headers = lines[0].split(",");
+
+    return lines.slice(1).map(line => {
+
+        const values = line.split(",");
+
+        let obj = {};
+
+        headers.forEach((header, index) => {
+            obj[header.trim()] = values[index]
+                ? values[index].trim()
+                : "";
+        });
+
+        return obj;
+
+    });
+}
+
+function getNumbers(rows) {
+
+    let values = [];
+
+    rows.forEach(row => {
+
+        Object.values(row).forEach(value => {
+
+            const number = parseFloat(value);
+
+            if (!isNaN(number)) {
+                values.push(number);
+            }
+
+        });
+
+    });
+
+    return values;
+}
+
+function average(values) {
+
+    if (!values.length) return 0;
+
+    return values.reduce((a,b) => a+b,0) / values.length;
+}
+
+async function loadFile(path) {
+
+    try {
+
+        const response = await fetch(path);
+
+        if (!response.ok) {
+            throw new Error("File not found");
+        }
+
+        return await response.text();
+
+    } catch(error) {
+
+        console.log("Unable to load:", path);
+
+        return "";
+
+    }
+
+}
+
+async function loadDashboard() {
+
+    let temperatures = [];
+    let humidities = [];
+    let cityTemps = [];
+
+    for (let i = 0; i < cities.length; i++) {
+
+        const tempText = await loadFile(tempFiles[i]);
+
+        const humidityText = await loadFile(humidityFiles[i]);
+
+        const tempRows = parseCSV(tempText);
+
+        const humidityRows = parseCSV(humidityText);
+
+        const tempNumbers = getNumbers(tempRows);
+
+        const humidityNumbers = getNumbers(humidityRows);
+
+        const cityTemperature = average(tempNumbers);
+
+        const cityHumidity = average(humidityNumbers);
+
+        if (tempNumbers.length) {
+
+            temperatures.push(...tempNumbers);
+
+            cityTemps.push(cityTemperature);
+
+        }
+
+        if (humidityNumbers.length) {
+            humidities.push(...humidityNumbers);
+        }
+
+        const cityElement =
+            document.querySelectorAll(".city-value")[i];
+
+        if (cityElement && tempNumbers.length) {
+
+            cityElement.textContent =
+                cityTemperature.toFixed(1) + " °C";
+
+        }
+
+    }
+
+    const avgTemp = average(temperatures);
+
+    const avgHumidity = average(humidities);
+
+    let minTemp = Math.min(...cityTemps);
+    let maxTemp = Math.max(...cityTemps);
+
+    let climateDifference =
+        cityTemps.length
+        ? maxTemp - minTemp
+        : 0;
+
+    document.getElementById("avgTemp").textContent =
+        avgTemp.toFixed(1) + " °C";
+
+    document.getElementById("avgHumidity").textContent =
+        avgHumidity.toFixed(1) + " %";
+
+    document.getElementById("climateDiff").textContent =
+        climateDifference.toFixed(1);
+
+    const opportunityCount =
+        cityTemps.filter(
+            value => Math.abs(value - avgTemp) > 3
+        ).length;
+
+    document.getElementById("opportunities").textContent =
+        opportunityCount;
+
+    createChart(cityTemps);
+
+    updateOpportunityTable(cityTemps);
+
+}
+
+function createChart(cityTemps) {
+
+    const ctx =
+        document.getElementById("climateChart");
+
+    new Chart(ctx, {
+
+        type: "line",
+
+        data: {
+
+            labels: cities,
+
+            datasets: [
+
+                {
+                    label: "Average Temperature °C",
+                    data: cityTemps,
+                    borderColor: "#42e8d4",
+                    backgroundColor: "rgba(66,232,212,0.10)",
+                    tension: 0.4,
+                    fill: true
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+                    labels: {
+                        color: "#a9bad0"
+                    }
+                }
+
+            },
+
+            scales: {
+
+                x: {
+                    ticks: {
+                        color: "#7f93ab"
+                    },
+
+                    grid: {
+                        color: "rgba(255,255,255,.05)"
+                    }
+
+                },
+
+                y: {
+                    ticks: {
+                        color: "#7f93ab"
+                    },
+
+                    grid: {
+                        color: "rgba(255,255,255,.05)"
+                    }
+
+                }
+
+            }
+
+        }
+
+    });
+
+}
+
+function updateOpportunityTable(cityTemps) {
+
+    const table =
+        document.getElementById("opportunityTable");
+
+    table.innerHTML = "";
+
+    for (let i = 0; i < cities.length - 1; i++) {
+
+        const difference =
+            Math.abs(cityTemps[i] - cityTemps[i+1]);
+
+        const score =
+            difference;
+
+        let status = "LOW";
+        let className = "low";
+
+        if (score >= 8) {
+
+            status = "HIGH";
+            className = "high";
+
+        } else if (score >= 4) {
+
+            status = "MEDIUM";
+            className = "medium";
+
+        }
+
+        const row =
+            document.createElement("tr");
+
+        row.innerHTML = `
+
+            <td>
+                ${cities[i]} → ${cities[i+1]}
+            </td>
+
+            <td>
+                ${difference.toFixed(2)} °C
+            </td>
+
+            <td>
+                Climate comparison
+            </td>
+
+            <td>
+                ${score.toFixed(2)}
+            </td>
+
+            <td>
+                <span class="status ${className}">
+                    ${status}
+                </span>
+            </td>
+
+        `;
+
+        table.appendChild(row);
+
+    }
+
+}
+
+loadDashboard();
+
+</script>
+
+</body>
+</html>
