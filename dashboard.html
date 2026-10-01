@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Autosync - Micro-Climate Analytics</title>
+<title>Autosync | Micro-Climate Analytics</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -16,92 +16,114 @@
     box-sizing: border-box;
 }
 
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #07111f;
-    color: #e8f0f7;
+html {
+    scroll-behavior: smooth;
 }
 
-.container {
-    display: flex;
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #0b1120;
+    color: #e5e7eb;
     min-height: 100vh;
 }
 
+/* ================= SIDEBAR ================= */
+
 .sidebar {
-    width: 240px;
-    background: #0b1727;
-    border-right: 1px solid #1d3047;
-    padding: 25px 15px;
     position: fixed;
+    left: 0;
     top: 0;
-    bottom: 0;
+    width: 245px;
+    height: 100vh;
+    background: #111827;
+    border-right: 1px solid #263244;
+    padding: 25px 15px;
+    z-index: 1000;
 }
 
 .logo {
-    font-size: 22px;
-    font-weight: bold;
-    color: #ffffff;
-    margin-bottom: 4px;
+    padding: 5px 15px 30px;
+}
+
+.logo h2 {
+    font-size: 21px;
+    letter-spacing: 1px;
+}
+
+.logo span {
+    color: #38bdf8;
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+.menu-title {
+    color: #64748b;
+    font-size: 11px;
+    margin: 20px 15px 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.nav-btn {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    padding: 13px 15px;
+    margin: 3px 0;
+    border-radius: 9px;
+    text-align: left;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+    background: #1e293b;
+    color: #38bdf8;
+}
+
+.nav-btn span {
+    margin-right: 9px;
+}
+
+/* ================= MAIN ================= */
+
+.main {
+    margin-left: 245px;
+    padding: 30px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.topbar h1 {
+    font-size: 28px;
+    margin-bottom: 6px;
 }
 
 .subtitle {
-    color: #6e8299;
-    font-size: 11px;
-    letter-spacing: 1px;
-    margin-bottom: 35px;
-}
-
-.section-title {
-    font-size: 11px;
-    color: #60758b;
-    margin: 20px 10px 10px;
-    text-transform: uppercase;
-}
-
-.nav-item {
-    padding: 12px;
-    margin: 5px 0;
-    border-radius: 7px;
-    color: #91a4b8;
+    color: #94a3b8;
     font-size: 14px;
 }
 
-.nav-item.active {
-    background: #142a40;
-    color: #ffffff;
-}
-
-.main {
-    margin-left: 240px;
-    width: calc(100% - 240px);
-    padding: 35px;
-}
-
-.header {
-    margin-bottom: 25px;
-}
-
-.header h1 {
-    font-size: 30px;
-    margin-bottom: 8px;
-}
-
-.header p {
-    color: #7f93a8;
-}
-
 .status {
-    display: inline-block;
-    margin-top: 15px;
-    background: #123529;
-    color: #61e6a4;
-    padding: 7px 12px;
+    background: #102a22;
+    color: #34d399;
+    padding: 9px 14px;
     border-radius: 20px;
-    font-size: 11px;
-    font-weight: bold;
+    font-size: 12px;
+    border: 1px solid #1d5545;
 }
 
-.cards {
+/* ================= CARDS ================= */
+
+.summary-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 18px;
@@ -109,82 +131,107 @@ body {
 }
 
 .card {
-    background: #0c1929;
-    border: 1px solid #1b3047;
-    border-radius: 12px;
-    padding: 22px;
+    background: #111827;
+    border: 1px solid #263244;
+    border-radius: 13px;
+    padding: 20px;
 }
 
-.card-title {
-    color: #71859a;
+.card-label {
+    color: #94a3b8;
     font-size: 12px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .card-value {
-    font-size: 29px;
+    font-size: 27px;
     font-weight: bold;
 }
 
-.card-description {
-    color: #62778c;
+.card-note {
+    color: #64748b;
     font-size: 11px;
     margin-top: 8px;
 }
 
+/* ================= SECTIONS ================= */
+
 .section {
-    background: #0c1929;
-    border: 1px solid #1b3047;
-    border-radius: 12px;
-    padding: 25px;
+    background: #111827;
+    border: 1px solid #263244;
+    border-radius: 13px;
+    padding: 22px;
     margin-bottom: 25px;
+    scroll-margin-top: 25px;
 }
 
-.section h2 {
-    font-size: 18px;
-    margin-bottom: 7px;
-}
-
-.section-description {
-    color: #71859a;
-    font-size: 12px;
+.section-header {
     margin-bottom: 20px;
 }
+
+.section-header h2 {
+    font-size: 19px;
+    margin-bottom: 6px;
+}
+
+.section-header p {
+    color: #64748b;
+    font-size: 13px;
+}
+
+/* ================= CITY GRID ================= */
+
+.city-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+}
+
+.city-card {
+    background: #0b1120;
+    border: 1px solid #263244;
+    border-radius: 11px;
+    padding: 17px;
+    transition: 0.2s;
+}
+
+.city-card:hover {
+    transform: translateY(-3px);
+    border-color: #38bdf8;
+}
+
+.city-name {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 17px;
+}
+
+.city-temp {
+    font-size: 23px;
+    font-weight: bold;
+    color: #38bdf8;
+}
+
+.city-humidity {
+    margin-top: 8px;
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.city-status {
+    margin-top: 12px;
+    font-size: 10px;
+    color: #34d399;
+}
+
+/* ================= CHART ================= */
 
 .chart-container {
     height: 350px;
     position: relative;
 }
 
-.city-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 15px;
-}
-
-.city-card {
-    background: #101f31;
-    border: 1px solid #20364e;
-    border-radius: 10px;
-    padding: 20px;
-}
-
-.city-name {
-    color: #8498ac;
-    font-size: 13px;
-    margin-bottom: 12px;
-}
-
-.city-value {
-    font-size: 22px;
-    font-weight: bold;
-}
-
-.city-humidity {
-    color: #6f879e;
-    font-size: 11px;
-    margin-top: 7px;
-}
+/* ================= TABLE ================= */
 
 .table-wrapper {
     overflow-x: auto;
@@ -196,30 +243,93 @@ table {
 }
 
 th {
-    text-align: left;
+    color: #64748b;
     font-size: 11px;
-    color: #71859a;
+    text-align: left;
     padding: 13px;
-    border-bottom: 1px solid #21354b;
+    border-bottom: 1px solid #263244;
 }
 
 td {
-    padding: 15px 13px;
-    border-bottom: 1px solid #172a3d;
+    padding: 14px 13px;
     font-size: 13px;
+    border-bottom: 1px solid #1e293b;
 }
 
-.status-high {
-    color: #ff7070;
+.good {
+    color: #34d399;
 }
 
-.status-medium {
-    color: #ffc766;
+.medium {
+    color: #fbbf24;
 }
 
-.status-low {
-    color: #62d9a1;
+.neutral {
+    color: #94a3b8;
 }
+
+/* ================= LOCATION GRID ================= */
+
+.location-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+}
+
+.location-card {
+    background: #0b1120;
+    border: 1px solid #263244;
+    border-radius: 11px;
+    padding: 20px;
+    text-align: center;
+}
+
+.location-icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+}
+
+.location-card h3 {
+    margin-bottom: 7px;
+}
+
+.location-card p {
+    color: #64748b;
+    font-size: 12px;
+}
+
+/* ================= DATA EXPLORER ================= */
+
+.explorer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.explorer-card {
+    background: #0b1120;
+    border: 1px solid #263244;
+    padding: 18px;
+    border-radius: 10px;
+}
+
+.explorer-card h3 {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.explorer-card p {
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.file-name {
+    color: #38bdf8;
+    margin-top: 8px;
+    font-family: monospace;
+}
+
+/* ================= PIPELINE ================= */
 
 .pipeline {
     display: grid;
@@ -227,40 +337,88 @@ td {
     gap: 10px;
 }
 
-.pipeline-item {
-    text-align: center;
-    background: #101f31;
-    padding: 20px 10px;
+.pipeline-step {
+    background: #0b1120;
+    border: 1px solid #263244;
     border-radius: 9px;
-    border: 1px solid #20364e;
+    padding: 15px;
+    text-align: center;
 }
 
 .pipeline-number {
-    font-size: 22px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #1e293b;
+    color: #38bdf8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto auto 9px;
+    font-size: 12px;
     font-weight: bold;
-    margin-bottom: 8px;
 }
 
-.pipeline-name {
+.pipeline-step div:last-child {
     font-size: 11px;
-    color: #8195aa;
+    color: #94a3b8;
 }
+
+/* ================= QUALITY ================= */
+
+.quality-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.quality-card {
+    background: #0b1120;
+    border: 1px solid #263244;
+    border-radius: 10px;
+    padding: 18px;
+}
+
+.quality-card strong {
+    display: block;
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.quality-card span {
+    color: #64748b;
+    font-size: 11px;
+}
+
+/* ================= FOOTER ================= */
 
 .footer {
     text-align: center;
-    color: #53697e;
+    color: #475569;
     font-size: 11px;
-    padding: 15px;
+    padding: 25px;
 }
 
-@media(max-width: 1000px) {
+/* ================= LOADING ================= */
 
-    .cards {
+.loading {
+    color: #64748b;
+}
+
+.error {
+    color: #f87171;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1200px) {
+    .summary-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .city-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .city-grid,
+    .location-grid {
+        grid-template-columns: repeat(3, 1fr);
     }
 
     .pipeline {
@@ -268,23 +426,22 @@ td {
     }
 }
 
-@media(max-width: 700px) {
-
+@media (max-width: 800px) {
     .sidebar {
-        display: none;
+        position: relative;
+        width: 100%;
+        height: auto;
     }
 
     .main {
         margin-left: 0;
-        width: 100%;
-        padding: 20px;
     }
 
-    .cards {
-        grid-template-columns: 1fr;
-    }
-
-    .city-grid {
+    .summary-grid,
+    .city-grid,
+    .location-grid,
+    .explorer-grid,
+    .quality-grid {
         grid-template-columns: 1fr;
     }
 }
@@ -293,228 +450,254 @@ td {
 
 <body>
 
-<div class="container">
+<!-- ================= SIDEBAR ================= -->
 
-<div class="sidebar">
+<aside class="sidebar">
 
-    <div class="logo">AUTOSYNC</div>
-    <div class="subtitle">MICRO-CLIMATE ANALYTICS</div>
-
-    <div class="section-title">Workspace</div>
-
-    <div class="nav-item active">▣ Dashboard</div>
-    <div class="nav-item">◉ Climate Analysis</div>
-    <div class="nav-item">⌖ Locations</div>
-    <div class="nav-item">◆ Opportunities</div>
-    <div class="nav-item">▤ Data Explorer</div>
-
-    <div class="section-title">System</div>
-
-    <div class="nav-item">⚙ Analytics Engine</div>
-    <div class="nav-item">✓ Data Quality</div>
-
-</div>
-
-<div class="main">
-
-    <div class="header">
-
-        <h1>Micro-Climate Analytics</h1>
-
-        <p>
-            Climate comparison and arbitrage opportunity analysis
-        </p>
-
-        <span class="status">
-            ● ANALYTICS ACTIVE
-        </span>
-
+    <div class="logo">
+        <h2>**AUTOSYNC**</h2>
+        <span>MICRO-CLIMATE ANALYTICS</span>
     </div>
 
-    <div class="cards">
+    <div class="menu-title">Workspace</div>
 
-        <div class="card">
+    <button class="nav-btn active" onclick="goTo('dashboardSection')">
+        <span>▣</span> Dashboard
+    </button>
 
-            <div class="card-title">
-                Average Temperature
+    <button class="nav-btn" onclick="goTo('analysisSection')">
+        <span>◉</span> Climate Analysis
+    </button>
+
+    <button class="nav-btn" onclick="goTo('locationsSection')">
+        <span>⌖</span> Locations
+    </button>
+
+    <button class="nav-btn" onclick="goTo('opportunitiesSection')">
+        <span>◆</span> Opportunities
+    </button>
+
+    <button class="nav-btn" onclick="goTo('explorerSection')">
+        <span>▤</span> Data Explorer
+    </button>
+
+    <div class="menu-title">System</div>
+
+    <button class="nav-btn" onclick="goTo('pipelineSection')">
+        <span>⚙</span> Analytics Engine
+    </button>
+
+    <button class="nav-btn" onclick="goTo('qualitySection')">
+        <span>✓</span> Data Quality
+    </button>
+
+</aside>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+    <!-- DASHBOARD -->
+
+    <section id="dashboardSection">
+
+        <div class="topbar">
+
+            <div>
+                <h1>Micro-Climate Analytics</h1>
+                <div class="subtitle">
+                    Climate comparison and arbitrage opportunity analysis
+                </div>
             </div>
 
-            <div class="card-value" id="avgTemp">
-                Loading...
-            </div>
-
-            <div class="card-description">
-                Across monitored locations
-            </div>
-
-        </div>
-
-        <div class="card">
-
-            <div class="card-title">
-                Average Humidity
-            </div>
-
-            <div class="card-value" id="avgHumidity">
-                Loading...
-            </div>
-
-            <div class="card-description">
-                Environmental moisture
-            </div>
-
-        </div>
-
-        <div class="card">
-
-            <div class="card-title">
-                Climate Difference
-            </div>
-
-            <div class="card-value" id="climateDiff">
-                Loading...
-            </div>
-
-            <div class="card-description">
-                Maximum cross-city difference
-            </div>
-
-        </div>
-
-        <div class="card">
-
-            <div class="card-title">
-                Opportunities
-            </div>
-
-            <div class="card-value" id="opportunities">
-                Loading...
-            </div>
-
-            <div class="card-description">
-                City-pair comparisons
+            <div class="status">
+                ● ANALYTICS ACTIVE
             </div>
 
         </div>
 
-    </div>
 
-    <div class="section">
+        <!-- SUMMARY -->
 
-        <h2>Climate Comparison</h2>
+        <div class="summary-grid">
 
-        <div class="section-description">
-            Average temperature and humidity across monitored cities
+            <div class="card">
+                <div class="card-label">Average Temperature</div>
+                <div class="card-value" id="avgTemp">-- °C</div>
+                <div class="card-note">Across monitored locations</div>
+            </div>
+
+            <div class="card">
+                <div class="card-label">Average Humidity</div>
+                <div class="card-value" id="avgHumidity">-- %</div>
+                <div class="card-note">Environmental moisture</div>
+            </div>
+
+            <div class="card">
+                <div class="card-label">Climate Difference</div>
+                <div class="card-value" id="climateDiff">-- °C</div>
+                <div class="card-note">Maximum cross-city difference</div>
+            </div>
+
+            <div class="card">
+                <div class="card-label">Opportunities</div>
+                <div class="card-value" id="opportunities">--</div>
+                <div class="card-note">City-pair comparisons</div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CLIMATE ANALYSIS -->
+
+    <section class="section" id="analysisSection">
+
+        <div class="section-header">
+            <h2>Climate Comparison</h2>
+            <p>Average temperature and humidity across monitored cities</p>
         </div>
 
         <div class="chart-container">
-
             <canvas id="climateChart"></canvas>
-
         </div>
 
-    </div>
+    </section>
 
-    <div class="section">
 
-        <h2>Location Comparison</h2>
+    <!-- LOCATION COMPARISON -->
 
-        <div class="section-description">
-            Average temperature by city
+    <section class="section">
+
+        <div class="section-header">
+            <h2>Location Comparison</h2>
+            <p>Average temperature and humidity by city</p>
         </div>
 
         <div class="city-grid">
 
             <div class="city-card">
-
-                <div class="city-name">
-                    Baltimore
-                </div>
-
-                <div class="city-value" id="Baltimore-temp">
-                    Loading...
-                </div>
-
+                <div class="city-name">Baltimore</div>
+                <div class="city-temp" id="Baltimore-temp">Loading...</div>
                 <div class="city-humidity" id="Baltimore-humidity">
                     Humidity: Loading...
                 </div>
-
+                <div class="city-status" id="Baltimore-status">
+                    ● Loading
+                </div>
             </div>
 
             <div class="city-card">
-
-                <div class="city-name">
-                    Denver
-                </div>
-
-                <div class="city-value" id="Denver-temp">
-                    Loading...
-                </div>
-
+                <div class="city-name">Denver</div>
+                <div class="city-temp" id="Denver-temp">Loading...</div>
                 <div class="city-humidity" id="Denver-humidity">
                     Humidity: Loading...
                 </div>
-
+                <div class="city-status" id="Denver-status">
+                    ● Loading
+                </div>
             </div>
 
             <div class="city-card">
-
-                <div class="city-name">
-                    Las Vegas
-                </div>
-
-                <div class="city-value" id="Las-Vegas-temp">
-                    Loading...
-                </div>
-
+                <div class="city-name">Las Vegas</div>
+                <div class="city-temp" id="Las-Vegas-temp">Loading...</div>
                 <div class="city-humidity" id="Las-Vegas-humidity">
                     Humidity: Loading...
                 </div>
-
+                <div class="city-status" id="Las-Vegas-status">
+                    ● Loading
+                </div>
             </div>
 
             <div class="city-card">
-
-                <div class="city-name">
-                    Los Angeles
-                </div>
-
-                <div class="city-value" id="Los-Angeles-temp">
-                    Loading...
-                </div>
-
+                <div class="city-name">Los Angeles</div>
+                <div class="city-temp" id="Los-Angeles-temp">Loading...</div>
                 <div class="city-humidity" id="Los-Angeles-humidity">
                     Humidity: Loading...
                 </div>
-
+                <div class="city-status" id="Los-Angeles-status">
+                    ● Loading
+                </div>
             </div>
 
             <div class="city-card">
-
-                <div class="city-name">
-                    Miami
-                </div>
-
-                <div class="city-value" id="Miami-temp">
-                    Loading...
-                </div>
-
+                <div class="city-name">Miami</div>
+                <div class="city-temp" id="Miami-temp">Loading...</div>
                 <div class="city-humidity" id="Miami-humidity">
                     Humidity: Loading...
                 </div>
-
+                <div class="city-status" id="Miami-status">
+                    ● Loading
+                </div>
             </div>
 
         </div>
 
-    </div>
+    </section>
 
-    <div class="section">
 
-        <h2>Climate Opportunity Analysis</h2>
+    <!-- LOCATIONS -->
 
-        <div class="section-description">
-            Pairwise micro-climate differences between monitored locations
+    <section class="section" id="locationsSection">
+
+        <div class="section-header">
+            <h2>Monitored Locations</h2>
+            <p>Five cities included in the Autosync micro-climate dataset</p>
+        </div>
+
+        <div class="location-grid">
+
+            <div class="location-card">
+                <div class="location-icon">📍</div>
+                <h3>Baltimore</h3>
+                <p>Maryland, USA</p>
+                <p id="locBaltimore">Climate data loading...</p>
+            </div>
+
+            <div class="location-card">
+                <div class="location-icon">📍</div>
+                <h3>Denver</h3>
+                <p>Colorado, USA</p>
+                <p id="locDenver">Climate data loading...</p>
+            </div>
+
+            <div class="location-card">
+                <div class="location-icon">📍</div>
+                <h3>Las Vegas</h3>
+                <p>Nevada, USA</p>
+                <p id="locLasVegas">Climate data loading...</p>
+            </div>
+
+            <div class="location-card">
+                <div class="location-icon">📍</div>
+                <h3>Los Angeles</h3>
+                <p>California, USA</p>
+                <p id="locLosAngeles">Climate data loading...</p>
+            </div>
+
+            <div class="location-card">
+                <div class="location-icon">📍</div>
+                <h3>Miami</h3>
+                <p>Florida, USA</p>
+                <p id="locMiami">Climate data loading...</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- OPPORTUNITIES -->
+
+    <section class="section" id="opportunitiesSection">
+
+        <div class="section-header">
+            <h2>Climate Opportunity Analysis</h2>
+            <p>
+                Pairwise micro-climate differences between monitored locations
+            </p>
         </div>
 
         <div class="table-wrapper">
@@ -522,27 +705,21 @@ td {
             <table>
 
                 <thead>
-
                     <tr>
-
                         <th>LOCATION PAIR</th>
                         <th>TEMPERATURE Δ</th>
                         <th>HUMIDITY Δ</th>
                         <th>PROTOTYPE SCORE</th>
                         <th>STATUS</th>
-
                     </tr>
-
                 </thead>
 
                 <tbody id="opportunityTable">
 
                     <tr>
-
-                        <td colspan="5">
-                            Loading climate opportunities...
+                        <td colspan="5" class="loading">
+                            Calculating climate opportunities...
                         </td>
-
                     </tr>
 
                 </tbody>
@@ -551,137 +728,257 @@ td {
 
         </div>
 
-        <br>
-
-        <div style="font-size:11px;color:#60758b;">
-
+        <p style="color:#64748b;font-size:11px;margin-top:15px;">
             Prototype opportunity score = temperature difference +
-            humidity difference / 10.
-            It is an analytical demonstration metric, not a financial
-            trading recommendation.
+            humidity difference / 10. It is an analytical demonstration
+            metric, not a financial trading recommendation.
+        </p>
+
+    </section>
+
+
+    <!-- DATA EXPLORER -->
+
+    <section class="section" id="explorerSection">
+
+        <div class="section-header">
+            <h2>Data Explorer</h2>
+            <p>Source files currently connected to the Autosync dashboard</p>
+        </div>
+
+        <div class="explorer-grid">
+
+            <div class="explorer-card">
+                <h3>Baltimore</h3>
+                <p>Temperature dataset</p>
+                <div class="file-name">baltimore_temp.csv</div>
+                <p id="explorerBaltimore">Checking...</p>
+            </div>
+
+            <div class="explorer-card">
+                <h3>Denver</h3>
+                <p>Temperature dataset</p>
+                <div class="file-name">denver_temp.csv</div>
+                <p id="explorerDenver">Checking...</p>
+            </div>
+
+            <div class="explorer-card">
+                <h3>Las Vegas</h3>
+                <p>Temperature dataset</p>
+                <div class="file-name">las_vegas_temp.csv</div>
+                <p id="explorerLasVegas">Checking...</p>
+            </div>
+
+            <div class="explorer-card">
+                <h3>Los Angeles</h3>
+                <p>Temperature dataset</p>
+                <div class="file-name">los_angeles_temp.csv</div>
+                <p id="explorerLosAngeles">Checking...</p>
+            </div>
+
+            <div class="explorer-card">
+                <h3>Miami</h3>
+                <p>Temperature dataset</p>
+                <div class="file-name">miami_temp.csv</div>
+                <p id="explorerMiami">Checking...</p>
+            </div>
+
+            <div class="explorer-card">
+                <h3>Humidity</h3>
+                <p>Relative humidity files</p>
+                <div class="file-name">*_rh.csv</div>
+                <p>5 city datasets connected</p>
+            </div>
 
         </div>
 
-    </div>
+    </section>
 
-    <div class="section">
 
-        <h2>Autosync Analytics Pipeline</h2>
+    <!-- PIPELINE -->
 
-        <div class="section-description">
-            End-to-end data processing workflow
+    <section class="section" id="pipelineSection">
+
+        <div class="section-header">
+            <h2>Autosync Analytics Pipeline</h2>
+            <p>End-to-end data processing workflow</p>
         </div>
 
         <div class="pipeline">
 
-            <div class="pipeline-item">
+            <div class="pipeline-step">
                 <div class="pipeline-number">1</div>
-                <div class="pipeline-name">Dataset</div>
+                <div>Dataset</div>
             </div>
 
-            <div class="pipeline-item">
+            <div class="pipeline-step">
                 <div class="pipeline-number">2</div>
-                <div class="pipeline-name">Data Cleaning</div>
+                <div>Data Cleaning</div>
             </div>
 
-            <div class="pipeline-item">
+            <div class="pipeline-step">
                 <div class="pipeline-number">3</div>
-                <div class="pipeline-name">Climate Analysis</div>
+                <div>Climate Analysis</div>
             </div>
 
-            <div class="pipeline-item">
+            <div class="pipeline-step">
                 <div class="pipeline-number">4</div>
-                <div class="pipeline-name">Difference</div>
+                <div>Difference</div>
             </div>
 
-            <div class="pipeline-item">
+            <div class="pipeline-step">
                 <div class="pipeline-number">5</div>
-                <div class="pipeline-name">Opportunity</div>
+                <div>Opportunity</div>
             </div>
 
-            <div class="pipeline-item">
+            <div class="pipeline-step">
                 <div class="pipeline-number">6</div>
-                <div class="pipeline-name">Dashboard</div>
+                <div>Dashboard</div>
             </div>
 
         </div>
 
-    </div>
+    </section>
+
+
+    <!-- DATA QUALITY -->
+
+    <section class="section" id="qualitySection">
+
+        <div class="section-header">
+            <h2>Data Quality</h2>
+            <p>Live connection and dataset validation status</p>
+        </div>
+
+        <div class="quality-grid">
+
+            <div class="quality-card">
+                <strong id="qualityCities">0 / 5</strong>
+                <span>Cities loaded</span>
+            </div>
+
+            <div class="quality-card">
+                <strong id="qualityTemperature">0 / 5</strong>
+                <span>Temperature files</span>
+            </div>
+
+            <div class="quality-card">
+                <strong id="qualityHumidity">0 / 5</strong>
+                <span>Humidity files</span>
+            </div>
+
+            <div class="quality-card">
+                <strong id="qualityStatus">CHECKING</strong>
+                <span>Overall system status</span>
+            </div>
+
+        </div>
+
+    </section>
+
 
     <div class="footer">
-
         Autosync • Micro-Climate Arbitrage Analytics • Infotact Solutions
-
     </div>
 
-</div>
+</main>
 
-</div>
 
 <script>
 
 /* =========================================================
-   IMPORTANT:
-   dashboard.html = MAIN BRANCH
-   DATA FILES = VAISHNAVI BRANCH
-   ========================================================= */
+   AUTOSYNC DATA CONFIGURATION
+   Dashboard = main branch
+   Data = vaishnavi branch
+========================================================= */
 
-const BASE_URL =
+const DATA_BASE =
 "https://raw.githubusercontent.com/vaishnaviakula47/Infotact-major-project/vaishnavi/data/";
 
-
-/* =========================================================
-   CITY FILES
-   ========================================================= */
 
 const cities = [
 
     {
         name: "Baltimore",
-        temp: "baltimore_temp.csv",
-        humidity: "baltimore_rh.csv"
+        key: "Baltimore",
+        temp: DATA_BASE + "baltimore_temp.csv",
+        humidity: DATA_BASE + "baltimore_rh.csv"
     },
 
     {
         name: "Denver",
-        temp: "denver_temp.csv",
-        humidity: "denver_rh.csv"
+        key: "Denver",
+        temp: DATA_BASE + "denver_temp.csv",
+        humidity: DATA_BASE + "denver_rh.csv"
     },
 
     {
         name: "Las Vegas",
-        temp: "las_vegas_temp.csv",
-        humidity: "las_vegas_rh.csv"
+        key: "Las-Vegas",
+        temp: DATA_BASE + "las_vegas_temp.csv",
+        humidity: DATA_BASE + "las_vegas_rh.csv"
     },
 
     {
         name: "Los Angeles",
-        temp: "los_angeles_temp.csv",
-        humidity: "los_angeles_rh.csv"
+        key: "Los-Angeles",
+        temp: DATA_BASE + "los_angeles_temp.csv",
+        humidity: DATA_BASE + "los_angeles_rh.csv"
     },
 
     {
         name: "Miami",
-        temp: "miami_temp.csv",
-        humidity: "miami_rh.csv"
+        key: "Miami",
+        temp: DATA_BASE + "miami_temp.csv",
+        humidity: DATA_BASE + "miami_rh.csv"
     }
 
 ];
 
 
+/* =========================================================
+   GLOBAL DATA
+========================================================= */
+
+let cityData = [];
+
 let climateChart = null;
 
 
 /* =========================================================
+   NAVIGATION
+========================================================= */
+
+function goTo(sectionId) {
+
+    const section = document.getElementById(sectionId);
+
+    if (section) {
+        section.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    }
+
+}
+
+
+/* =========================================================
    CSV PARSER
-   ========================================================= */
+========================================================= */
 
 function parseCSV(text) {
 
+    if (!text) {
+        return [];
+    }
+
+    text = text.replace(/^\uFEFF/, "");
+
     const lines = text
-        .replace(/\r/g, "")
-        .split("\n")
-        .filter(line => line.trim() !== "");
+        .split(/\r?\n/)
+        .map(line => line.trim())
+        .filter(line => line.length > 0);
 
     if (lines.length < 2) {
         return [];
@@ -689,12 +986,7 @@ function parseCSV(text) {
 
     const headers = lines[0]
         .split(",")
-        .map(header =>
-            header
-                .replace(/^"|"$/g, "")
-                .trim()
-                .toLowerCase()
-        );
+        .map(h => h.trim().replace(/^"|"$/g, ""));
 
     const rows = [];
 
@@ -702,18 +994,12 @@ function parseCSV(text) {
 
         const values = lines[i]
             .split(",")
-            .map(value =>
-                value
-                    .replace(/^"|"$/g, "")
-                    .trim()
-            );
+            .map(v => v.trim().replace(/^"|"$/g, ""));
 
         const row = {};
 
         headers.forEach((header, index) => {
-
             row[header] = values[index] ?? "";
-
         });
 
         rows.push(row);
@@ -724,8 +1010,53 @@ function parseCSV(text) {
 
 
 /* =========================================================
-   NUMERIC VALUES
-   ========================================================= */
+   FETCH CSV
+========================================================= */
+
+async function fetchCSV(url) {
+
+    try {
+
+        const response = await fetch(
+            url + "?cache=" + Date.now(),
+            {
+                method: "GET",
+                cache: "no-store"
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                "HTTP " + response.status
+            );
+        }
+
+        const text = await response.text();
+
+        if (!text || text.length < 20) {
+            throw new Error("Empty CSV file");
+        }
+
+        return parseCSV(text);
+
+    } catch (error) {
+
+        console.error(
+            "CSV loading failed:",
+            url,
+            error
+        );
+
+        return [];
+
+    }
+
+}
+
+
+/* =========================================================
+   NUMERIC VALUE EXTRACTION
+========================================================= */
 
 function getNumericValues(rows) {
 
@@ -733,19 +1064,21 @@ function getNumericValues(rows) {
 
     rows.forEach(row => {
 
-        Object.keys(row).forEach(key => {
+        Object.keys(row).forEach(column => {
 
-            const lowerKey = key.toLowerCase();
+            const lower = column.toLowerCase();
 
             if (
-                lowerKey.includes("date") ||
-                lowerKey.includes("time") ||
-                lowerKey === "hour"
+                lower.includes("date") ||
+                lower.includes("time") ||
+                lower === "hour"
             ) {
                 return;
             }
 
-            const value = parseFloat(row[key]);
+            const value = parseFloat(
+                String(row[column]).replace(/"/g, "")
+            );
 
             if (
                 Number.isFinite(value) &&
@@ -764,136 +1097,93 @@ function getNumericValues(rows) {
 
 /* =========================================================
    AVERAGE
-   ========================================================= */
+========================================================= */
 
 function average(values) {
 
-    if (!values.length) {
+    if (!values || values.length === 0) {
         return null;
     }
 
-    return values.reduce(
+    const valid = values.filter(
+        value => Number.isFinite(value)
+    );
+
+    if (valid.length === 0) {
+        return null;
+    }
+
+    return valid.reduce(
         (sum, value) => sum + value,
         0
-    ) / values.length;
-}
-
-
-/* =========================================================
-   LOAD CSV FROM VAISHNAVI BRANCH
-   ========================================================= */
-
-async function loadCSV(filename) {
-
-    const url = BASE_URL + filename;
-
-    console.log("Loading:", url);
-
-    try {
-
-        const response = await fetch(
-            url + "?cache=" + Date.now()
-        );
-
-        if (!response.ok) {
-
-            throw new Error(
-                "HTTP " +
-                response.status +
-                " - " +
-                filename
-            );
-
-        }
-
-        const text = await response.text();
-
-        console.log(
-            filename +
-            " loaded successfully"
-        );
-
-        return parseCSV(text);
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "FAILED TO LOAD:",
-            filename,
-            error
-        );
-
-        return [];
-
-    }
+    ) / valid.length;
 
 }
 
 
 /* =========================================================
-   LOAD CITY
-   ========================================================= */
+   LOAD ONE CITY
+========================================================= */
 
 async function loadCity(city) {
 
     console.log(
-        "Loading city:",
+        "Loading:",
         city.name
     );
 
-    const temperatureRows =
-        await loadCSV(city.temp);
+    const [
+        temperatureRows,
+        humidityRows
+    ] = await Promise.all([
 
-    const humidityRows =
-        await loadCSV(city.humidity);
+        fetchCSV(city.temp),
 
+        fetchCSV(city.humidity)
 
-    console.log(
-        city.name +
-        " temperature rows:",
-        temperatureRows.length
-    );
-
-    console.log(
-        city.name +
-        " humidity rows:",
-        humidityRows.length
-    );
+    ]);
 
 
     const temperatureValues =
-        getNumericValues(
-            temperatureRows
-        );
+        getNumericValues(temperatureRows);
 
     const humidityValues =
-        getNumericValues(
-            humidityRows
-        );
+        getNumericValues(humidityRows);
 
 
     const temperature =
-        average(
-            temperatureValues
-        );
+        average(temperatureValues);
 
     const humidity =
-        average(
-            humidityValues
-        );
+        average(humidityValues);
+
+
+    console.log(
+        city.name,
+        "Temperature:",
+        temperature,
+        "Humidity:",
+        humidity
+    );
 
 
     return {
 
-        name: city.name,
+        ...city,
 
-        temperature:
-            temperature,
+        temperature: temperature,
 
-        humidity:
-            humidity
+        humidity: humidity,
+
+        temperatureRows: temperatureRows.length,
+
+        humidityRows: humidityRows.length,
+
+        temperatureLoaded:
+            temperature !== null,
+
+        humidityLoaded:
+            humidity !== null
 
     };
 
@@ -901,187 +1191,200 @@ async function loadCity(city) {
 
 
 /* =========================================================
-   UPDATE CITY CARD
-   ========================================================= */
+   UPDATE CITY CARDS
+========================================================= */
 
-function updateCityCard(city) {
+function updateCityCards() {
 
-    const cityId =
-        city.name.replaceAll(" ", "-");
+    cityData.forEach(city => {
 
+        const tempElement =
+            document.getElementById(
+                city.key + "-temp"
+            );
 
-    const tempElement =
-        document.getElementById(
-            cityId + "-temp"
-        );
+        const humidityElement =
+            document.getElementById(
+                city.key + "-humidity"
+            );
 
-
-    const humidityElement =
-        document.getElementById(
-            cityId + "-humidity"
-        );
-
-
-    if (!tempElement) {
-        return;
-    }
+        const statusElement =
+            document.getElementById(
+                city.key + "-status"
+            );
 
 
-    if (city.temperature === null) {
+        if (tempElement) {
 
-        tempElement.textContent =
-            "No data";
+            if (city.temperature !== null) {
 
-    }
+                tempElement.textContent =
+                    city.temperature.toFixed(1) + " °C";
 
-    else {
+            } else {
 
-        tempElement.textContent =
-            city.temperature.toFixed(1) +
-            " °C";
+                tempElement.textContent =
+                    "No data";
 
-    }
+            }
+
+        }
 
 
-    if (city.humidity === null) {
+        if (humidityElement) {
 
-        humidityElement.textContent =
-            "Humidity: No data";
+            if (city.humidity !== null) {
 
-    }
+                humidityElement.textContent =
+                    "Humidity: " +
+                    city.humidity.toFixed(1) +
+                    " %";
 
-    else {
+            } else {
 
-        humidityElement.textContent =
-            "Humidity: " +
-            city.humidity.toFixed(1) +
-            " %";
+                humidityElement.textContent =
+                    "Humidity: No data";
 
-    }
+            }
+
+        }
+
+
+        if (statusElement) {
+
+            if (
+                city.temperatureLoaded &&
+                city.humidityLoaded
+            ) {
+
+                statusElement.textContent =
+                    "● Data loaded";
+
+                statusElement.className =
+                    "city-status";
+
+            } else {
+
+                statusElement.textContent =
+                    "● Partial data";
+
+                statusElement.className =
+                    "city-status error";
+
+            }
+
+        }
+
+    });
 
 }
 
 
 /* =========================================================
-   SUMMARY
-   ========================================================= */
+   UPDATE SUMMARY
+========================================================= */
 
-function updateSummary(data) {
+function updateSummary() {
 
-    const temperatures =
-        data
+    const validTemperature =
+        cityData
             .map(city => city.temperature)
             .filter(value => value !== null);
 
 
-    const humidities =
-        data
+    const validHumidity =
+        cityData
             .map(city => city.humidity)
             .filter(value => value !== null);
 
 
     const avgTemperature =
-        average(temperatures);
+        average(validTemperature);
 
 
     const avgHumidity =
-        average(humidities);
+        average(validHumidity);
 
 
-    let maximumDifference = 0;
+    let maxDifference = 0;
 
 
-    for (
-        let i = 0;
-        i < temperatures.length;
-        i++
-    ) {
+    for (let i = 0; i < validTemperature.length; i++) {
 
         for (
             let j = i + 1;
-            j < temperatures.length;
+            j < validTemperature.length;
             j++
         ) {
 
             const difference =
                 Math.abs(
-                    temperatures[i] -
-                    temperatures[j]
+                    validTemperature[i] -
+                    validTemperature[j]
                 );
 
-
-            maximumDifference =
-                Math.max(
-                    maximumDifference,
-                    difference
-                );
+            if (difference > maxDifference) {
+                maxDifference = difference;
+            }
 
         }
 
     }
 
 
-    document.getElementById(
-        "avgTemp"
-    ).textContent =
-        avgTemperature !== null
-            ? avgTemperature.toFixed(1) + " °C"
-            : "No data";
+    document.getElementById("avgTemp")
+        .textContent =
+        avgTemperature === null
+            ? "-- °C"
+            : avgTemperature.toFixed(1) + " °C";
 
 
-    document.getElementById(
-        "avgHumidity"
-    ).textContent =
-        avgHumidity !== null
-            ? avgHumidity.toFixed(1) + " %"
-            : "No data";
+    document.getElementById("avgHumidity")
+        .textContent =
+        avgHumidity === null
+            ? "-- %"
+            : avgHumidity.toFixed(1) + " %";
 
 
-    document.getElementById(
-        "climateDiff"
-    ).textContent =
-        maximumDifference.toFixed(1) +
-        " °C";
+    document.getElementById("climateDiff")
+        .textContent =
+        maxDifference.toFixed(1) + " °C";
 
 }
 
 
 /* =========================================================
    OPPORTUNITY ANALYSIS
-   ========================================================= */
+========================================================= */
 
-function calculateOpportunities(data) {
+function calculateOpportunities() {
+
+    const validCities =
+        cityData.filter(
+            city =>
+                city.temperature !== null &&
+                city.humidity !== null
+        );
+
 
     const opportunities = [];
 
 
     for (
         let i = 0;
-        i < data.length;
+        i < validCities.length;
         i++
     ) {
 
         for (
             let j = i + 1;
-            j < data.length;
+            j < validCities.length;
             j++
         ) {
 
-            const cityA = data[i];
+            const cityA = validCities[i];
 
-            const cityB = data[j];
-
-
-            if (
-                cityA.temperature === null ||
-                cityB.temperature === null ||
-                cityA.humidity === null ||
-                cityB.humidity === null
-            ) {
-
-                continue;
-
-            }
+            const cityB = validCities[j];
 
 
             const temperatureDifference =
@@ -1103,40 +1406,44 @@ function calculateOpportunities(data) {
                 humidityDifference / 10;
 
 
-            let status = "LOW";
+            let status = "Low";
+
+            let statusClass = "neutral";
 
 
-            if (score >= 8) {
+            if (score >= 5) {
 
-                status = "HIGH";
+                status = "High";
 
-            }
+                statusClass = "good";
 
-            else if (score >= 4) {
+            } else if (score >= 2) {
 
-                status = "MEDIUM";
+                status = "Moderate";
+
+                statusClass = "medium";
 
             }
 
 
             opportunities.push({
 
-                pair:
-                    cityA.name +
-                    " ↔ " +
-                    cityB.name,
+                cityA: cityA.name,
 
-                temperature:
+                cityB: cityB.name,
+
+                temperatureDifference:
                     temperatureDifference,
 
-                humidity:
+                humidityDifference:
                     humidityDifference,
 
-                score:
-                    score,
+                score: score,
 
-                status:
-                    status
+                status: status,
+
+                statusClass:
+                    statusClass
 
             });
 
@@ -1151,14 +1458,20 @@ function calculateOpportunities(data) {
     );
 
 
+    document.getElementById(
+        "opportunities"
+    ).textContent =
+        opportunities.length;
+
+
     return opportunities;
 
 }
 
 
 /* =========================================================
-   UPDATE OPPORTUNITY TABLE
-   ========================================================= */
+   OPPORTUNITY TABLE
+========================================================= */
 
 function updateOpportunityTable(
     opportunities
@@ -1170,105 +1483,63 @@ function updateOpportunityTable(
         );
 
 
-    document.getElementById(
-        "opportunities"
-    ).textContent =
-        opportunities.length;
-
-
     if (!opportunities.length) {
 
         table.innerHTML = `
-
             <tr>
-
-                <td colspan="5">
-
-                    No climate opportunities detected.
-
+                <td colspan="5" class="neutral">
+                    No complete city comparisons available.
                 </td>
-
             </tr>
-
         `;
 
         return;
     }
 
 
-    table.innerHTML = "";
+    table.innerHTML =
+        opportunities.map(
+            opportunity => `
 
-
-    opportunities
-        .slice(0, 10)
-        .forEach(item => {
-
-            let statusClass =
-                "status-low";
-
-
-            if (
-                item.status === "HIGH"
-            ) {
-
-                statusClass =
-                    "status-high";
-
-            }
-
-            else if (
-                item.status === "MEDIUM"
-            ) {
-
-                statusClass =
-                    "status-medium";
-
-            }
-
-
-            const row =
-                document.createElement(
-                    "tr"
-                );
-
-
-            row.innerHTML = `
+            <tr>
 
                 <td>
-                    ${item.pair}
+                    ${opportunity.cityA}
+                    ↔
+                    ${opportunity.cityB}
                 </td>
 
                 <td>
-                    ${item.temperature.toFixed(2)} °C
+                    ${opportunity.temperatureDifference.toFixed(1)}
+                    °C
                 </td>
 
                 <td>
-                    ${item.humidity.toFixed(2)} %
+                    ${opportunity.humidityDifference.toFixed(1)}
+                    %
                 </td>
 
                 <td>
-                    ${item.score.toFixed(2)}
+                    ${opportunity.score.toFixed(2)}
                 </td>
 
-                <td class="${statusClass}">
-                    ${item.status}
+                <td class="${opportunity.statusClass}">
+                    ${opportunity.status}
                 </td>
 
-            `;
+            </tr>
 
-
-            table.appendChild(row);
-
-        });
+        `
+        ).join("");
 
 }
 
 
 /* =========================================================
-   CREATE CHART
-   ========================================================= */
+   CHART
+========================================================= */
 
-function createChart(data) {
+function createChart() {
 
     const canvas =
         document.getElementById(
@@ -1276,18 +1547,37 @@ function createChart(data) {
         );
 
 
-    if (climateChart) {
-
-        climateChart.destroy();
-
-    }
-
-
-    const validData =
-        data.filter(
-            city =>
-                city.temperature !== null
+    const labels =
+        cityData.map(
+            city => city.name
         );
+
+
+    const temperatures =
+        cityData.map(
+            city =>
+                city.temperature === null
+                    ? 0
+                    : Number(
+                        city.temperature.toFixed(2)
+                    )
+        );
+
+
+    const humidities =
+        cityData.map(
+            city =>
+                city.humidity === null
+                    ? 0
+                    : Number(
+                        city.humidity.toFixed(2)
+                    )
+        );
+
+
+    if (climateChart) {
+        climateChart.destroy();
+    }
 
 
     climateChart =
@@ -1299,27 +1589,28 @@ function createChart(data) {
 
                 data: {
 
-                    labels:
-                        validData.map(
-                            city =>
-                                city.name
-                        ),
+                    labels: labels,
 
                     datasets: [
 
                         {
-
                             label:
-                                "Temperature °C",
+                                "Temperature (°C)",
 
                             data:
-                                validData.map(
-                                    city =>
-                                        city.temperature
-                                ),
+                                temperatures,
 
                             borderWidth: 1
+                        },
 
+                        {
+                            label:
+                                "Humidity (%)",
+
+                            data:
+                                humidities,
+
+                            borderWidth: 1
                         }
 
                     ]
@@ -1337,10 +1628,7 @@ function createChart(data) {
                         legend: {
 
                             labels: {
-
-                                color:
-                                    "#9db0c3"
-
+                                color: "#cbd5e1"
                             }
 
                         }
@@ -1352,35 +1640,25 @@ function createChart(data) {
                         x: {
 
                             ticks: {
-
-                                color:
-                                    "#8195aa"
-
+                                color: "#94a3b8"
                             },
 
                             grid: {
-
-                                color:
-                                    "rgba(255,255,255,0.05)"
-
+                                color: "#1e293b"
                             }
 
                         },
 
                         y: {
 
+                            beginAtZero: true,
+
                             ticks: {
-
-                                color:
-                                    "#8195aa"
-
+                                color: "#94a3b8"
                             },
 
                             grid: {
-
-                                color:
-                                    "rgba(255,255,255,0.05)"
-
+                                color: "#1e293b"
                             }
 
                         }
@@ -1396,72 +1674,255 @@ function createChart(data) {
 
 
 /* =========================================================
-   LOAD DASHBOARD
-   ========================================================= */
+   LOCATION SECTION
+========================================================= */
+
+function updateLocations() {
+
+    cityData.forEach(city => {
+
+        const id =
+            "loc" +
+            city.name.replace(/\s/g, "");
+
+        const element =
+            document.getElementById(id);
+
+        if (!element) {
+            return;
+        }
+
+
+        if (
+            city.temperature !== null &&
+            city.humidity !== null
+        ) {
+
+            element.textContent =
+                "Temperature " +
+                city.temperature.toFixed(1) +
+                " °C • Humidity " +
+                city.humidity.toFixed(1) +
+                " %";
+
+        } else {
+
+            element.textContent =
+                "Partial dataset";
+
+        }
+
+    });
+
+}
+
+
+/* =========================================================
+   DATA EXPLORER
+========================================================= */
+
+function updateExplorer() {
+
+    cityData.forEach(city => {
+
+        const id =
+            "explorer" +
+            city.name.replace(/\s/g, "");
+
+        const element =
+            document.getElementById(id);
+
+        if (!element) {
+            return;
+        }
+
+
+        if (
+            city.temperatureLoaded &&
+            city.humidityLoaded
+        ) {
+
+            element.textContent =
+                "✓ Temperature + humidity connected";
+
+            element.className =
+                "good";
+
+        } else if (
+            city.temperatureLoaded ||
+            city.humidityLoaded
+        ) {
+
+            element.textContent =
+                "⚠ Partial connection";
+
+            element.className =
+                "medium";
+
+        } else {
+
+            element.textContent =
+                "✕ Data unavailable";
+
+            element.className =
+                "error";
+
+        }
+
+    });
+
+}
+
+
+/* =========================================================
+   DATA QUALITY
+========================================================= */
+
+function updateQuality() {
+
+    const loadedCities =
+        cityData.filter(
+            city =>
+                city.temperatureLoaded ||
+                city.humidityLoaded
+        ).length;
+
+
+    const loadedTemperature =
+        cityData.filter(
+            city =>
+                city.temperatureLoaded
+        ).length;
+
+
+    const loadedHumidity =
+        cityData.filter(
+            city =>
+                city.humidityLoaded
+        ).length;
+
+
+    document.getElementById(
+        "qualityCities"
+    ).textContent =
+        loadedCities + " / 5";
+
+
+    document.getElementById(
+        "qualityTemperature"
+    ).textContent =
+        loadedTemperature + " / 5";
+
+
+    document.getElementById(
+        "qualityHumidity"
+    ).textContent =
+        loadedHumidity + " / 5";
+
+
+    const qualityStatus =
+        document.getElementById(
+            "qualityStatus"
+        );
+
+
+    if (
+        loadedTemperature === 5 &&
+        loadedHumidity === 5
+    ) {
+
+        qualityStatus.textContent =
+            "READY";
+
+        qualityStatus.className =
+            "good";
+
+    } else if (
+        loadedCities > 0
+    ) {
+
+        qualityStatus.textContent =
+            "PARTIAL";
+
+        qualityStatus.className =
+            "medium";
+
+    } else {
+
+        qualityStatus.textContent =
+            "ERROR";
+
+        qualityStatus.className =
+            "error";
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD COMPLETE DASHBOARD
+========================================================= */
 
 async function loadDashboard() {
 
     console.log(
-        "================================"
+        "================================="
     );
 
     console.log(
-        "AUTOSYNC DASHBOARD"
+        "AUTOSYNC DASHBOARD STARTED"
     );
 
     console.log(
-        "Dashboard branch: MAIN"
+        "Dashboard branch: main"
     );
 
     console.log(
-        "Data branch: VAISHNAVI"
+        "Data branch: vaishnavi"
     );
 
     console.log(
-        "================================"
+        "================================="
     );
 
 
-    const results =
+    cityData =
         await Promise.all(
             cities.map(
-                city =>
-                    loadCity(city)
+                city => loadCity(city)
             )
         );
 
 
     console.log(
         "FINAL CITY DATA:",
-        results
+        cityData
     );
 
 
-    results.forEach(
-        city =>
-            updateCityCard(city)
-    );
+    updateCityCards();
 
-
-    updateSummary(results);
-
+    updateSummary();
 
     const opportunities =
-        calculateOpportunities(
-            results
-        );
-
+        calculateOpportunities();
 
     updateOpportunityTable(
         opportunities
     );
 
+    createChart();
 
-    createChart(results);
+    updateLocations();
+
+    updateExplorer();
+
+    updateQuality();
 
 
     console.log(
-        "AUTOSYNC DASHBOARD COMPLETE"
+        "AUTOSYNC DASHBOARD READY"
     );
 
 }
@@ -1469,9 +1930,12 @@ async function loadDashboard() {
 
 /* =========================================================
    START
-   ========================================================= */
+========================================================= */
 
-loadDashboard();
+document.addEventListener(
+    "DOMContentLoaded",
+    loadDashboard
+);
 
 </script>
 
