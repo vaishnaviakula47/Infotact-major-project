@@ -1,1129 +1,287 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Analytics Engine | AtmoSync</title>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: Inter, Arial, sans-serif;
-            background: #07111f;
-            color: #e8f0f7;
-        }
-
-        .app {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* ================= SIDEBAR ================= */
-
-        .sidebar {
-            width: 245px;
-            background: #091522;
-            border-right: 1px solid #1c3043;
-            padding: 25px 16px;
-            position: fixed;
-            left: 0;
-            top: 0;
-            bottom: 0;
-        }
-
-        .brand {
-            padding: 0 12px 28px;
-            border-bottom: 1px solid #1c3043;
-            margin-bottom: 22px;
-        }
-
-        .brand h1 {
-            font-size: 22px;
-            letter-spacing: 1px;
-            color: #ffffff;
-        }
-
-        .brand p {
-            font-size: 11px;
-            color: #7890a5;
-            margin-top: 5px;
-            letter-spacing: 1px;
-        }
-
-        .nav-title {
-            font-size: 10px;
-            color: #526b80;
-            letter-spacing: 1.5px;
-            margin: 18px 12px 9px;
-        }
-
-        .nav-item {
-            display: block;
-            padding: 12px 13px;
-            margin: 4px 0;
-            border-radius: 9px;
-            color: #91a7b9;
-            text-decoration: none;
-            font-size: 13px;
-            transition: 0.2s;
-        }
-
-        .nav-item:hover {
-            background: #102336;
-            color: #ffffff;
-        }
-
-        .nav-item.active {
-            background: #12314b;
-            color: #ffffff;
-            border-left: 3px solid #37c6ff;
-        }
-
-        /* ================= MAIN ================= */
-
-        .main {
-            margin-left: 245px;
-            width: calc(100% - 245px);
-            padding: 28px 32px 45px;
-        }
-
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 28px;
-        }
-
-        .topbar h2 {
-            font-size: 27px;
-            color: #ffffff;
-        }
-
-        .topbar p {
-            margin-top: 6px;
-            color: #7890a5;
-            font-size: 13px;
-        }
-
-        .status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: #0c1c2b;
-            border: 1px solid #1e384e;
-            padding: 9px 13px;
-            border-radius: 20px;
-            color: #9fb4c6;
-            font-size: 11px;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            background: #2bd67b;
-            border-radius: 50%;
-            box-shadow: 0 0 9px #2bd67b;
-        }
-
-        /* ================= KPI ================= */
-
-        .kpis {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 15px;
-            margin-bottom: 22px;
-        }
-
-        .card {
-            background: #0b1927;
-            border: 1px solid #1a3145;
-            border-radius: 13px;
-            padding: 19px;
-        }
-
-        .kpi-label {
-            color: #7890a5;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .kpi-value {
-            font-size: 26px;
-            font-weight: 700;
-            margin-top: 9px;
-            color: #ffffff;
-        }
-
-        .kpi-sub {
-            margin-top: 6px;
-            font-size: 10px;
-            color: #61798e;
-        }
-
-        /* ================= ENGINE ================= */
-
-        .engine {
-            background: #0b1927;
-            border: 1px solid #1a3145;
-            border-radius: 13px;
-            padding: 22px;
-            margin-bottom: 22px;
-        }
-
-        .engine-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 22px;
-        }
-
-        .engine-header h3 {
-            font-size: 16px;
-            color: #ffffff;
-        }
-
-        .engine-header span {
-            font-size: 10px;
-            color: #48db90;
-            background: #0d3024;
-            padding: 6px 10px;
-            border-radius: 20px;
-        }
-
-        .pipeline {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
-        }
-
-        .stage {
-            border: 1px solid #1b3448;
-            background: #091725;
-            border-radius: 10px;
-            padding: 17px;
-            text-align: center;
-            position: relative;
-        }
-
-        .stage-number {
-            width: 28px;
-            height: 28px;
-            margin: auto;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #12314b;
-            color: #57cfff;
-            font-size: 11px;
-            font-weight: bold;
-        }
-
-        .stage h4 {
-            margin-top: 10px;
-            font-size: 12px;
-            color: #dceaf4;
-        }
-
-        .stage p {
-            margin-top: 5px;
-            color: #61798e;
-            font-size: 10px;
-            line-height: 1.5;
-        }
-
-        /* ================= CHARTS ================= */
-
-        .chart-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
-            margin-bottom: 22px;
-        }
-
-        .chart-card {
-            background: #0b1927;
-            border: 1px solid #1a3145;
-            border-radius: 13px;
-            padding: 20px;
-            min-height: 350px;
-        }
-
-        .section-title {
-            font-size: 16px;
-            color: #ffffff;
-            margin-bottom: 5px;
-        }
-
-        .section-sub {
-            color: #657e92;
-            font-size: 11px;
-            margin-bottom: 16px;
-        }
-
-        .chart-container {
-            height: 275px;
-            position: relative;
-        }
-
-        /* ================= INTELLIGENCE ================= */
-
-        .intelligence {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 22px;
-        }
-
-        .intel-card {
-            background: linear-gradient(145deg, #0d1d2d, #0a1724);
-            border: 1px solid #1a3145;
-            border-radius: 13px;
-            padding: 20px;
-        }
-
-        .intel-card h3 {
-            font-size: 13px;
-            color: #dceaf4;
-            margin-bottom: 9px;
-        }
-
-        .intel-card p {
-            font-size: 12px;
-            line-height: 1.65;
-            color: #7890a5;
-        }
-
-        /* ================= EXTREMES ================= */
-
-        .extremes {
-            background: #0b1927;
-            border: 1px solid #1a3145;
-            border-radius: 13px;
-            padding: 20px;
-            margin-bottom: 22px;
-        }
-
-        .extreme-row {
-            display: grid;
-            grid-template-columns: 1fr 130px 130px;
-            padding: 13px 5px;
-            border-bottom: 1px solid #142839;
-            align-items: center;
-        }
-
-        .extreme-row:last-child {
-            border-bottom: none;
-        }
-
-        .extreme-city {
-            color: #dbe7ef;
-            font-size: 12px;
-        }
-
-        .extreme-value {
-            color: #ffffff;
-            font-weight: 600;
-            font-size: 12px;
-        }
-
-        .tag {
-            display: inline-block;
-            width: fit-content;
-            padding: 4px 8px;
-            border-radius: 20px;
-            background: #102d40;
-            color: #56cfff;
-            font-size: 9px;
-        }
-
-        /* ================= FOOTER ================= */
-
-        .footer {
-            text-align: center;
-            color: #50687b;
-            font-size: 10px;
-            margin-top: 28px;
-        }
-
-        /* ================= RESPONSIVE ================= */
-
-        @media(max-width: 1100px) {
-            .kpis {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .pipeline {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media(max-width: 850px) {
-            .chart-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .intelligence {
-                grid-template-columns: 1fr;
-            }
-
-            .extreme-row {
-                grid-template-columns: 1fr 100px 100px;
-            }
-        }
-
-        @media(max-width: 760px) {
-
-            .app {
-                display: block;
-            }
-
-            .sidebar {
-                position: relative;
-                width: 100%;
-                height: auto;
-            }
-
-            .main {
-                margin-left: 0;
-                width: 100%;
-                padding: 20px;
-            }
-
-            .kpis {
-                grid-template-columns: 1fr;
-            }
-
-            .pipeline {
-                grid-template-columns: 1fr;
-            }
-
-            .topbar {
-                display: block;
-            }
-
-            .status {
-                margin-top: 12px;
-                width: fit-content;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AtmoSync | Analytics Engine</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+Chart.defaults.font.family='Inter,"Segoe UI",Arial,sans-serif';
+Chart.defaults.font.size=13;Chart.defaults.color='#8fa3b8';Chart.defaults.borderColor='#18293b';
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,"Segoe UI",Arial,sans-serif}
+
+/* ALWAYS-VISIBLE SCROLLBAR (background color) */
+html{overflow-y:scroll;scrollbar-width:thin;scrollbar-color:#243c52 #07111f}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:#07111f}
+::-webkit-scrollbar-thumb{background:#243c52;border-radius:10px;border:2px solid #07111f}
+::-webkit-scrollbar-thumb:hover{background:#31506b}
+::-webkit-scrollbar-corner{background:#07111f}
+
+body{background:radial-gradient(circle at 85% 0%,#123044 0%,transparent 28%),#07111f;background-attachment:fixed;color:#e8f0f7;min-height:100vh;font-size:14px}
+
+/* SIDEBAR */
+.sidebar{position:fixed;left:0;top:0;width:260px;height:100vh;background:rgba(8,21,36,.97);border-right:1px solid #20334a;padding:28px 16px;z-index:1000;overflow-y:auto}
+.logo{font-size:28px;font-weight:800;letter-spacing:.5px;margin-bottom:6px}
+.logo span{color:#31d6a5}
+.subtitle{color:#7e93aa;font-size:12px;line-height:1.5;margin-bottom:35px;text-transform:uppercase;letter-spacing:.5px}
+.section-title{color:#526b84;font-size:12px;text-transform:uppercase;letter-spacing:1.5px;margin:22px 12px 10px}
+.nav a{display:block;padding:14px 16px;margin:5px 0;border-radius:10px;color:#91a5b9;text-decoration:none;font-size:14px;transition:.2s;border-left:3px solid transparent}
+.nav a:hover{background:#10253a;color:#fff;transform:translateX(2px)}
+.nav a.active{background:linear-gradient(90deg,#103c3b,#102b3b);color:#43e1b1;border-left:3px solid #35d5a3}
+
+/* MAIN + HEADER */
+.main{margin-left:260px;padding:32px 38px}
+.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;gap:20px}
+.header h1{font-size:32px;font-weight:800;letter-spacing:-.5px}
+.header p{color:#8fa3b8;font-size:14px;margin-top:8px}
+.status{display:flex;align-items:center;gap:8px;padding:10px 16px;border:1px solid #1e4650;border-radius:20px;background:#0b2028;color:#45ddb0;font-size:12px;font-weight:700;white-space:nowrap}
+.status-dot{width:9px;height:9px;border-radius:50%;background:#43dfae;box-shadow:0 0 10px #43dfae}
+
+/* CARDS */
+.panel{background:rgba(12,26,42,.94);border:1px solid #203249;border-radius:15px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.12);margin-bottom:20px}
+.card-title{font-size:18px;font-weight:700}
+.card-subtitle{color:#8fa3b8;font-size:14px;margin-top:5px;margin-bottom:20px;line-height:1.5}
+
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;margin-bottom:20px}
+.kpi{background:linear-gradient(145deg,#0d1d30,#0a1727);border:1px solid #203249;border-radius:15px;padding:22px;position:relative;overflow:hidden;transition:.25s}
+.kpi:hover{transform:translateY(-3px);border-color:#2c5c6b}
+.kpi::after{content:"";position:absolute;right:-30px;bottom:-40px;width:110px;height:110px;border-radius:50%;background:#15364b;opacity:.25}
+.kpi-label{color:#8fa3b8;font-size:12px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px}
+.kpi-value{font-size:32px;font-weight:800}
+.green{color:#43dca8}.blue{color:#55b8ff}.yellow{color:#f6c85f}.red{color:#ff7777}
+
+/* ENGINE STATUS */
+.engine-status{display:flex;gap:12px;flex-wrap:wrap}
+.status-box{background:#091522;border:1px solid #20354b;border-radius:10px;padding:13px 16px;color:#b5c5d3;font-size:14px}
+.status-box span{color:#43dfae;font-weight:700}
+
+/* PIPELINE */
+.pipeline{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.step{background:#091522;border:1px solid #20354b;border-radius:12px;padding:18px}
+.step-number{width:34px;height:34px;border-radius:50%;background:#103c3b;color:#43e1b1;display:flex;align-items:center;justify-content:center;font-weight:700;margin-bottom:12px}
+.step-title{font-size:16px;font-weight:700;margin-bottom:8px}
+.step-text{color:#8fa3b8;font-size:14px;line-height:1.55}
+
+/* LAYOUT */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+.grid .panel{margin-bottom:0}
+.chart-container{height:330px}
+
+/* METRICS + INSIGHTS */
+.metric-grid,.insights{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.metric-box,.insight{background:#091522;border:1px solid #20354b;border-radius:12px;padding:20px}
+.metric-name{color:#8fa3b8;font-size:12px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px}
+.metric-value{font-size:24px;font-weight:800;color:#55b8ff;overflow-wrap:anywhere}
+.metric-info{color:#8fa3b8;font-size:14px;margin-top:9px;line-height:1.5}
+.insight{border-left:3px solid #31d6a5}
+.insight-title{color:#43dfae;font-size:12px;text-transform:uppercase;letter-spacing:.7px;margin-bottom:9px;font-weight:700}
+.insight-text{color:#b4c1ce;font-size:14px;line-height:1.6}
+
+/* RANKING */
+.ranking{display:flex;flex-direction:column;gap:10px}
+.rank-row{display:grid;grid-template-columns:45px 190px 1fr 80px;align-items:center;gap:12px;background:#091522;border:1px solid #20354b;border-radius:10px;padding:13px}
+.rank-number{color:#55b8ff;font-weight:700;font-size:14px}
+.rank-city{font-size:14px;color:#e8f0f7}
+.bar{height:10px;background:#142538;border-radius:10px;overflow:hidden}
+.bar-fill{height:100%;background:#31d6a5;border-radius:10px}
+.rank-value{text-align:right;font-size:14px;color:#c0cfdb;font-weight:700}
+
+/* FORMULA */
+.formula{background:#091522;border:1px solid #263e56;border-radius:12px;padding:20px;text-align:center;font-size:16px;color:#55b8ff;margin-top:12px;font-weight:700}
+
+.footer{text-align:center;color:#6a8197;font-size:12px;padding:28px 0 10px}
+
+/* RESPONSIVE */
+@media(max-width:1400px){.kpis{grid-template-columns:repeat(3,1fr)}.pipeline{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:1100px){.sidebar{width:225px}.main{margin-left:225px}.grid,.metric-grid,.insights{grid-template-columns:1fr}.pipeline{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:750px){.sidebar{position:relative;width:100%;height:auto}.main{margin-left:0;padding:22px 16px}.header{flex-direction:column}.header h1{font-size:26px}.kpis,.pipeline{grid-template-columns:1fr}.rank-row{grid-template-columns:35px 110px 1fr 65px}}
+</style>
 </head>
-
 <body>
 
-<div class="app">
-
-    <!-- SIDEBAR -->
-
-    <aside class="sidebar">
-
-        <div class="brand">
-            <h1>ATMOSYNC</h1>
-            <p>MICRO-CLIMATE ANALYTICS</p>
-        </div>
-
-        <div class="nav-title">WORKSPACE</div>
-
-        <a href="/" class="nav-item">▣ Dashboard</a>
-        <a href="/climate" class="nav-item">◉ Climate Analysis</a>
-        <a href="/locations" class="nav-item">⌖ Locations</a>
-        <a href="/opportunities" class="nav-item">◆ Opportunities</a>
-        <a href="/explorer" class="nav-item">▤ Data Explorer</a>
-
-        <div class="nav-title">SYSTEM</div>
-
-        <a href="/analytics" class="nav-item active">⚙ Analytics Engine</a>
-        <a href="/quality" class="nav-item">✓ Data Quality</a>
-
-    </aside>
-
-
-    <!-- MAIN -->
-
-    <main class="main">
-
-        <div class="topbar">
-
-            <div>
-                <h2>Analytics Engine</h2>
-
-                <p>
-                    Automated statistical intelligence and climate opportunity analysis
-                </p>
-            </div>
-
-            <div class="status">
-                <span class="dot"></span>
-                ENGINE ACTIVE
-            </div>
-
-        </div>
-
-
-        <!-- KPI CARDS -->
-
-        <div class="kpis">
-
-            <div class="card">
-                <div class="kpi-label">Locations</div>
-                <div class="kpi-value" id="cityCount">—</div>
-                <div class="kpi-sub">
-                    Active locations
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="kpi-label">Avg Temperature</div>
-                <div class="kpi-value" id="avgTemp">—</div>
-                <div class="kpi-sub">
-                    Dataset average
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="kpi-label">Avg Humidity</div>
-                <div class="kpi-value" id="avgHumidity">—</div>
-                <div class="kpi-sub">
-                    Dataset average
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="kpi-label">Climate Spread</div>
-                <div class="kpi-value" id="spread">—</div>
-                <div class="kpi-sub">
-                    Temperature range
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="kpi-label">Opportunities</div>
-                <div class="kpi-value" id="opportunities">—</div>
-                <div class="kpi-sub">
-                    Detected signals
-                </div>
-            </div>
-
-        </div>
-
-
-        <!-- ANALYTICS PIPELINE -->
-
-        <div class="engine">
-
-            <div class="engine-header">
-
-                <h3>Analytics Processing Pipeline</h3>
-
-                <span>PROCESSING READY</span>
-
-            </div>
-
-            <div class="pipeline">
-
-                <div class="stage">
-                    <div class="stage-number">01</div>
-                    <h4>Data Input</h4>
-                    <p>
-                        Climate observations loaded from source datasets.
-                    </p>
-                </div>
-
-                <div class="stage">
-                    <div class="stage-number">02</div>
-                    <h4>Validation</h4>
-                    <p>
-                        Records checked for valid numerical values.
-                    </p>
-                </div>
-
-                <div class="stage">
-                    <div class="stage-number">03</div>
-                    <h4>Aggregation</h4>
-                    <p>
-                        Location-level temperature and humidity statistics calculated.
-                    </p>
-                </div>
-
-                <div class="stage">
-                    <div class="stage-number">04</div>
-                    <h4>Comparison</h4>
-                    <p>
-                        Climate differences between locations are measured.
-                    </p>
-                </div>
-
-                <div class="stage">
-                    <div class="stage-number">05</div>
-                    <h4>Opportunity</h4>
-                    <p>
-                        Climate arbitrage signals are ranked using the scoring engine.
-                    </p>
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- CHARTS -->
-
-        <div class="chart-grid">
-
-            <div class="chart-card">
-
-                <div class="section-title">
-                    Temperature Ranking
-                </div>
-
-                <div class="section-sub">
-                    Average temperature by location
-                </div>
-
-                <div class="chart-container">
-                    <canvas id="temperatureChart"></canvas>
-                </div>
-
-            </div>
-
-
-            <div class="chart-card">
-
-                <div class="section-title">
-                    Humidity Ranking
-                </div>
-
-                <div class="section-sub">
-                    Average humidity by location
-                </div>
-
-                <div class="chart-container">
-                    <canvas id="humidityChart"></canvas>
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- INTELLIGENCE -->
-
-        <div class="section-title">
-            Statistical Intelligence
-        </div>
-
-        <div class="intelligence">
-
-            <div class="intel-card">
-
-                <h3>Temperature Analysis</h3>
-
-                <p id="temperatureInsight">
-                    Calculating temperature intelligence...
-                </p>
-
-            </div>
-
-
-            <div class="intel-card">
-
-                <h3>Humidity Analysis</h3>
-
-                <p id="humidityInsight">
-                    Calculating humidity intelligence...
-                </p>
-
-            </div>
-
-
-            <div class="intel-card">
-
-                <h3>Opportunity Analysis</h3>
-
-                <p id="opportunityInsight">
-                    Calculating opportunity intelligence...
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <!-- CLIMATE EXTREMES -->
-
-        <div class="extremes">
-
-            <div class="section-title">
-                Climate Extremes Ranking
-            </div>
-
-            <div class="section-sub">
-                Highest and lowest observed location averages
-            </div>
-
-            <div id="extremeRows"></div>
-
-        </div>
-
-
-        <!-- FOOTER -->
-
-        <div class="footer">
-            AtmoSync • Micro-Climate Arbitrage Analytics • Analytics Engine
-        </div>
-
-    </main>
-
+<aside class="sidebar">
+<div class="logo">Atmo<span>Sync</span></div>
+<div class="subtitle">MICRO-CLIMATE ARBITRAGE ANALYTICS</div>
+<div class="section-title">Workspace</div>
+<div class="nav">
+<a href="/">◈ Dashboard</a>
+<a href="/climate">◉ Climate Analysis</a>
+<a href="/locations">⌖ Locations</a>
+<a href="/opportunities">◆ Opportunities</a>
+<a href="/explorer">▤ Data Explorer</a>
+</div>
+<div class="section-title">System</div>
+<div class="nav">
+<a href="/analytics" class="active">⚙ Analytics Engine</a>
+<a href="/quality">✓ Data Quality</a>
+</div>
+</aside>
+
+<main class="main">
+
+<div class="header">
+<div>
+<h1>Analytics Engine</h1>
+<p>Advanced statistical processing and climate intelligence</p>
+</div>
+<div class="status"><span class="status-dot"></span>ENGINE ACTIVE</div>
 </div>
 
+<div class="kpis">
+<div class="kpi"><div class="kpi-label">Cities Processed</div><div class="kpi-value green" id="cityCount">—</div></div>
+<div class="kpi"><div class="kpi-label">Data Records</div><div class="kpi-value blue" id="recordCount">—</div></div>
+<div class="kpi"><div class="kpi-label">Temperature Spread</div><div class="kpi-value yellow" id="temperatureSpread">—</div></div>
+<div class="kpi"><div class="kpi-label">Humidity Spread</div><div class="kpi-value blue" id="humiditySpread">—</div></div>
+<div class="kpi"><div class="kpi-label">Opportunity Signals</div><div class="kpi-value red" id="opportunityCount">—</div></div>
+</div>
+
+<div class="panel">
+<div class="card-title">Analytical Engine Status</div>
+<div class="card-subtitle">Current state of the AtmoSync analytical pipeline</div>
+<div class="engine-status">
+<div class="status-box">Dataset Detection: <span>ACTIVE</span></div>
+<div class="status-box">Aggregation: <span>ACTIVE</span></div>
+<div class="status-box">Statistical Analysis: <span>ACTIVE</span></div>
+<div class="status-box">Climate Ranking: <span>ACTIVE</span></div>
+<div class="status-box">Opportunity Engine: <span>ACTIVE</span></div>
+</div>
+</div>
+
+<div class="panel">
+<div class="card-title">Analytical Processing Pipeline</div>
+<div class="card-subtitle">Transformation of climate data into analytical intelligence</div>
+<div class="pipeline">
+<div class="step"><div class="step-number">1</div><div class="step-title">Detect</div><div class="step-text">Identify temperature and relative-humidity datasets automatically.</div></div>
+<div class="step"><div class="step-number">2</div><div class="step-title">Aggregate</div><div class="step-text">Calculate city-level climate statistics from sensor observations.</div></div>
+<div class="step"><div class="step-number">3</div><div class="step-title">Measure</div><div class="step-text">Measure temperature and humidity variation between locations.</div></div>
+<div class="step"><div class="step-number">4</div><div class="step-title">Rank</div><div class="step-text">Rank locations according to their climate characteristics.</div></div>
+<div class="step"><div class="step-number">5</div><div class="step-title">Score</div><div class="step-text">Generate prototype opportunity signals from city-pair differences.</div></div>
+</div>
+</div>
+
+<div class="grid">
+<div class="panel">
+<div class="card-title">Temperature Ranking</div>
+<div class="card-subtitle">Cities ranked from coolest to hottest</div>
+<div class="chart-container"><canvas id="temperatureChart"></canvas></div>
+</div>
+<div class="panel">
+<div class="card-title">Humidity Ranking</div>
+<div class="card-subtitle">Cities ranked from driest to most humid</div>
+<div class="chart-container"><canvas id="humidityChart"></canvas></div>
+</div>
+</div>
+
+<div class="panel">
+<div class="card-title">Statistical Intelligence</div>
+<div class="card-subtitle">Derived statistics calculated from city-level climate values</div>
+<div class="metric-grid">
+<div class="metric-box"><div class="metric-name">Average Temperature</div><div class="metric-value" id="avgTemp">—</div><div class="metric-info">Mean temperature across detected cities.</div></div>
+<div class="metric-box"><div class="metric-name">Average Humidity</div><div class="metric-value" id="avgHumidity">—</div><div class="metric-info">Mean relative humidity across detected cities.</div></div>
+<div class="metric-box"><div class="metric-name">Hottest Location</div><div class="metric-value" id="hottest">—</div><div class="metric-info">Location with the highest average temperature.</div></div>
+<div class="metric-box"><div class="metric-name">Coolest Location</div><div class="metric-value" id="coolest">—</div><div class="metric-info">Location with the lowest average temperature.</div></div>
+<div class="metric-box"><div class="metric-name">Most Humid</div><div class="metric-value" id="mostHumid">—</div><div class="metric-info">Location with the highest average humidity.</div></div>
+<div class="metric-box"><div class="metric-name">Least Humid</div><div class="metric-value" id="leastHumid">—</div><div class="metric-info">Location with the lowest average humidity.</div></div>
+</div>
+</div>
+
+<div class="panel">
+<div class="card-title">Climate Extremes Ranking</div>
+<div class="card-subtitle">Relative temperature ranking calculated by the analytics engine</div>
+<div class="ranking" id="ranking"></div>
+</div>
+
+<div class="panel">
+<div class="card-title">Opportunity Scoring Engine</div>
+<div class="card-subtitle">Mathematical model used by AtmoSync to identify strong climate differences</div>
+<div class="formula">Opportunity Score = |Temperature Difference| + (|Humidity Difference| ÷ 10)</div>
+<div class="formula">HIGH ≥ 8 &nbsp;|&nbsp; MEDIUM ≥ 4 &nbsp;|&nbsp; LOW &lt; 4</div>
+</div>
+
+<div class="panel">
+<div class="card-title">Engine Intelligence</div>
+<div class="card-subtitle">Automatically generated analytical observations</div>
+<div class="insights">
+<div class="insight"><div class="insight-title">Temperature Extreme</div><div class="insight-text" id="temperatureInsight">Loading...</div></div>
+<div class="insight"><div class="insight-title">Humidity Extreme</div><div class="insight-text" id="humidityInsight">Loading...</div></div>
+<div class="insight"><div class="insight-title">Opportunity Signal</div><div class="insight-text" id="opportunityInsight">Loading...</div></div>
+</div>
+</div>
+
+<div class="footer">AtmoSync · Micro-Climate Arbitrage Analytics<br>Analytics Engine</div>
+</main>
 
 <script>
+const $=id=>document.getElementById(id);
+const grid={color:"#18293b"},tick={color:"#8fa3b8"};
+let tC=null,hC=null;
 
-let dashboardData = null;
-
-let temperatureChart = null;
-
-let humidityChart = null;
-
-
-/* ================= LOAD DATA ================= */
-
-async function loadAnalytics() {
-
-    try {
-
-        const response =
-            await fetch("/api/dashboard");
-
-        dashboardData =
-            await response.json();
-
-        updateAnalytics();
-
-    } catch(error) {
-
-        console.error(
-            "Analytics loading error:",
-            error
-        );
-
-    }
-
+async function loadData(){
+ try{const r=await fetch("/api/dashboard");render(await r.json());}
+ catch(e){console.error(e);}
 }
 
+function render(data){
+ const cities=data.cities||[],s=data.summary||{};
+ if(!cities.length)return;
 
-/* ================= UPDATE ================= */
+ const T=cities.map(x=>x.temperature),H=cities.map(x=>x.humidity);
+ const by=(k,d)=>[...cities].sort((a,b)=>d*(b[k]-a[k]))[0];
+ const hot=by("temperature",1),cool=by("temperature",-1),wet=by("humidity",1),dry=by("humidity",-1);
+ const avg=a=>a.reduce((x,y)=>x+y,0)/a.length;
 
-function updateAnalytics() {
+ $("cityCount").textContent=s.cityCount;
+ $("recordCount").textContent=(s.totalRecords||0).toLocaleString();
+ $("temperatureSpread").textContent=(Math.max(...T)-Math.min(...T)).toFixed(2)+"°";
+ $("humiditySpread").textContent=(Math.max(...H)-Math.min(...H)).toFixed(2)+"%";
+ $("opportunityCount").textContent=s.opportunityCount;
 
-    const summary =
-        dashboardData.summary;
+ $("avgTemp").textContent=avg(T).toFixed(2)+"°";
+ $("avgHumidity").textContent=avg(H).toFixed(2)+"%";
+ $("hottest").textContent=hot.city;
+ $("coolest").textContent=cool.city;
+ $("mostHumid").textContent=wet.city;
+ $("leastHumid").textContent=dry.city;
 
-    const cities =
-        dashboardData.cities || [];
+ charts(cities);
+ ranking(cities);
 
-    const opportunities =
-        dashboardData.opportunities || [];
-
-
-    document.getElementById(
-        "cityCount"
-    ).textContent =
-        summary.cityCount;
-
-
-    document.getElementById(
-        "avgTemp"
-    ).textContent =
-        summary.averageTemperature.toFixed(2);
-
-
-    document.getElementById(
-        "avgHumidity"
-    ).textContent =
-        summary.averageHumidity.toFixed(2);
-
-
-    document.getElementById(
-        "spread"
-    ).textContent =
-        summary.climateDifference.toFixed(2);
-
-
-    document.getElementById(
-        "opportunities"
-    ).textContent =
-        opportunities.length;
-
-
-    renderCharts(cities);
-
-    generateIntelligence(
-        cities,
-        opportunities
-    );
-
-    renderExtremes(cities);
-
+ $("temperatureInsight").textContent=`${hot.city} is the hottest detected location at ${hot.temperature}°, while ${cool.city} is the coolest at ${cool.temperature}°.`;
+ $("humidityInsight").textContent=`${wet.city} has the highest average humidity at ${wet.humidity}%, while ${dry.city} has the lowest at ${dry.humidity}%.`;
+ const o=s.highestOpportunity;
+ $("opportunityInsight").textContent=o
+  ?`${o.cityA} ↔ ${o.cityB} currently produces the highest analytical score of ${o.score}.`
+  :"No opportunity signals detected.";
 }
 
-
-/* ================= CHARTS ================= */
-
-function renderCharts(cities) {
-
-    const sortedTemperature =
-        [...cities].sort(
-            (a,b) =>
-                b.temperature - a.temperature
-        );
-
-
-    const sortedHumidity =
-        [...cities].sort(
-            (a,b) =>
-                b.humidity - a.humidity
-        );
-
-
-    if(temperatureChart) {
-        temperatureChart.destroy();
-    }
-
-
-    temperatureChart =
-        new Chart(
-            document.getElementById(
-                "temperatureChart"
-            ),
-            {
-
-                type: "bar",
-
-                data: {
-
-                    labels:
-                        sortedTemperature.map(
-                            city => city.city
-                        ),
-
-                    datasets: [{
-
-                        label:
-                            "Average Temperature",
-
-                        data:
-                            sortedTemperature.map(
-                                city =>
-                                    city.temperature
-                            ),
-
-                        borderRadius: 6,
-
-                        borderWidth: 1
-
-                    }]
-
-                },
-
-                options: {
-
-                    responsive: true,
-
-                    maintainAspectRatio: false,
-
-                    plugins: {
-
-                        legend: {
-
-                            labels: {
-                                color: "#9fb4c6"
-                            }
-
-                        }
-
-                    },
-
-                    scales: {
-
-                        x: {
-
-                            ticks: {
-                                color: "#7890a5"
-                            },
-
-                            grid: {
-                                color: "#142839"
-                            }
-
-                        },
-
-                        y: {
-
-                            ticks: {
-                                color: "#7890a5"
-                            },
-
-                            grid: {
-                                color: "#142839"
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            }
-        );
-
-
-    if(humidityChart) {
-        humidityChart.destroy();
-    }
-
-
-    humidityChart =
-        new Chart(
-            document.getElementById(
-                "humidityChart"
-            ),
-            {
-
-                type: "bar",
-
-                data: {
-
-                    labels:
-                        sortedHumidity.map(
-                            city => city.city
-                        ),
-
-                    datasets: [{
-
-                        label:
-                            "Average Humidity",
-
-                        data:
-                            sortedHumidity.map(
-                                city =>
-                                    city.humidity
-                            ),
-
-                        borderRadius: 6,
-
-                        borderWidth: 1
-
-                    }]
-
-                },
-
-                options: {
-
-                    responsive: true,
-
-                    maintainAspectRatio: false,
-
-                    plugins: {
-
-                        legend: {
-
-                            labels: {
-                                color: "#9fb4c6"
-                            }
-
-                        }
-
-                    },
-
-                    scales: {
-
-                        x: {
-
-                            ticks: {
-                                color: "#7890a5"
-                            },
-
-                            grid: {
-                                color: "#142839"
-                            }
-
-                        },
-
-                        y: {
-
-                            ticks: {
-                                color: "#7890a5"
-                            },
-
-                            grid: {
-                                color: "#142839"
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            }
-        );
-
+function bar(id,label,list,key,color,old){
+ if(old)old.destroy();
+ return new Chart($(id),{type:"bar",
+  data:{labels:list.map(x=>x.city),datasets:[{label,data:list.map(x=>x[key]),backgroundColor:color,borderWidth:1,borderRadius:5}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:tick,grid},y:{ticks:tick,grid}}}});
 }
 
-
-/* ================= INTELLIGENCE ================= */
-
-function generateIntelligence(
-    cities,
-    opportunities
-) {
-
-    if(!cities.length) {
-        return;
-    }
-
-
-    const hottest =
-        [...cities].sort(
-            (a,b) =>
-                b.temperature - a.temperature
-        )[0];
-
-
-    const coolest =
-        [...cities].sort(
-            (a,b) =>
-                a.temperature - b.temperature
-        )[0];
-
-
-    const humid =
-        [...cities].sort(
-            (a,b) =>
-                b.humidity - a.humidity
-        )[0];
-
-
-    const highestOpportunity =
-        opportunities.length
-            ? opportunities[0]
-            : null;
-
-
-    document.getElementById(
-        "temperatureInsight"
-    ).textContent =
-        `${hottest.city} is the hottest location with an average temperature of ${hottest.temperature.toFixed(2)}, while ${coolest.city} is the coolest at ${coolest.temperature.toFixed(2)}.`;
-
-
-    document.getElementById(
-        "humidityInsight"
-    ).textContent =
-        `${humid.city} has the highest average humidity at ${humid.humidity.toFixed(2)}, providing the strongest humidity signal in the current dataset.`;
-
-
-    if(highestOpportunity) {
-
-        document.getElementById(
-            "opportunityInsight"
-        ).textContent =
-            `${highestOpportunity.cityA} and ${highestOpportunity.cityB} produce the strongest climate opportunity signal with a score of ${highestOpportunity.score}.`;
-
-    } else {
-
-        document.getElementById(
-            "opportunityInsight"
-        ).textContent =
-            "No significant opportunity signals were detected.";
-
-    }
-
+function charts(cities){
+ tC=bar("temperatureChart","Temperature",[...cities].sort((a,b)=>a.temperature-b.temperature),"temperature","rgba(49,214,165,.75)",tC);
+ hC=bar("humidityChart","Humidity",[...cities].sort((a,b)=>a.humidity-b.humidity),"humidity","rgba(85,184,255,.75)",hC);
 }
 
-
-/* ================= EXTREMES ================= */
-
-function renderExtremes(cities) {
-
-    const container =
-        document.getElementById(
-            "extremeRows"
-        );
-
-    container.innerHTML = "";
-
-
-    const sorted =
-        [...cities].sort(
-            (a,b) =>
-                b.temperature - a.temperature
-        );
-
-
-    sorted.forEach(
-        (city, index) => {
-
-            const row =
-                document.createElement("div");
-
-            row.className =
-                "extreme-row";
-
-
-            let tag = "NORMAL";
-
-            if(index === 0) {
-                tag = "HOTTEST";
-            }
-
-            if(index === sorted.length - 1) {
-                tag = "COOLEST";
-            }
-
-
-            row.innerHTML = `
-
-                <div class="extreme-city">
-                    ${city.city}
-                </div>
-
-                <div class="extreme-value">
-                    ${city.temperature.toFixed(2)}
-                </div>
-
-                <div>
-                    <span class="tag">
-                        ${tag}
-                    </span>
-                </div>
-
-            `;
-
-
-            container.appendChild(row);
-
-        }
-    );
-
+function ranking(cities){
+ const s=[...cities].sort((a,b)=>b.temperature-a.temperature),max=s[0].temperature;
+ $("ranking").innerHTML=s.map((c,i)=>`
+  <div class="rank-row">
+   <div class="rank-number">#${i+1}</div>
+   <div class="rank-city">${c.city}</div>
+   <div class="bar"><div class="bar-fill" style="width:${max>0?c.temperature/max*100:0}%"></div></div>
+   <div class="rank-value">${c.temperature}°</div>
+  </div>`).join("");
 }
 
-
-/* ================= START ================= */
-
-loadAnalytics();
-
+loadData();
 </script>
-
 </body>
 </html>
