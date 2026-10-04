@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>AtmoSync | Climate Analysis</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Inter,Segoe UI,Arial,sans-serif;
+    background:#07111f;
+    color:#e8f0f7;
+    min-height:100vh;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:245px;
+    height:100vh;
+    background:#0a1727;
+    border-right:1px solid #20334a;
+    padding:25px 15px;
+}
+
+.logo{
+    font-size:25px;
+    font-weight:800;
+    margin-bottom:5px;
+}
+
+.logo span{
+    color:#31d6a5;
+}
+
+.subtitle{
+    color:#7e93aa;
+    font-size:11px;
+    margin-bottom:35px;
+}
+
+.nav-title{
+    color:#526b84;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+    margin:20px 12px 10px;
+}
+
+.nav-item{
+    display:block;
+    padding:13px 14px;
+    margin:5px 0;
+    border-radius:10px;
+    color:#91a5b9;
+    text-decoration:none;
+    font-size:14px;
+    transition:.2s;
+}
+
+.nav-item:hover{
+    background:#10253a;
+    color:#fff;
+}
+
+.nav-item.active{
+    background:#103c3b;
+    color:#43e1b1;
+    border-left:3px solid #35d5a3;
+}
+
+
+/* ================= MAIN ================= */
+
+.main{
+    margin-left:245px;
+    padding:30px 35px;
+}
+
+
+/* ================= HEADER ================= */
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.page-title{
+    font-size:28px;
+    font-weight:750;
+}
+
+.page-description{
+    color:#8295a9;
+    font-size:13px;
+    margin-top:5px;
+}
+
+.status{
+    padding:9px 14px;
+    border:1px solid #1e4650;
+    border-radius:20px;
+    background:#0b2028;
+    color:#45ddb0;
+    font-size:12px;
+}
+
+
+/* ================= CONTROL BAR ================= */
+
+.controls{
+    background:#0c1a2a;
+    border:1px solid #203249;
+    border-radius:14px;
+    padding:18px;
+    display:flex;
+    gap:20px;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.control-label{
+    color:#8195a9;
+    font-size:12px;
+}
+
+select{
+    margin-top:6px;
+    background:#07111f;
+    border:1px solid #294058;
+    color:#e8f0f7;
+    padding:9px 12px;
+    border-radius:8px;
+}
+
+
+/* ================= CARDS ================= */
+
+.card{
+    background:#0c1a2a;
+    border:1px solid #203249;
+    border-radius:14px;
+    padding:20px;
+}
+
+.card-title{
+    font-size:15px;
+    font-weight:650;
+}
+
+.card-subtitle{
+    color:#71869b;
+    font-size:11px;
+    margin-top:4px;
+    margin-bottom:18px;
+}
+
+
+/* ================= KPI ================= */
+
+.kpi-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:20px;
+}
+
+.kpi{
+    background:#0c1a2a;
+    border:1px solid #203249;
+    border-radius:14px;
+    padding:19px;
+}
+
+.kpi-label{
+    color:#8095a9;
+    font-size:12px;
+}
+
+.kpi-value{
+    font-size:27px;
+    font-weight:750;
+    margin-top:9px;
+}
+
+.kpi-small{
+    color:#60768b;
+    font-size:10px;
+    margin-top:6px;
+}
+
+
+/* ================= CHARTS ================= */
+
+.chart-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+    margin-bottom:18px;
+}
+
+.chart-card{
+    min-height:390px;
+}
+
+.chart-container{
+    height:300px;
+}
+
+
+/* ================= INSIGHT ================= */
+
+.insight{
+    background:#091522;
+    border-left:3px solid #32d5a4;
+    padding:14px;
+    border-radius:8px;
+    margin-bottom:10px;
+    color:#a6b7c8;
+    font-size:12px;
+    line-height:1.5;
+}
+
+
+/* ================= TABLE ================= */
+
+.table-card{
+    margin-bottom:20px;
+    overflow:hidden;
+}
+
+.table-wrapper{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    text-align:left;
+    color:#688097;
+    font-size:11px;
+    padding:13px;
+    border-bottom:1px solid #24364b;
+}
+
+td{
+    padding:13px;
+    border-bottom:1px solid #182b3e;
+    font-size:12px;
+    color:#b7c5d2;
+}
+
+tr:hover{
+    background:#0e2032;
+}
+
+
+/* ================= FOOTER ================= */
+
+.footer{
+    text-align:center;
+    color:#536a80;
+    font-size:10px;
+    padding:25px;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:1000px){
+
+    .sidebar{
+        width:200px;
+    }
+
+    .main{
+        margin-left:200px;
+    }
+
+    .kpi-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .chart-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:700px){
+
+    .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .kpi-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar">
+
+<div class="logo">
+Atmo<span>Sync</span>
+</div>
+
+<div class="subtitle">
+MICRO-CLIMATE ARBITRAGE ANALYTICS
+</div>
+
+
+<div class="nav-title">
+Workspace
+</div>
+
+
+<a href="/" class="nav-item">
+◈ Dashboard
+</a>
+
+
+<a href="/climate"
+class="nav-item active">
+
+◉ Climate Analysis
+
+</a>
+
+
+<a href="/locations"
+class="nav-item">
+
+⌖ Locations
+
+</a>
+
+
+<a href="/opportunities"
+class="nav-item">
+
+◆ Opportunities
+
+</a>
+
+
+<a href="/explorer"
+class="nav-item">
+
+▤ Data Explorer
+
+</a>
+
+
+<div class="nav-title">
+System
+</div>
+
+
+<a href="/analytics"
+class="nav-item">
+
+⚙ Analytics Engine
+
+</a>
+
+
+<a href="/quality"
+class="nav-item">
+
+✓ Data Quality
+
+</a>
+
+</aside>
+
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="main">
+
+
+<div class="topbar">
+
+<div>
+
+<div class="page-title">
+Climate Analysis
+</div>
+
+<div class="page-description">
+Comparative analysis of temperature and relative humidity
+</div>
+
+</div>
+
+
+<div class="status">
+● ANALYTICS ACTIVE
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     CONTROLS
+===================================================== -->
+
+<div class="controls">
+
+<div>
+
+<div class="control-label">
+Comparison Metric
+</div>
+
+<select id="metricSelector">
+
+<option value="temperature">
+Temperature
+</option>
+
+<option value="humidity">
+Humidity
+</option>
+
+</select>
+
+</div>
+
+
+<div>
+
+<div class="control-label">
+Analysis Type
+</div>
+
+<select id="analysisSelector">
+
+<option value="comparison">
+City Comparison
+</option>
+
+<option value="ranking">
+City Ranking
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     KPI
+===================================================== -->
+
+<div class="kpi-grid">
+
+
+<div class="kpi">
+
+<div class="kpi-label">
+Hottest City
+</div>
+
+<div
+class="kpi-value"
+id="hottestCity">
+--
+</div>
+
+<div
+class="kpi-small"
+id="hottestValue">
+--
+</div>
+
+</div>
+
+
+<div class="kpi">
+
+<div class="kpi-label">
+Coolest City
+</div>
+
+<div
+class="kpi-value"
+id="coolestCity">
+--
+</div>
+
+<div
+class="kpi-small"
+id="coolestValue">
+--
+</div>
+
+</div>
+
+
+<div class="kpi">
+
+<div class="kpi-label">
+Most Humid City
+</div>
+
+<div
+class="kpi-value"
+id="humidCity">
+--
+</div>
+
+<div
+class="kpi-small"
+id="humidValue">
+--
+</div>
+
+</div>
+
+
+<div class="kpi">
+
+<div class="kpi-label">
+Climate Spread
+</div>
+
+<div
+class="kpi-value"
+id="spread">
+--
+</div>
+
+<div class="kpi-small">
+Maximum temperature difference
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     CHARTS
+===================================================== -->
+
+<div class="chart-grid">
+
+
+<div class="card chart-card">
+
+<div class="card-title">
+Temperature Comparison
+</div>
+
+<div class="card-subtitle">
+Average temperature by city
+</div>
+
+<div class="chart-container">
+
+<canvas
+id="temperatureChart">
+</canvas>
+
+</div>
+
+</div>
+
+
+
+<div class="card chart-card">
+
+<div class="card-title">
+Humidity Comparison
+</div>
+
+<div class="card-subtitle">
+Average relative humidity by city
+</div>
+
+<div class="chart-container">
+
+<canvas
+id="humidityChart">
+</canvas>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     SCATTER
+===================================================== -->
+
+<div class="card chart-card"
+style="margin-bottom:18px;">
+
+<div class="card-title">
+Temperature vs Humidity
+</div>
+
+<div class="card-subtitle">
+Relationship between average temperature and relative humidity
+</div>
+
+<div class="chart-container">
+
+<canvas
+id="relationshipChart">
+</canvas>
+
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     INSIGHTS
+===================================================== -->
+
+<div class="card"
+style="margin-bottom:18px;">
+
+<div class="card-title">
+Climate Intelligence
+</div>
+
+<div class="card-subtitle">
+Automatically generated from the current dataset
+</div>
+
+<div id="insights">
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     CITY TABLE
+===================================================== -->
+
+<div class="card table-card">
+
+<div class="card-title">
+Detailed City Comparison
+</div>
+
+<div class="card-subtitle">
+Climate statistics for every detected location
+</div>
+
+
+<div class="table-wrapper">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+City
+</th>
+
+<th>
+Temperature
+</th>
+
+<th>
+Humidity
+</th>
+
+<th>
+Temperature Records
+</th>
+
+<th>
+Humidity Records
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="cityTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+
+<div class="footer">
+
+AtmoSync · Micro-Climate Arbitrage Analytics
+
+</div>
+
+
+</main>
+
+
+
+<script>
+
+
+let data = null;
+
+let tempChart = null;
+
+let humidityChart = null;
+
+let relationshipChart = null;
+
+
+/* =====================================================
+   LOAD DATA
+===================================================== */
+
+async function loadData(){
+
+try{
+
+const response =
+await fetch("/api/dashboard");
+
+data =
+await response.json();
+
+updateKPIs();
+
+createTemperatureChart();
+
+createHumidityChart();
+
+createRelationshipChart();
+
+createTable();
+
+createInsights();
+
+}
+
+catch(error){
+
+console.error(
+"Unable to load climate data",
+error
+);
+
+}
+
+}
+
+
+/* =====================================================
+   KPI
+===================================================== */
+
+function updateKPIs(){
+
+const cities =
+data.cities;
+
+
+const hottest =
+[...cities].sort(
+(a,b)=>
+b.temperature-a.temperature
+)[0];
+
+
+const coolest =
+[...cities].sort(
+(a,b)=>
+a.temperature-b.temperature
+)[0];
+
+
+const humid =
+[...cities].sort(
+(a,b)=>
+b.humidity-a.humidity
+)[0];
+
+
+document.getElementById(
+"hottestCity"
+).textContent =
+hottest.city;
+
+
+document.getElementById(
+"hottestValue"
+).textContent =
+hottest.temperature
++
+"° average temperature";
+
+
+document.getElementById(
+"coolestCity"
+).textContent =
+coolest.city;
+
+
+document.getElementById(
+"coolestValue"
+).textContent =
+coolest.temperature
++
+"° average temperature";
+
+
+document.getElementById(
+"humidCity"
+).textContent =
+humid.city;
+
+
+document.getElementById(
+"humidValue"
+).textContent =
+humid.humidity
++
+"% relative humidity";
+
+
+document.getElementById(
+"spread"
+).textContent =
+data.summary.climateDifference
++
+"°";
+
+}
+
+
+/* =====================================================
+   CHART OPTIONS
+===================================================== */
+
+function chartOptions(){
+
+return {
+
+responsive:true,
+
+maintainAspectRatio:false,
+
+plugins:{
+
+legend:{
+labels:{
+color:"#a9bacb"
+}
+}
+
+},
+
+scales:{
+
+x:{
+ticks:{
+color:"#71869b"
+},
+
+grid:{
+color:"#18293b"
+}
+
+},
+
+y:{
+ticks:{
+color:"#71869b"
+},
+
+grid:{
+color:"#18293b"
+}
+
+}
+
+}
+
+};
+
+}
+
+
+/* =====================================================
+   TEMPERATURE CHART
+===================================================== */
+
+function createTemperatureChart(){
+
+const cities =
+data.cities;
+
+const labels =
+cities.map(
+city=>city.city
+);
+
+const values =
+cities.map(
+city=>city.temperature
+);
+
+
+tempChart =
+new Chart(
+
+document.getElementById(
+"temperatureChart"
+),
+
+{
+
+type:"bar",
+
+data:{
+
+labels:labels,
+
+datasets:[{
+
+label:"Temperature",
+
+data:values,
+
+borderWidth:1
+
+}]
+
+},
+
+options:chartOptions()
+
+}
+
+);
+
+}
+
+
+/* =====================================================
+   HUMIDITY CHART
+===================================================== */
+
+function createHumidityChart(){
+
+const cities =
+data.cities;
+
+const labels =
+cities.map(
+city=>city.city
+);
+
+const values =
+cities.map(
+city=>city.humidity
+);
+
+
+humidityChart =
+new Chart(
+
+document.getElementById(
+"humidityChart"
+),
+
+{
+
+type:"bar",
+
+data:{
+
+labels:labels,
+
+datasets:[{
+
+label:"Relative Humidity",
+
+data:values,
+
+borderWidth:1
+
+}]
+
+},
+
+options:chartOptions()
+
+}
+
+);
+
+}
+
+
+/* =====================================================
+   TEMPERATURE VS HUMIDITY
+===================================================== */
+
+function createRelationshipChart(){
+
+const points =
+data.cities.map(
+city=>({
+
+x:city.temperature,
+
+y:city.humidity
+
+})
+);
+
+
+relationshipChart =
+new Chart(
+
+document.getElementById(
+"relationshipChart"
+),
+
+{
+
+type:"scatter",
+
+data:{
+
+datasets:[{
+
+label:
+"City Climate Relationship",
+
+data:points,
+
+pointRadius:7,
+
+borderWidth:1
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+maintainAspectRatio:false,
+
+plugins:{
+
+legend:{
+labels:{
+color:"#a9bacb"
+}
+}
+
+},
+
+scales:{
+
+x:{
+
+title:{
+display:true,
+text:"Temperature",
+color:"#8295a9"
+},
+
+ticks:{
+color:"#71869b"
+},
+
+grid:{
+color:"#18293b"
+}
+
+},
+
+y:{
+
+title:{
+display:true,
+text:"Humidity %",
+color:"#8295a9"
+},
+
+ticks:{
+color:"#71869b"
+},
+
+grid:{
+color:"#18293b"
+}
+
+}
+
+}
+
+}
+
+}
+
+);
+
+}
+
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+function createTable(){
+
+const tbody =
+document.getElementById(
+"cityTable"
+);
+
+tbody.innerHTML = "";
+
+
+data.cities
+.forEach(city=>{
+
+const row =
+document.createElement(
+"tr"
+);
+
+
+row.innerHTML = `
+
+<td>
+<strong>
+${city.city}
+</strong>
+</td>
+
+<td>
+${city.temperature}°
+</td>
+
+<td>
+${city.humidity}%
+</td>
+
+<td>
+${city.temperatureRecords.toLocaleString()}
+</td>
+
+<td>
+${city.humidityRecords.toLocaleString()}
+</td>
+
+`;
+
+
+tbody.appendChild(
+row
+);
+
+});
+
+}
+
+
+/* =====================================================
+   INSIGHTS
+===================================================== */
+
+function createInsights(){
+
+const cities =
+data.cities;
+
+
+const hottest =
+[...cities].sort(
+(a,b)=>
+b.temperature-a.temperature
+)[0];
+
+
+const coolest =
+[...cities].sort(
+(a,b)=>
+a.temperature-b.temperature
+)[0];
+
+
+const humid =
+[...cities].sort(
+(a,b)=>
+b.humidity-a.humidity
+)[0];
+
+
+const coldSpread =
+hottest.temperature
+-
+coolest.temperature;
+
+
+const container =
+document.getElementById(
+"insights"
+);
+
+
+container.innerHTML = `
+
+<div class="insight">
+
+<strong>🔥 Temperature Leader</strong>
+
+<br>
+
+${hottest.city}
+has the highest average temperature at
+${hottest.temperature}°.
+
+</div>
+
+
+<div class="insight">
+
+<strong>❄️ Coolest Location</strong>
+
+<br>
+
+${coolest.city}
+has the lowest average temperature at
+${coolest.temperature}°.
+
+</div>
+
+
+<div class="insight">
+
+<strong>💧 Humidity Leader</strong>
+
+<br>
+
+${humid.city}
+has the highest average relative humidity at
+${humid.humidity}%.
+
+</div>
+
+
+<div class="insight">
+
+<strong>📊 Climate Variability</strong>
+
+<br>
+
+The difference between the hottest and coolest
+detected cities is
+${coldSpread.toFixed(2)}°.
+
+</div>
+
+`;
+
+}
+
+
+/* =====================================================
+   METRIC SELECTOR
+===================================================== */
+
+document.getElementById(
+"metricSelector"
+).addEventListener(
+"change",
+function(){
+
+if(!data){
+return;
+}
+
+if(
+this.value === "temperature"
+){
+
+tempChart.data.datasets[0].data =
+data.cities.map(
+city=>city.temperature
+);
+
+tempChart.data.datasets[0].label =
+"Temperature";
+
+}
+
+else{
+
+tempChart.data.datasets[0].data =
+data.cities.map(
+city=>city.humidity
+);
+
+tempChart.data.datasets[0].label =
+"Humidity";
+
+}
+
+tempChart.update();
+
+});
+
+
+/* =====================================================
+   START
+===================================================== */
+
+loadData();
+
+</script>
+
+</body>
+
+</html>
