@@ -1,2656 +1,334 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>AtmoSync | Data Quality</title>
-
 <style>
-
-/* =========================================================
-   ATMOSYNC
-   MICRO-CLIMATE ARBITRAGE ANALYTICS
-   DATA QUALITY ENGINE
-   ========================================================= */
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-    font-family:
-        Inter,
-        "Segoe UI",
-        Arial,
-        sans-serif;
-
-    background:#07111f;
-    color:#e8f1f8;
-    min-height:100vh;
-}
-
-a{
-    text-decoration:none;
-    color:inherit;
-}
-
-/* =========================================================
-   SIDEBAR
-   ========================================================= */
-
-.sidebar{
-
-    position:fixed;
-
-    left:0;
-    top:0;
-
-    width:250px;
-    height:100vh;
-
-    background:
-        linear-gradient(
-            180deg,
-            #0a1728 0%,
-            #081321 100%
-        );
-
-    border-right:1px solid #20344a;
-
-    padding:26px 16px;
-
-    z-index:1000;
-
-    overflow-y:auto;
-}
-
-.brand{
-
-    padding:0 12px;
-    margin-bottom:35px;
-}
-
-.brand-name{
-
-    font-size:25px;
-    font-weight:800;
-
-    letter-spacing:-.6px;
-}
-
-.brand-name span{
-    color:#38d6a4;
-}
-
-.brand-subtitle{
-
-    margin-top:5px;
-
-    font-size:9px;
-    letter-spacing:1.5px;
-
-    color:#667e96;
-
-    text-transform:uppercase;
-}
-
-.section-title{
-
-    margin:
-
-        22px 12px 9px;
-
-    color:#536c84;
-
-    font-size:9px;
-
-    letter-spacing:1.4px;
-
-    text-transform:uppercase;
-
-    font-weight:700;
-}
-
-.nav-link{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:11px;
-
-    padding:12px 13px;
-
-    margin:4px 0;
-
-    border-radius:9px;
-
-    color:#8499ad;
-
-    font-size:12px;
-
-    transition:.2s ease;
-}
-
-.nav-link:hover{
-
-    background:#10263b;
-    color:#eaf5ff;
-}
-
-.nav-link.active{
-
-    background:
-        linear-gradient(
-            90deg,
-            #103b3b,
-            #0e2c34
-        );
-
-    color:#40ddb0;
-
-    border-left:3px solid #38d6a4;
-
-    padding-left:10px;
-
-    box-shadow:
-        inset 0 0 20px
-        rgba(56,214,164,.04);
-}
-
-.nav-icon{
-
-    width:20px;
-
-    text-align:center;
-
-    font-size:13px;
-}
-
-/* =========================================================
-   MAIN
-   ========================================================= */
-
-.main{
-
-    margin-left:250px;
-
-    padding:30px 34px 40px;
-
-    min-height:100vh;
-}
-
-/* =========================================================
-   HEADER
-   ========================================================= */
-
-.header{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:flex-start;
-
-    margin-bottom:25px;
-}
-
-.eyebrow{
-
-    color:#3bd5a5;
-
-    font-size:9px;
-
-    font-weight:800;
-
-    letter-spacing:1.8px;
-
-    text-transform:uppercase;
-
-    margin-bottom:8px;
-}
-
-.title{
-
-    font-size:29px;
-
-    font-weight:800;
-
-    letter-spacing:-.7px;
-}
-
-.description{
-
-    margin-top:7px;
-
-    color:#71869a;
-
-    font-size:12px;
-
-    max-width:650px;
-
-    line-height:1.5;
-}
-
-.header-right{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-}
-
-.live-badge{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:7px;
-
-    padding:9px 13px;
-
-    border-radius:20px;
-
-    border:1px solid #1e514b;
-
-    background:#0a211f;
-
-    color:#45ddb0;
-
-    font-size:9px;
-
-    font-weight:800;
-
-    letter-spacing:.6px;
-}
-
-.live-dot{
-
-    width:7px;
-    height:7px;
-
-    border-radius:50%;
-
-    background:#42dfa9;
-
-    box-shadow:
-        0 0 9px
-        rgba(66,223,169,.8);
-}
-
-/* =========================================================
-   KPI CARDS
-   ========================================================= */
-
-.kpi-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(5,1fr);
-
-    gap:14px;
-
-    margin-bottom:18px;
-}
-
-.kpi-card{
-
-    position:relative;
-
-    overflow:hidden;
-
-    background:
-        linear-gradient(
-            145deg,
-            #0d1d2f,
-            #0a1727
-        );
-
-    border:1px solid #20344b;
-
-    border-radius:13px;
-
-    padding:17px;
-
-    min-height:118px;
-
-    transition:.2s ease;
-}
-
-.kpi-card:hover{
-
-    transform:translateY(-2px);
-
-    border-color:#31516b;
-}
-
-.kpi-card::after{
-
-    content:"";
-
-    position:absolute;
-
-    right:-25px;
-
-    bottom:-35px;
-
-    width:90px;
-    height:90px;
-
-    border-radius:50%;
-
-    background:
-        rgba(56,214,164,.035);
-}
-
-.kpi-label{
-
-    color:#71869b;
-
-    font-size:9px;
-
-    font-weight:700;
-
-    letter-spacing:.8px;
-
-    text-transform:uppercase;
-}
-
-.kpi-value{
-
-    margin-top:9px;
-
-    font-size:24px;
-
-    font-weight:800;
-
-    letter-spacing:-.4px;
-}
-
-.kpi-sub{
-
-    margin-top:6px;
-
-    color:#526b82;
-
-    font-size:9px;
-}
-
-.green{
-    color:#38d6a4;
-}
-
-.blue{
-    color:#55b9ff;
-}
-
-.yellow{
-    color:#f4c85b;
-}
-
-.purple{
-    color:#b69cff;
-}
-
-/* =========================================================
-   COMMON PANEL
-   ========================================================= */
-
-.panel{
-
-    background:
-        linear-gradient(
-            145deg,
-            #0c1b2c,
-            #0a1726
-        );
-
-    border:1px solid #20344b;
-
-    border-radius:14px;
-
-    padding:19px;
-
-    margin-bottom:18px;
-}
-
-.panel-header{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:flex-start;
-
-    margin-bottom:17px;
-}
-
-.panel-title{
-
-    font-size:15px;
-
-    font-weight:750;
-
-    letter-spacing:-.2px;
-}
-
-.panel-description{
-
-    margin-top:5px;
-
-    color:#637a91;
-
-    font-size:10px;
-
-    line-height:1.5;
-}
-
-.panel-badge{
-
-    padding:5px 9px;
-
-    border-radius:12px;
-
-    background:#102b31;
-
-    border:1px solid #1d4c50;
-
-    color:#42d9ab;
-
-    font-size:8px;
-
-    font-weight:800;
-
-    letter-spacing:.5px;
-}
-
-/* =========================================================
-   HEALTH OVERVIEW
-   ========================================================= */
-
-.overview-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        1.05fr
-        1.5fr;
-
-    gap:16px;
-
-    margin-bottom:18px;
-}
-
-.health-card{
-
-    background:#091624;
-
-    border:1px solid #1c3045;
-
-    border-radius:12px;
-
-    padding:21px;
-}
-
-.health-top{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    margin-bottom:17px;
-}
-
-.health-label{
-
-    font-size:9px;
-
-    color:#71879c;
-
-    font-weight:800;
-
-    letter-spacing:1px;
-}
-
-.health-status{
-
-    color:#43ddb0;
-
-    background:#0d302b;
-
-    border:1px solid #1d5549;
-
-    border-radius:15px;
-
-    padding:5px 9px;
-
-    font-size:8px;
-
-    font-weight:800;
-}
-
-.health-score{
-
-    font-size:48px;
-
-    font-weight:850;
-
-    color:#39d6a4;
-
-    letter-spacing:-2px;
-}
-
-.health-score span{
-
-    font-size:18px;
-
-    color:#628096;
-
-    letter-spacing:0;
-}
-
-.health-caption{
-
-    color:#637a90;
-
-    font-size:10px;
-
-    margin-top:2px;
-}
-
-.progress-container{
-
-    margin-top:17px;
-
-    height:8px;
-
-    background:#17283b;
-
-    border-radius:10px;
-
-    overflow:hidden;
-}
-
-.progress-bar{
-
-    width:100%;
-
-    height:100%;
-
-    background:
-        linear-gradient(
-            90deg,
-            #28bd8f,
-            #43e0ad
-        );
-
-    border-radius:10px;
-
-    box-shadow:
-        0 0 12px
-        rgba(56,214,164,.25);
-}
-
-.health-note{
-
-    margin-top:13px;
-
-    color:#657c92;
-
-    font-size:9px;
-
-    line-height:1.6;
-}
-
-/* =========================================================
-   QUALITY MATRIX
-   ========================================================= */
-
-.matrix{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(2,1fr);
-
-    gap:9px;
-}
-
-.matrix-item{
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    padding:11px 12px;
-
-    background:#0b1928;
-
-    border:1px solid #1b3045;
-
-    border-radius:9px;
-}
-
-.matrix-left{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:9px;
-}
-
-.check-icon{
-
-    width:23px;
-    height:23px;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    border-radius:50%;
-
-    background:#10352f;
-
-    color:#42d9aa;
-
-    font-size:9px;
-
-    font-weight:900;
-}
-
-.matrix-name{
-
-    font-size:10px;
-
-    color:#a9bac9;
-
-}
-
-.matrix-value{
-
-    color:#41d9aa;
-
-    font-size:8px;
-
-    font-weight:800;
-
-    letter-spacing:.4px;
-}
-
-/* =========================================================
-   VALIDATION PIPELINE
-   ========================================================= */
-
-.pipeline{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(6,1fr);
-
-    gap:8px;
-
-    position:relative;
-}
-
-.pipeline-step{
-
-    position:relative;
-
-    text-align:center;
-
-    padding:15px 7px;
-
-    background:#091624;
-
-    border:1px solid #1c3045;
-
-    border-radius:10px;
-}
-
-.pipeline-step:not(:last-child)::after{
-
-    content:"→";
-
-    position:absolute;
-
-    right:-13px;
-
-    top:29px;
-
-    color:#3a5870;
-
-    font-size:13px;
-
-    z-index:5;
-}
-
-.step-number{
-
-    width:25px;
-    height:25px;
-
-    display:flex;
-
-    justify-content:center;
-    align-items:center;
-
-    margin:0 auto 9px;
-
-    border-radius:50%;
-
-    background:#10342f;
-
-    border:1px solid #1c574b;
-
-    color:#42d9aa;
-
-    font-size:9px;
-
-    font-weight:800;
-}
-
-.step-name{
-
-    font-size:9px;
-
-    color:#a9bac8;
-
-    font-weight:700;
-
-}
-
-.step-status{
-
-    margin-top:5px;
-
-    color:#45dbae;
-
-    font-size:7px;
-
-    font-weight:800;
-
-    letter-spacing:.6px;
-}
-
-/* =========================================================
-   DATA COVERAGE
-   ========================================================= */
-
-.coverage-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        1.2fr
-        1fr;
-
-    gap:17px;
-}
-
-.chart-area{
-
-    background:#091624;
-
-    border:1px solid #1c3045;
-
-    border-radius:11px;
-
-    padding:17px;
-}
-
-.chart-title{
-
-    font-size:10px;
-
-    color:#8196a9;
-
-    text-transform:uppercase;
-
-    letter-spacing:.7px;
-
-    font-weight:800;
-
-    margin-bottom:15px;
-}
-
-.bar-row{
-
-    margin-bottom:14px;
-}
-
-.bar-info{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    margin-bottom:6px;
-
-    font-size:9px;
-}
-
-.bar-city{
-
-    color:#aebdca;
-
-}
-
-.bar-value{
-
-    color:#55b9ff;
-
-    font-weight:700;
-}
-
-.bar-track{
-
-    width:100%;
-
-    height:7px;
-
-    background:#17283b;
-
-    border-radius:10px;
-
-    overflow:hidden;
-}
-
-.bar-fill{
-
-    height:100%;
-
-    border-radius:10px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #247fb5,
-            #55b9ff
-        );
-}
-
-/* =========================================================
-   DATASET INFO
-   ========================================================= */
-
-.info-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(2,1fr);
-
-    gap:10px;
-}
-
-.info-card{
-
-    background:#091624;
-
-    border:1px solid #1c3045;
-
-    border-radius:10px;
-
-    padding:14px;
-}
-
-.info-label{
-
-    color:#637b91;
-
-    font-size:8px;
-
-    text-transform:uppercase;
-
-    letter-spacing:.7px;
-}
-
-.info-value{
-
-    color:#dbe7ef;
-
-    font-size:13px;
-
-    font-weight:750;
-
-    margin-top:6px;
-}
-
-.info-description{
-
-    color:#5d748a;
-
-    font-size:8px;
-
-    margin-top:4px;
-
-    line-height:1.45;
-}
-
-/* =========================================================
-   TABLE
-   ========================================================= */
-
-.table-wrapper{
-
-    overflow-x:auto;
-
-    border:1px solid #1c3045;
-
-    border-radius:10px;
-}
-
-table{
-
-    width:100%;
-
-    border-collapse:collapse;
-
-    min-width:760px;
-}
-
-thead{
-
-    background:#0a1726;
-}
-
-th{
-
-    text-align:left;
-
-    padding:12px 13px;
-
-    color:#637b91;
-
-    font-size:8px;
-
-    text-transform:uppercase;
-
-    letter-spacing:.7px;
-
-    border-bottom:1px solid #20344a;
-}
-
-td{
-
-    padding:12px 13px;
-
-    border-bottom:1px solid #172a3d;
-
-    color:#9eb1c1;
-
-    font-size:10px;
-}
-
-tbody tr:last-child td{
-    border-bottom:none;
-}
-
-tbody tr:hover{
-
-    background:#0d2032;
-}
-
-.city-name{
-
-    color:#e1ebf2;
-
-    font-weight:750;
-}
-
-.number{
-
-    color:#55b9ff;
-
-    font-weight:650;
-}
-
-.metric{
-
-    color:#d0dce5;
-}
-
-.status-pill{
-
-    display:inline-flex;
-
-    align-items:center;
-
-    gap:5px;
-
-    padding:5px 8px;
-
-    border-radius:12px;
-
-    color:#40d8a8;
-
-    background:#0d302b;
-
-    border:1px solid #1d5148;
-
-    font-size:7px;
-
-    font-weight:800;
-}
-
-.status-dot{
-
-    width:5px;
-    height:5px;
-
-    background:#42d9aa;
-
-    border-radius:50%;
-}
-
-/* =========================================================
-   INTELLIGENCE CARDS
-   ========================================================= */
-
-.intelligence-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
-    gap:12px;
-}
-
-.intelligence-card{
-
-    background:#091624;
-
-    border:1px solid #1c3045;
-
-    border-radius:11px;
-
-    padding:17px;
-
-    min-height:125px;
-}
-
-.intelligence-icon{
-
-    width:30px;
-    height:30px;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    border-radius:8px;
-
-    background:#10283a;
-
-    color:#55b9ff;
-
-    font-size:11px;
-
-    margin-bottom:12px;
-}
-
-.intelligence-title{
-
-    font-size:11px;
-
-    font-weight:750;
-
-    color:#d7e4ec;
-}
-
-.intelligence-text{
-
-    margin-top:6px;
-
-    color:#657c91;
-
-    font-size:9px;
-
-    line-height:1.55;
-}
-
-/* =========================================================
-   FOOTER
-   ========================================================= */
-
-.footer{
-
-    text-align:center;
-
-    padding:15px 0 5px;
-
-    color:#4e657c;
-
-    font-size:8px;
-
-    letter-spacing:.3px;
-}
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
-@media(max-width:1250px){
-
-    .kpi-grid{
-        grid-template-columns:
-            repeat(3,1fr);
-    }
-
-    .pipeline{
-        grid-template-columns:
-            repeat(3,1fr);
-    }
-
-    .pipeline-step:not(:last-child)::after{
-        display:none;
-    }
-
-}
-
-@media(max-width:1000px){
-
-    .sidebar{
-        width:215px;
-    }
-
-    .main{
-        margin-left:215px;
-    }
-
-    .overview-grid,
-    .coverage-grid{
-        grid-template-columns:1fr;
-    }
-
-    .intelligence-grid{
-        grid-template-columns:
-            repeat(2,1fr);
-    }
-
-}
-
-@media(max-width:750px){
-
-    .sidebar{
-
-        position:relative;
-
-        width:100%;
-
-        height:auto;
-
-        border-right:none;
-
-        border-bottom:1px solid #20344a;
-    }
-
-    .main{
-        margin-left:0;
-
-        padding:20px 15px;
-    }
-
-    .header{
-
-        flex-direction:column;
-
-        gap:15px;
-    }
-
-    .kpi-grid{
-
-        grid-template-columns:
-            repeat(2,1fr);
-    }
-
-    .matrix,
-    .info-grid,
-    .intelligence-grid{
-
-        grid-template-columns:1fr;
-    }
-
-    .pipeline{
-
-        grid-template-columns:
-            repeat(2,1fr);
-    }
-
-}
-
-@media(max-width:500px){
-
-    .kpi-grid{
-        grid-template-columns:1fr;
-    }
-
-    .pipeline{
-        grid-template-columns:1fr;
-    }
-
-    .title{
-        font-size:24px;
-    }
-
-}
-
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,"Segoe UI",Arial,sans-serif}
+
+/* ALWAYS-VISIBLE SCROLLBAR (background color) */
+html{overflow-y:scroll;scrollbar-width:thin;scrollbar-color:#243c52 #07111f}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:#07111f}
+::-webkit-scrollbar-thumb{background:#243c52;border-radius:10px;border:2px solid #07111f}
+::-webkit-scrollbar-thumb:hover{background:#31506b}
+::-webkit-scrollbar-corner{background:#07111f}
+
+body{background:radial-gradient(circle at 85% 0%,#123044 0%,transparent 28%),#07111f;background-attachment:fixed;color:#e8f0f7;min-height:100vh;font-size:14px}
+
+/* SIDEBAR */
+.sidebar{position:fixed;left:0;top:0;width:260px;height:100vh;background:rgba(8,21,36,.97);border-right:1px solid #20334a;padding:28px 16px;z-index:1000;overflow-y:auto}
+.logo{font-size:28px;font-weight:800;letter-spacing:.5px;margin-bottom:6px}
+.logo span{color:#31d6a5}
+.subtitle{color:#7e93aa;font-size:12px;line-height:1.5;margin-bottom:35px;text-transform:uppercase;letter-spacing:.5px}
+.section-title{color:#526b84;font-size:12px;text-transform:uppercase;letter-spacing:1.5px;margin:22px 12px 10px}
+.nav a{display:block;padding:14px 16px;margin:5px 0;border-radius:10px;color:#91a5b9;text-decoration:none;font-size:14px;transition:.2s;border-left:3px solid transparent}
+.nav a:hover{background:#10253a;color:#fff;transform:translateX(2px)}
+.nav a.active{background:linear-gradient(90deg,#103c3b,#102b3b);color:#43e1b1;border-left:3px solid #35d5a3}
+
+/* MAIN + HEADER */
+.main{margin-left:260px;padding:32px 38px}
+.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;gap:20px}
+.header h1{font-size:32px;font-weight:800;letter-spacing:-.5px}
+.header p{color:#8fa3b8;font-size:14px;margin-top:8px;line-height:1.5}
+.status{display:flex;align-items:center;gap:8px;padding:10px 16px;border:1px solid #1e4650;border-radius:20px;background:#0b2028;color:#45ddb0;font-size:12px;font-weight:700;white-space:nowrap}
+.status-dot{width:9px;height:9px;border-radius:50%;background:#43dfae;box-shadow:0 0 10px #43dfae}
+
+/* CARDS */
+.panel{background:rgba(12,26,42,.94);border:1px solid #203249;border-radius:15px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.12);margin-bottom:20px}
+.card-title{font-size:18px;font-weight:700}
+.card-subtitle{color:#8fa3b8;font-size:14px;margin-top:5px;line-height:1.5}
+.panel-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;gap:15px}
+.panel-badge{background:#0b2929;color:#43dfae;border:1px solid #174b46;padding:7px 12px;border-radius:15px;font-size:12px;font-weight:700;white-space:nowrap}
+
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;margin-bottom:20px}
+.kpi{background:linear-gradient(145deg,#0d1d30,#0a1727);border:1px solid #203249;border-radius:15px;padding:22px;position:relative;overflow:hidden;transition:.25s}
+.kpi:hover{transform:translateY(-3px);border-color:#2c5c6b}
+.kpi::after{content:"";position:absolute;right:-30px;bottom:-40px;width:110px;height:110px;border-radius:50%;background:#15364b;opacity:.25}
+.kpi-label{color:#8fa3b8;font-size:12px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px}
+.kpi-value{font-size:32px;font-weight:800}
+.kpi-small{color:#6f869b;font-size:12px;margin-top:8px}
+.green{color:#43dca8}.blue{color:#55b8ff}.yellow{color:#f6c85f}.purple{color:#b69cff}
+
+/* LAYOUT */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.two-col.spaced{margin-bottom:20px}
+.two-col.spaced .panel{margin-bottom:0}
+.inner{background:#091522;border:1px solid #20354b;border-radius:12px;padding:20px}
+
+/* HEALTH */
+.health-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.health-label{color:#8fa3b8;font-size:12px;font-weight:700;letter-spacing:.5px}
+.pill{background:#0b2929;color:#43dfae;border:1px solid #174b46;padding:6px 12px;border-radius:15px;font-size:12px;font-weight:700}
+.health-score{color:#43dca8;font-size:32px;font-weight:800}
+.health-score span{color:#8fa3b8;font-size:18px}
+.health-caption{color:#8fa3b8;font-size:14px;margin-top:5px}
+.progress{height:10px;background:#142538;border-radius:10px;margin-top:18px;overflow:hidden}
+.progress div{width:100%;height:100%;background:#31d6a5;border-radius:10px}
+.health-note{color:#8fa3b8;font-size:14px;line-height:1.6;margin-top:15px}
+
+/* MATRIX */
+.matrix{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.matrix-item{display:flex;justify-content:space-between;align-items:center;padding:14px;background:#091522;border:1px solid #20354b;border-radius:10px;gap:8px}
+.matrix-left{display:flex;align-items:center;gap:10px}
+.check-icon{width:28px;height:28px;display:flex;justify-content:center;align-items:center;background:#10352f;color:#43dca8;border-radius:50%;font-size:13px;font-weight:700;flex-shrink:0}
+.matrix-name{color:#c0cfdb;font-size:14px}
+.matrix-value{color:#43dca8;font-size:12px;font-weight:700}
+
+/* PIPELINE */
+.pipeline{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.pipeline-step{background:#091522;border:1px solid #20354b;border-radius:12px;padding:18px 10px;text-align:center;position:relative;min-height:115px;display:flex;flex-direction:column;justify-content:center}
+.pipeline-step:not(:last-child)::after{content:"→";position:absolute;right:-15px;top:50%;transform:translateY(-50%);color:#3a5870;font-size:18px;z-index:2}
+.step-number{width:34px;height:34px;display:flex;justify-content:center;align-items:center;margin:0 auto 10px;background:#10352f;border:1px solid #1b5748;color:#43dca8;border-radius:50%;font-size:12px;font-weight:700}
+.step-name{color:#e8f0f7;font-size:14px;font-weight:700}
+.step-status{color:#43dca8;font-size:12px;margin-top:7px;font-weight:700}
+
+/* COVERAGE */
+.chart-title{color:#8fa3b8;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:20px}
+.bar-row{margin-bottom:18px}
+.bar-info{display:flex;justify-content:space-between;margin-bottom:8px;font-size:14px}
+.bar-city{color:#c0cfdb}
+.bar-value{color:#55b8ff;font-weight:700}
+.bar-track{height:10px;background:#142538;border-radius:10px;overflow:hidden}
+.bar-fill{height:100%;background:#55b8ff;border-radius:10px}
+.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
+.info-card{background:#0c1a2a;border:1px solid #20354b;border-radius:12px;padding:18px}
+.info-label{color:#8fa3b8;font-size:12px;text-transform:uppercase;letter-spacing:.7px}
+.info-value{color:#e8f0f7;font-size:24px;font-weight:800;margin-top:8px}
+.info-description{color:#8fa3b8;font-size:14px;margin-top:8px;line-height:1.5}
+
+/* TABLE */
+.table-wrapper{overflow:auto;max-height:520px;border:1px solid #20354b;border-radius:10px}
+table{width:100%;min-width:950px;border-collapse:collapse}
+th{position:sticky;top:0;background:#101f31;color:#8197ac;font-size:12px;text-transform:uppercase;letter-spacing:.6px;text-align:left;padding:15px;border-bottom:1px solid #24364b;white-space:nowrap}
+td{padding:15px;border-bottom:1px solid #182b3e;font-size:14px;color:#c0cfdb}
+tbody tr:hover{background:#0e2032}
+.city-name{color:#e8f0f7;font-weight:700}
+.number{color:#55b8ff;font-weight:700}
+.status-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:12px;color:#42dca4;background:#17372f;font-size:12px;font-weight:800}
+.status-pill .dot{width:7px;height:7px;background:#42d9aa;border-radius:50%}
+.status-pill.check{color:#f6c85f;background:#3b321d}
+.status-pill.check .dot{background:#f6c85f}
+
+/* INTELLIGENCE */
+.intelligence-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.intelligence-card{background:#091522;border:1px solid #20354b;border-left:3px solid #31d6a5;border-radius:12px;padding:20px}
+.intelligence-icon{width:36px;height:36px;display:flex;justify-content:center;align-items:center;background:#102d3a;color:#43dfae;border-radius:10px;margin-bottom:12px;font-size:16px}
+.intelligence-title{color:#e8f0f7;font-size:16px;font-weight:700}
+.intelligence-text{color:#b4c1ce;font-size:14px;line-height:1.6;margin-top:8px}
+
+.footer{text-align:center;color:#6a8197;font-size:12px;padding:28px 0 10px}
+
+/* RESPONSIVE */
+@media(max-width:1400px){.kpis{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:1100px){.sidebar{width:225px}.main{margin-left:225px}.two-col{grid-template-columns:1fr}.two-col.spaced{gap:20px}.pipeline{grid-template-columns:repeat(3,1fr)}.pipeline-step:not(:last-child)::after{display:none}.intelligence-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:750px){.sidebar{position:relative;width:100%;height:auto}.main{margin-left:0;padding:22px 16px}.header{flex-direction:column}.header h1{font-size:26px}.kpis,.matrix,.info-grid,.intelligence-grid{grid-template-columns:1fr}.pipeline{grid-template-columns:repeat(2,1fr)}}
 </style>
-
 </head>
-
 <body>
-
-<!-- =======================================================
-     SIDEBAR
-     ======================================================= -->
-
 <aside class="sidebar">
-
-    <div class="brand">
-
-        <div class="brand-name">
-            Atmo<span>Sync</span>
-        </div>
-
-        <div class="brand-subtitle">
-            Micro-Climate Arbitrage Analytics
-        </div>
-
-    </div>
-
-
-    <div class="section-title">
-        Workspace
-    </div>
-
-
-    <a href="/" class="nav-link">
-
-        <span class="nav-icon">▣</span>
-
-        <span>Dashboard</span>
-
-    </a>
-
-
-    <a href="/climate" class="nav-link">
-
-        <span class="nav-icon">◉</span>
-
-        <span>Climate Analysis</span>
-
-    </a>
-
-
-    <a href="/locations" class="nav-link">
-
-        <span class="nav-icon">⌖</span>
-
-        <span>Locations</span>
-
-    </a>
-
-
-    <a href="/opportunities" class="nav-link">
-
-        <span class="nav-icon">◆</span>
-
-        <span>Opportunities</span>
-
-    </a>
-
-
-    <a href="/explorer" class="nav-link">
-
-        <span class="nav-icon">▤</span>
-
-        <span>Data Explorer</span>
-
-    </a>
-
-
-    <div class="section-title">
-        System
-    </div>
-
-
-    <a href="/analytics" class="nav-link">
-
-        <span class="nav-icon">⚙</span>
-
-        <span>Analytics Engine</span>
-
-    </a>
-
-
-    <a href="/quality" class="nav-link active">
-
-        <span class="nav-icon">✓</span>
-
-        <span>Data Quality</span>
-
-    </a>
-
+<div class="logo">Atmo<span>Sync</span></div>
+<div class="subtitle">MICRO-CLIMATE ARBITRAGE ANALYTICS</div>
+<div class="section-title">Workspace</div>
+<div class="nav">
+<a href="/">◈ Dashboard</a>
+<a href="/climate">◉ Climate Analysis</a>
+<a href="/locations">⌖ Locations</a>
+<a href="/opportunities">◆ Opportunities</a>
+<a href="/explorer">▤ Data Explorer</a>
+</div>
+<div class="section-title">System</div>
+<div class="nav">
+<a href="/analytics">⚙ Analytics Engine</a>
+<a href="/quality" class="active">✓ Data Quality</a>
+</div>
 </aside>
-
-
-<!-- =======================================================
-     MAIN
-     ======================================================= -->
 
 <main class="main">
 
-
-    <!-- HEADER -->
-
-    <div class="header">
-
-        <div>
-
-            <div class="eyebrow">
-                SYSTEM VALIDATION
-            </div>
-
-            <div class="title">
-                Data Quality
-            </div>
-
-            <div class="description">
-                Monitor dataset coverage, record availability,
-                structural validation and analytics readiness
-                across the AtmoSync climate intelligence system.
-            </div>
-
-        </div>
-
-
-        <div class="header-right">
-
-            <div class="live-badge">
-
-                <span class="live-dot"></span>
-
-                DATA QUALITY ACTIVE
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- ===================================================
-         KPI CARDS
-         =================================================== -->
-
-    <div class="kpi-grid">
-
-
-        <div class="kpi-card">
-
-            <div class="kpi-label">
-                Locations Validated
-            </div>
-
-            <div
-                class="kpi-value green"
-                id="cityCount">
-                --
-            </div>
-
-            <div class="kpi-sub">
-                Detected climate locations
-            </div>
-
-        </div>
-
-
-        <div class="kpi-card">
-
-            <div class="kpi-label">
-                Total Observations
-            </div>
-
-            <div
-                class="kpi-value blue"
-                id="totalRecords">
-                --
-            </div>
-
-            <div class="kpi-sub">
-                Combined climate records
-            </div>
-
-        </div>
-
-
-        <div class="kpi-card">
-
-            <div class="kpi-label">
-                Temperature Records
-            </div>
-
-            <div
-                class="kpi-value yellow"
-                id="temperatureRecords">
-                --
-            </div>
-
-            <div class="kpi-sub">
-                Temperature observations
-            </div>
-
-        </div>
-
-
-        <div class="kpi-card">
-
-            <div class="kpi-label">
-                Humidity Records
-            </div>
-
-            <div
-                class="kpi-value purple"
-                id="humidityRecords">
-                --
-            </div>
-
-            <div class="kpi-sub">
-                Relative humidity observations
-            </div>
-
-        </div>
-
-
-        <div class="kpi-card">
-
-            <div class="kpi-label">
-                Quality Status
-            </div>
-
-            <div
-                class="kpi-value green"
-                id="qualityStatus">
-                --
-            </div>
-
-            <div class="kpi-sub">
-                Current system state
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- ===================================================
-         HEALTH + QUALITY MATRIX
-         =================================================== -->
-
-    <div class="overview-grid">
-
-
-        <!-- HEALTH -->
-
-        <div class="panel">
-
-            <div class="panel-header">
-
-                <div>
-
-                    <div class="panel-title">
-                        Dataset Health
-                    </div>
-
-                    <div class="panel-description">
-                        Overall structural readiness of
-                        the connected climate dataset.
-                    </div>
-
-                </div>
-
-                <div class="panel-badge">
-                    LIVE
-                </div>
-
-            </div>
-
-
-            <div class="health-card">
-
-                <div class="health-top">
-
-                    <div class="health-label">
-                        OVERALL HEALTH SCORE
-                    </div>
-
-                    <div class="health-status">
-                        HEALTHY
-                    </div>
-
-                </div>
-
-
-                <div class="health-score">
-                    100<span>%</span>
-                </div>
-
-                <div class="health-caption">
-                    Dataset structure and availability
-                </div>
-
-
-                <div class="progress-container">
-
-                    <div class="progress-bar"></div>
-
-                </div>
-
-
-                <div class="health-note">
-
-                    All detected locations are returning
-                    temperature and humidity information
-                    through the active AtmoSync analytics API.
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- QUALITY MATRIX -->
-
-        <div class="panel">
-
-            <div class="panel-header">
-
-                <div>
-
-                    <div class="panel-title">
-                        Quality Control Matrix
-                    </div>
-
-                    <div class="panel-description">
-                        Core validation checkpoints used
-                        by the analytics system.
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="matrix">
-
-
-                <div class="matrix-item">
-
-                    <div class="matrix-left">
-
-                        <div class="check-icon">
-                            ✓
-                        </div>
-
-                        <div class="matrix-name">
-                            Dataset Detection
-                        </div>
-
-                    </div>
-
-                    <div class="matrix-value">
-                        PASSED
-                    </div>
-
-                </div>
-
-
-                <div class="matrix-item">
-
-                    <div class="matrix-left">
-
-                        <div class="check-icon">
-                            ✓
-                        </div>
-
-                        <div class="matrix-name">
-                            City Coverage
-                        </div>
-
-                    </div>
-
-                    <div class="matrix-value">
-                        PASSED
-                    </div>
-
-                </div>
-
-
-                <div class="matrix-item">
-
-                    <div class="matrix-left">
-
-                        <div class="check-icon">
-                            ✓
-                        </div>
-
-                        <div class="matrix-name">
-                            Temperature Data
-                        </div>
-
-                    </div>
-
-                    <div class="matrix-value">
-                        AVAILABLE
-                    </div>
-
-                </div>
-
-
-                <div class="matrix-item">
-
-                    <div class="matrix-left">
-
-                        <div class="check-icon">
-                            ✓
-                        </div>
-
-                        <div class="matrix-name">
-                            Humidity Data
-                        </div>
-
-                    </div>
-
-                    <div class="matrix-value">
-                        AVAILABLE
-                    </div>
-
-                </div>
-
-
-                <div class="matrix-item">
-
-                    <div class="matrix-left">
-
-                        <div class="check-icon">
-                            ✓
-                        </div>
-
-                        <div class="matrix-name">
-                            Numeric Processing
-                        </div>
-
-                    </div>
-
-                    <div class="matrix-value">
-                        PASSED
-                    </div>
-
-                </div>
-
-
-                <div class="matrix-item">
-
-                    <div class="matrix-left">
-
-                        <div class="check-icon">
-                            ✓
-                        </div>
-
-                        <div class="matrix-name">
-                            API Integration
-                        </div>
-
-                    </div>
-
-                    <div class="matrix-value">
-                        ACTIVE
-                    </div>
-
-                </div>
-
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- ===================================================
-         VALIDATION PIPELINE
-         =================================================== -->
-
-    <div class="panel">
-
-        <div class="panel-header">
-
-            <div>
-
-                <div class="panel-title">
-                    Data Validation Pipeline
-                </div>
-
-                <div class="panel-description">
-                    Quality checks performed before climate
-                    intelligence reaches the dashboard.
-                </div>
-
-            </div>
-
-            <div class="panel-badge">
-                6 STAGES
-            </div>
-
-        </div>
-
-
-        <div class="pipeline">
-
-
-            <div class="pipeline-step">
-
-                <div class="step-number">
-                    01
-                </div>
-
-                <div class="step-name">
-                    Detect
-                </div>
-
-                <div class="step-status">
-                    COMPLETE
-                </div>
-
-            </div>
-
-
-            <div class="pipeline-step">
-
-                <div class="step-number">
-                    02
-                </div>
-
-                <div class="step-name">
-                    Read
-                </div>
-
-                <div class="step-status">
-                    COMPLETE
-                </div>
-
-            </div>
-
-
-            <div class="pipeline-step">
-
-                <div class="step-number">
-                    03
-                </div>
-
-                <div class="step-name">
-                    Validate
-                </div>
-
-                <div class="step-status">
-                    COMPLETE
-                </div>
-
-            </div>
-
-
-            <div class="pipeline-step">
-
-                <div class="step-number">
-                    04
-                </div>
-
-                <div class="step-name">
-                    Aggregate
-                </div>
-
-                <div class="step-status">
-                    COMPLETE
-                </div>
-
-            </div>
-
-
-            <div class="pipeline-step">
-
-                <div class="step-number">
-                    05
-                </div>
-
-                <div class="step-name">
-                    Analyze
-                </div>
-
-                <div class="step-status">
-                    COMPLETE
-                </div>
-
-            </div>
-
-
-            <div class="pipeline-step">
-
-                <div class="step-number">
-                    06
-                </div>
-
-                <div class="step-name">
-                    Publish
-                </div>
-
-                <div class="step-status">
-                    READY
-                </div>
-
-            </div>
-
-
-        </div>
-
-    </div>
-
-
-    <!-- ===================================================
-         COVERAGE
-         =================================================== -->
-
-    <div class="panel">
-
-        <div class="panel-header">
-
-            <div>
-
-                <div class="panel-title">
-                    Data Coverage
-                </div>
-
-                <div class="panel-description">
-                    Relative record coverage across detected
-                    climate locations.
-                </div>
-
-            </div>
-
-            <div class="panel-badge">
-                LIVE DATA
-            </div>
-
-        </div>
-
-
-        <div class="coverage-grid">
-
-
-            <!-- BARS -->
-
-            <div class="chart-area">
-
-                <div class="chart-title">
-                    Temperature Record Distribution
-                </div>
-
-                <div id="coverageBars">
-
-                    Loading coverage...
-
-                </div>
-
-            </div>
-
-
-            <!-- DATASET INFORMATION -->
-
-            <div class="chart-area">
-
-                <div class="chart-title">
-                    Dataset Intelligence
-                </div>
-
-
-                <div class="info-grid">
-
-
-                    <div class="info-card">
-
-                        <div class="info-label">
-                            Locations
-                        </div>
-
-                        <div
-                            class="info-value"
-                            id="infoCities">
-                            --
-                        </div>
-
-                        <div class="info-description">
-                            Climate locations detected
-                            from the dataset.
-                        </div>
-
-                    </div>
-
-
-                    <div class="info-card">
-
-                        <div class="info-label">
-                            Temperature
-                        </div>
-
-                        <div
-                            class="info-value"
-                            id="infoTemperature">
-                            --
-                        </div>
-
-                        <div class="info-description">
-                            Total temperature observations
-                            available for processing.
-                        </div>
-
-                    </div>
-
-
-                    <div class="info-card">
-
-                        <div class="info-label">
-                            Humidity
-                        </div>
-
-                        <div
-                            class="info-value"
-                            id="infoHumidity">
-                            --
-                        </div>
-
-                        <div class="info-description">
-                            Total relative humidity observations
-                            available for processing.
-                        </div>
-
-                    </div>
-
-
-                    <div class="info-card">
-
-                        <div class="info-label">
-                            API
-                        </div>
-
-                        <div class="info-value">
-                            ACTIVE
-                        </div>
-
-                        <div class="info-description">
-                            Connected to the AtmoSync
-                            analytics data service.
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- ===================================================
-         CITY QUALITY TABLE
-         =================================================== -->
-
-    <div class="panel">
-
-        <div class="panel-header">
-
-            <div>
-
-                <div class="panel-title">
-                    Location-Level Data Quality
-                </div>
-
-                <div class="panel-description">
-                    Individual record availability and climate
-                    metrics for every detected location.
-                </div>
-
-            </div>
-
-            <div class="panel-badge">
-                CITY AUDIT
-            </div>
-
-        </div>
-
-
-        <div class="table-wrapper">
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>
-                            Location
-                        </th>
-
-                        <th>
-                            Temperature Records
-                        </th>
-
-                        <th>
-                            Humidity Records
-                        </th>
-
-                        <th>
-                            Temperature
-                        </th>
-
-                        <th>
-                            Humidity
-                        </th>
-
-                        <th>
-                            Temperature File
-                        </th>
-
-                        <th>
-                            Humidity File
-                        </th>
-
-                        <th>
-                            Status
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-
-                <tbody id="qualityTable">
-
-                    <tr>
-
-                        <td colspan="8">
-                            Loading location quality data...
-                        </td>
-
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-
-    <!-- ===================================================
-         INTELLIGENCE
-         =================================================== -->
-
-    <div class="panel">
-
-        <div class="panel-header">
-
-            <div>
-
-                <div class="panel-title">
-                    Quality Intelligence
-                </div>
-
-                <div class="panel-description">
-                    Automated observations generated from the
-                    current dataset state.
-                </div>
-
-            </div>
-
-            <div class="panel-badge">
-                AUTO GENERATED
-            </div>
-
-        </div>
-
-
-        <div class="intelligence-grid">
-
-
-            <div class="intelligence-card">
-
-                <div class="intelligence-icon">
-                    ◉
-                </div>
-
-                <div class="intelligence-title">
-                    Dataset Coverage
-                </div>
-
-                <div
-                    class="intelligence-text"
-                    id="coverageInsight">
-
-                    Analyzing dataset coverage...
-
-                </div>
-
-            </div>
-
-
-            <div class="intelligence-card">
-
-                <div class="intelligence-icon">
-                    ≋
-                </div>
-
-                <div class="intelligence-title">
-                    Record Balance
-                </div>
-
-                <div
-                    class="intelligence-text"
-                    id="balanceInsight">
-
-                    Analyzing record distribution...
-
-                </div>
-
-            </div>
-
-
-            <div class="intelligence-card">
-
-                <div class="intelligence-icon">
-                    ✓
-                </div>
-
-                <div class="intelligence-title">
-                    Analytics Readiness
-                </div>
-
-                <div
-                    class="intelligence-text"
-                    id="readinessInsight">
-
-                    Checking analytics readiness...
-
-                </div>
-
-            </div>
-
-
-        </div>
-
-    </div>
-
-
-    <div class="footer">
-
-        AtmoSync · Micro-Climate Arbitrage Analytics
-        · Data Quality Engine
-
-    </div>
-
-
+<div class="header">
+<div>
+<h1>Data Quality</h1>
+<p>Monitor dataset coverage, record availability, structural validation and analytics readiness</p>
+</div>
+<div class="status"><span class="status-dot"></span>DATA QUALITY ACTIVE</div>
+</div>
+
+<div class="kpis">
+<div class="kpi"><div class="kpi-label">Locations Validated</div><div class="kpi-value green" id="cityCount">—</div><div class="kpi-small">Detected climate locations</div></div>
+<div class="kpi"><div class="kpi-label">Total Observations</div><div class="kpi-value blue" id="totalRecords">—</div><div class="kpi-small">Combined climate records</div></div>
+<div class="kpi"><div class="kpi-label">Temperature Records</div><div class="kpi-value yellow" id="temperatureRecords">—</div><div class="kpi-small">Temperature observations</div></div>
+<div class="kpi"><div class="kpi-label">Humidity Records</div><div class="kpi-value purple" id="humidityRecords">—</div><div class="kpi-small">Humidity observations</div></div>
+<div class="kpi"><div class="kpi-label">Quality Status</div><div class="kpi-value green" id="qualityStatus">—</div><div class="kpi-small">Current system state</div></div>
+</div>
+
+<div class="two-col spaced">
+
+<div class="panel">
+<div class="panel-header">
+<div><div class="card-title">Dataset Health</div><div class="card-subtitle">Overall structural readiness of the connected climate dataset.</div></div>
+<div class="panel-badge">LIVE</div>
+</div>
+<div class="inner">
+<div class="health-top"><div class="health-label">OVERALL HEALTH SCORE</div><div class="pill">HEALTHY</div></div>
+<div class="health-score">100<span>%</span></div>
+<div class="health-caption">Dataset structure and availability</div>
+<div class="progress"><div></div></div>
+<div class="health-note">All detected locations are returning temperature and humidity information through the active AtmoSync analytics API.</div>
+</div>
+</div>
+
+<div class="panel">
+<div class="panel-header">
+<div><div class="card-title">Quality Control Matrix</div><div class="card-subtitle">Core validation checkpoints used by the analytics system.</div></div>
+</div>
+<div class="matrix">
+<div class="matrix-item"><div class="matrix-left"><div class="check-icon">✓</div><div class="matrix-name">Dataset Detection</div></div><div class="matrix-value">PASSED</div></div>
+<div class="matrix-item"><div class="matrix-left"><div class="check-icon">✓</div><div class="matrix-name">City Coverage</div></div><div class="matrix-value">PASSED</div></div>
+<div class="matrix-item"><div class="matrix-left"><div class="check-icon">✓</div><div class="matrix-name">Temperature Data</div></div><div class="matrix-value">AVAILABLE</div></div>
+<div class="matrix-item"><div class="matrix-left"><div class="check-icon">✓</div><div class="matrix-name">Humidity Data</div></div><div class="matrix-value">AVAILABLE</div></div>
+<div class="matrix-item"><div class="matrix-left"><div class="check-icon">✓</div><div class="matrix-name">Numeric Processing</div></div><div class="matrix-value">PASSED</div></div>
+<div class="matrix-item"><div class="matrix-left"><div class="check-icon">✓</div><div class="matrix-name">API Integration</div></div><div class="matrix-value">ACTIVE</div></div>
+</div>
+</div>
+
+</div>
+
+<div class="panel">
+<div class="panel-header">
+<div><div class="card-title">Data Validation Pipeline</div><div class="card-subtitle">Quality checks performed before climate intelligence reaches the dashboard.</div></div>
+<div class="panel-badge">6 STAGES</div>
+</div>
+<div class="pipeline">
+<div class="pipeline-step"><div class="step-number">01</div><div class="step-name">Detect</div><div class="step-status">COMPLETE</div></div>
+<div class="pipeline-step"><div class="step-number">02</div><div class="step-name">Read</div><div class="step-status">COMPLETE</div></div>
+<div class="pipeline-step"><div class="step-number">03</div><div class="step-name">Validate</div><div class="step-status">COMPLETE</div></div>
+<div class="pipeline-step"><div class="step-number">04</div><div class="step-name">Aggregate</div><div class="step-status">COMPLETE</div></div>
+<div class="pipeline-step"><div class="step-number">05</div><div class="step-name">Analyze</div><div class="step-status">COMPLETE</div></div>
+<div class="pipeline-step"><div class="step-number">06</div><div class="step-name">Publish</div><div class="step-status">READY</div></div>
+</div>
+</div>
+
+<div class="panel">
+<div class="panel-header">
+<div><div class="card-title">Data Coverage</div><div class="card-subtitle">Relative record coverage across detected climate locations.</div></div>
+<div class="panel-badge">LIVE DATA</div>
+</div>
+<div class="two-col">
+<div class="inner">
+<div class="chart-title">Temperature Record Distribution</div>
+<div id="coverageBars">Loading coverage...</div>
+</div>
+<div class="inner">
+<div class="chart-title">Dataset Intelligence</div>
+<div class="info-grid">
+<div class="info-card"><div class="info-label">Locations</div><div class="info-value" id="infoCities">—</div><div class="info-description">Climate locations detected from the dataset.</div></div>
+<div class="info-card"><div class="info-label">Temperature</div><div class="info-value" id="infoTemperature">—</div><div class="info-description">Total temperature observations available for processing.</div></div>
+<div class="info-card"><div class="info-label">Humidity</div><div class="info-value" id="infoHumidity">—</div><div class="info-description">Total relative humidity observations available for processing.</div></div>
+<div class="info-card"><div class="info-label">API</div><div class="info-value">ACTIVE</div><div class="info-description">Connected to the AtmoSync analytics data service.</div></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="panel">
+<div class="panel-header">
+<div><div class="card-title">Location-Level Data Quality</div><div class="card-subtitle">Individual record availability and climate metrics for every detected location.</div></div>
+<div class="panel-badge">CITY AUDIT</div>
+</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>Location</th><th>Temperature Records</th><th>Humidity Records</th><th>Temperature</th><th>Humidity</th><th>Temperature File</th><th>Humidity File</th><th>Status</th></tr></thead>
+<tbody id="qualityTable"><tr><td colspan="8">Loading location quality data...</td></tr></tbody>
+</table>
+</div>
+</div>
+
+<div class="panel">
+<div class="panel-header">
+<div><div class="card-title">Quality Intelligence</div><div class="card-subtitle">Automated observations generated from the current dataset state.</div></div>
+<div class="panel-badge">AUTO GENERATED</div>
+</div>
+<div class="intelligence-grid">
+<div class="intelligence-card"><div class="intelligence-icon">◉</div><div class="intelligence-title">Dataset Coverage</div><div class="intelligence-text" id="coverageInsight">Analyzing dataset coverage...</div></div>
+<div class="intelligence-card"><div class="intelligence-icon">≋</div><div class="intelligence-title">Record Balance</div><div class="intelligence-text" id="balanceInsight">Analyzing record distribution...</div></div>
+<div class="intelligence-card"><div class="intelligence-icon">✓</div><div class="intelligence-title">Analytics Readiness</div><div class="intelligence-text" id="readinessInsight">Checking analytics readiness...</div></div>
+</div>
+</div>
+
+<div class="footer">AtmoSync · Micro-Climate Arbitrage Analytics<br>Data Quality Engine</div>
 </main>
 
-
-<!-- =======================================================
-     JAVASCRIPT
-     ======================================================= -->
-
 <script>
-
-/* =========================================================
-   API LOAD
-   ========================================================= */
+const $=id=>document.getElementById(id);
 
 async function loadQualityData(){
-
-    try{
-
-        const response =
-            await fetch("/api/dashboard");
-
-        if(!response.ok){
-
-            throw new Error(
-                "Unable to load dashboard data"
-            );
-
-        }
-
-        const data =
-            await response.json();
-
-        renderQualityData(data);
-
-    }
-
-    catch(error){
-
-        console.error(
-            "Data Quality Error:",
-            error
-        );
-
-        document.getElementById(
-            "qualityStatus"
-        ).textContent = "ERROR";
-
-        document.getElementById(
-            "coverageBars"
-        ).innerHTML = `
-            <div style="
-                color:#ff7777;
-                font-size:10px;
-                padding:20px 0;
-            ">
-                Unable to connect to the AtmoSync
-                analytics API.
-            </div>
-        `;
-
-    }
-
+ try{
+  const r=await fetch("/api/dashboard");
+  if(!r.ok)throw new Error("Unable to load dashboard data");
+  render(await r.json());
+ }catch(e){
+  console.error("Data Quality Error:",e);
+  $("qualityStatus").textContent="ERROR";
+  $("coverageBars").innerHTML='<div style="color:#ff7777;font-size:14px;padding:20px 0">Unable to connect to the AtmoSync analytics API.</div>';
+ }
 }
 
-
-/* =========================================================
-   MAIN RENDER
-   ========================================================= */
-
-function renderQualityData(data){
-
-    const cities =
-        data.cities || [];
-
-    const summary =
-        data.summary || {};
-
-
-    if(!cities.length){
-
-        return;
-
-    }
-
-
-    /* -----------------------------------------------------
-       SUMMARY VALUES
-       ----------------------------------------------------- */
-
-    const cityCount =
-        summary.cityCount ||
-        cities.length;
-
-    const totalRecords =
-        summary.totalRecords || 0;
-
-    const temperatureRecords =
-        summary.temperatureRecords || 0;
-
-    const humidityRecords =
-        summary.humidityRecords || 0;
-
-
-    /* -----------------------------------------------------
-       KPI
-       ----------------------------------------------------- */
-
-    document.getElementById(
-        "cityCount"
-    ).textContent =
-        cityCount.toLocaleString();
-
-
-    document.getElementById(
-        "totalRecords"
-    ).textContent =
-        totalRecords.toLocaleString();
-
-
-    document.getElementById(
-        "temperatureRecords"
-    ).textContent =
-        temperatureRecords.toLocaleString();
-
-
-    document.getElementById(
-        "humidityRecords"
-    ).textContent =
-        humidityRecords.toLocaleString();
-
-
-    document.getElementById(
-        "qualityStatus"
-    ).textContent =
-        "HEALTHY";
-
-
-    /* -----------------------------------------------------
-       DATASET INTELLIGENCE
-       ----------------------------------------------------- */
-
-    document.getElementById(
-        "infoCities"
-    ).textContent =
-        cityCount;
-
-
-    document.getElementById(
-        "infoTemperature"
-    ).textContent =
-        temperatureRecords.toLocaleString();
-
-
-    document.getElementById(
-        "infoHumidity"
-    ).textContent =
-        humidityRecords.toLocaleString();
-
-
-    /* -----------------------------------------------------
-       TABLE
-       ----------------------------------------------------- */
-
-    const table =
-        document.getElementById(
-            "qualityTable"
-        );
-
-    table.innerHTML = "";
-
-
-    cities.forEach(city => {
-
-        const row =
-            document.createElement("tr");
-
-
-        const temperatureFile =
-            city.temperatureFile
-            || "--";
-
-
-        const humidityFile =
-            city.humidityFile
-            || "--";
-
-
-        const tempRecords =
-            city.temperatureRecords || 0;
-
-
-        const humidityRecordsCity =
-            city.humidityRecords || 0;
-
-
-        const valid =
-            tempRecords > 0 &&
-            humidityRecordsCity > 0;
-
-
-        row.innerHTML = `
-
-            <td class="city-name">
-                ${city.city}
-            </td>
-
-            <td class="number">
-                ${tempRecords.toLocaleString()}
-            </td>
-
-            <td class="number">
-                ${humidityRecordsCity.toLocaleString()}
-            </td>
-
-            <td class="metric">
-                ${city.temperature ?? "--"}°
-            </td>
-
-            <td class="metric">
-                ${city.humidity ?? "--"}%
-            </td>
-
-            <td>
-                ${temperatureFile}
-            </td>
-
-            <td>
-                ${humidityFile}
-            </td>
-
-            <td>
-
-                <span class="status-pill">
-
-                    <span class="status-dot"></span>
-
-                    ${valid ? "READY" : "CHECK"}
-
-                </span>
-
-            </td>
-
-        `;
-
-
-        table.appendChild(row);
-
-    });
-
-
-    /* -----------------------------------------------------
-       COVERAGE BARS
-       ----------------------------------------------------- */
-
-    const coverage =
-        document.getElementById(
-            "coverageBars"
-        );
-
-    coverage.innerHTML = "";
-
-
-    const maxTemperatureRecords =
-        Math.max(
-            ...cities.map(
-                city =>
-                    city.temperatureRecords || 0
-            )
-        );
-
-
-    cities.forEach(city => {
-
-        const records =
-            city.temperatureRecords || 0;
-
-
-        const percentage =
-            maxTemperatureRecords > 0
-            ? (
-                records /
-                maxTemperatureRecords
-            ) * 100
-            : 0;
-
-
-        const item =
-            document.createElement("div");
-
-
-        item.className =
-            "bar-row";
-
-
-        item.innerHTML = `
-
-            <div class="bar-info">
-
-                <span class="bar-city">
-                    ${city.city}
-                </span>
-
-                <span class="bar-value">
-                    ${records.toLocaleString()}
-                </span>
-
-            </div>
-
-
-            <div class="bar-track">
-
-                <div
-                    class="bar-fill"
-                    style="
-                        width:${percentage}%;
-                    ">
-                </div>
-
-            </div>
-
-        `;
-
-
-        coverage.appendChild(item);
-
-    });
-
-
-    /* -----------------------------------------------------
-       INTELLIGENCE
-       ----------------------------------------------------- */
-
-    const citiesWithData =
-        cities.filter(
-            city =>
-                (city.temperatureRecords || 0) > 0 &&
-                (city.humidityRecords || 0) > 0
-        ).length;
-
-
-    const coveragePercentage =
-        cityCount > 0
-        ? Math.round(
-            (
-                citiesWithData /
-                cityCount
-            ) * 100
-        )
-        : 0;
-
-
-    document.getElementById(
-        "coverageInsight"
-    ).textContent =
-
-        `${citiesWithData} of ${cityCount} detected locations `
-        +
-        `have both temperature and humidity records available. `
-        +
-        `Current structural coverage is ${coveragePercentage}%.`;
-
-
-    const temperatureShare =
-        totalRecords > 0
-        ? Math.round(
-            (
-                temperatureRecords /
-                totalRecords
-            ) * 100
-        )
-        : 0;
-
-
-    const humidityShare =
-        totalRecords > 0
-        ? Math.round(
-            (
-                humidityRecords /
-                totalRecords
-            ) * 100
-        )
-        : 0;
-
-
-    document.getElementById(
-        "balanceInsight"
-    ).textContent =
-
-        `The dataset contains `
-        +
-        `${temperatureShare}% temperature observations `
-        +
-        `and ${humidityShare}% humidity observations `
-        +
-        `across the connected climate locations.`;
-
-
-    document.getElementById(
-        "readinessInsight"
-    ).textContent =
-
-        citiesWithData === cityCount
-
-        ?
-
-        `All detected locations provide the required `
-        +
-        `temperature and humidity records. The dataset `
-        +
-        `is ready for AtmoSync climate analytics.`
-
-        :
-
-        `Some locations require additional data validation `
-        +
-        `before complete climate analytics coverage can `
-        +
-        `be confirmed.`;
-
+function render(data){
+ const cities=data.cities||[],s=data.summary||{};
+ if(!cities.length)return;
+
+ const cityCount=s.cityCount||cities.length,
+       total=s.totalRecords||0,
+       tRec=s.temperatureRecords||0,
+       hRec=s.humidityRecords||0;
+
+ $("cityCount").textContent=cityCount.toLocaleString();
+ $("totalRecords").textContent=total.toLocaleString();
+ $("temperatureRecords").textContent=tRec.toLocaleString();
+ $("humidityRecords").textContent=hRec.toLocaleString();
+ $("qualityStatus").textContent="HEALTHY";
+ $("infoCities").textContent=cityCount.toLocaleString();
+ $("infoTemperature").textContent=tRec.toLocaleString();
+ $("infoHumidity").textContent=hRec.toLocaleString();
+
+ $("qualityTable").innerHTML=cities.map(c=>{
+  const tr=c.temperatureRecords||0,hr=c.humidityRecords||0,ok=tr>0&&hr>0;
+  return `<tr>
+   <td class="city-name">${c.city}</td>
+   <td class="number">${tr.toLocaleString()}</td>
+   <td class="number">${hr.toLocaleString()}</td>
+   <td>${c.temperature??"--"}°</td>
+   <td>${c.humidity??"--"}%</td>
+   <td>${c.temperatureFile||"--"}</td>
+   <td>${c.humidityFile||"--"}</td>
+   <td><span class="status-pill ${ok?"":"check"}"><span class="dot"></span>${ok?"READY":"CHECK"}</span></td>
+  </tr>`;
+ }).join("");
+
+ const max=Math.max(...cities.map(c=>c.temperatureRecords||0));
+ $("coverageBars").innerHTML=cities.map(c=>{
+  const rec=c.temperatureRecords||0,pct=max>0?rec/max*100:0;
+  return `<div class="bar-row">
+   <div class="bar-info"><span class="bar-city">${c.city}</span><span class="bar-value">${rec.toLocaleString()}</span></div>
+   <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div></div>`;
+ }).join("");
+
+ const withData=cities.filter(c=>(c.temperatureRecords||0)>0&&(c.humidityRecords||0)>0).length;
+ const cov=cityCount>0?Math.round(withData/cityCount*100):0;
+ const tShare=total>0?Math.round(tRec/total*100):0;
+ const hShare=total>0?Math.round(hRec/total*100):0;
+
+ $("coverageInsight").textContent=`${withData} of ${cityCount} detected locations have both temperature and humidity records available. Current structural coverage is ${cov}%.`;
+ $("balanceInsight").textContent=`The dataset contains ${tShare}% temperature observations and ${hShare}% humidity observations across the connected climate locations.`;
+ $("readinessInsight").textContent=withData===cityCount
+  ?"All detected locations provide the required temperature and humidity records. The dataset is ready for AtmoSync climate analytics."
+  :"Some locations require additional data validation before complete climate analytics coverage can be confirmed.";
 }
-
-
-/* =========================================================
-   INITIALIZE
-   ========================================================= */
 
 loadQualityData();
-
 </script>
-
-
 </body>
-
 </html>
