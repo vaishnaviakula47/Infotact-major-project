@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AtmoSync | Data Explorer</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#08111f;
+    color:#e8f0f7;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:245px;
+    height:100vh;
+    background:#0b1728;
+    border-right:1px solid #1d3047;
+    padding:25px 16px;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+}
+
+.logo span{
+    color:#36d399;
+}
+
+.subtitle{
+    color:#8193a8;
+    font-size:12px;
+    margin-top:5px;
+    margin-bottom:30px;
+}
+
+.section-title{
+    color:#62758b;
+    font-size:11px;
+    margin:20px 10px 8px;
+    text-transform:uppercase;
+}
+
+.nav a{
+    display:block;
+    padding:13px 14px;
+    margin:5px 0;
+    border-radius:8px;
+    color:#9fb0c3;
+    text-decoration:none;
+    font-size:14px;
+}
+
+.nav a:hover{
+    background:#13263d;
+    color:white;
+}
+
+.nav a.active{
+    background:#17344a;
+    color:#36d399;
+    font-weight:bold;
+}
+
+/* MAIN */
+
+.main{
+    margin-left:245px;
+    padding:30px;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.header h1{
+    font-size:28px;
+}
+
+.header p{
+    color:#8193a8;
+    margin-top:6px;
+}
+
+.status{
+    background:#102b28;
+    color:#36d399;
+    padding:9px 15px;
+    border-radius:20px;
+    font-size:12px;
+    border:1px solid #1b5748;
+}
+
+/* PANELS */
+
+.panel{
+    background:#0d1b2c;
+    border:1px solid #1d3047;
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:20px;
+}
+
+.panel h2{
+    font-size:17px;
+    margin-bottom:6px;
+}
+
+.description{
+    color:#71859b;
+    font-size:12px;
+    margin-bottom:18px;
+}
+
+/* CONTROLS */
+
+.controls{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+select,
+input{
+    background:#101f31;
+    color:#dbe7f2;
+    border:1px solid #2a4058;
+    padding:11px 13px;
+    border-radius:7px;
+    outline:none;
+}
+
+input{
+    min-width:230px;
+}
+
+/* KPI */
+
+.kpis{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.card{
+    background:#0d1b2c;
+    border:1px solid #1d3047;
+    border-radius:12px;
+    padding:20px;
+}
+
+.card-title{
+    color:#8193a8;
+    font-size:11px;
+    margin-bottom:10px;
+}
+
+.card-value{
+    font-size:25px;
+    font-weight:bold;
+}
+
+/* CHARTS */
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.chart-container{
+    height:320px;
+}
+
+/* TABLE */
+
+.table-wrapper{
+    overflow:auto;
+    max-height:500px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    position:sticky;
+    top:0;
+    background:#101f31;
+    color:#72869b;
+    font-size:11px;
+    text-align:left;
+    padding:12px;
+    border-bottom:1px solid #24384e;
+}
+
+td{
+    padding:11px 12px;
+    border-bottom:1px solid #182b40;
+    font-size:12px;
+}
+
+tr:hover{
+    background:#102236;
+}
+
+/* CITY CARDS */
+
+.city-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.city-card{
+    background:#101f31;
+    border:1px solid #20354b;
+    border-radius:10px;
+    padding:16px;
+}
+
+.city-name{
+    font-size:16px;
+    font-weight:bold;
+    margin-bottom:12px;
+}
+
+.metric{
+    display:flex;
+    justify-content:space-between;
+    color:#91a3b6;
+    font-size:12px;
+    padding:6px 0;
+}
+
+.metric strong{
+    color:#e5edf5;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1100px){
+
+    .kpis{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .city-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:700px){
+
+    .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .kpis{
+        grid-template-columns:1fr;
+    }
+
+    .city-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo">
+        Atmo<span>Sync</span>
+    </div>
+
+    <div class="subtitle">
+        Micro-Climate Analytics
+    </div>
+
+
+    <div class="section-title">
+        Workspace
+    </div>
+
+    <div class="nav">
+
+        <a href="/">
+            ▣ Dashboard
+        </a>
+
+        <a href="/climate">
+            ◉ Climate Analysis
+        </a>
+
+        <a href="/locations">
+            ⌖ Locations
+        </a>
+
+        <a href="/opportunities">
+            ◆ Opportunities
+        </a>
+
+        <a href="/explorer" class="active">
+            ▤ Data Explorer
+        </a>
+
+    </div>
+
+
+    <div class="section-title">
+        System
+    </div>
+
+    <div class="nav">
+
+        <a href="/analytics">
+            ⚙ Analytics Engine
+        </a>
+
+        <a href="/quality">
+            ✓ Data Quality
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- MAIN -->
+
+<div class="main">
+
+
+    <div class="header">
+
+        <div>
+
+            <h1>
+                Data Explorer
+            </h1>
+
+            <p>
+                Explore and compare the climate datasets used by AtmoSync
+            </p>
+
+        </div>
+
+        <div class="status">
+            DATA CONNECTED
+        </div>
+
+    </div>
+
+
+    <!-- KPIs -->
+
+    <div class="kpis">
+
+        <div class="card">
+
+            <div class="card-title">
+                CITIES
+            </div>
+
+            <div
+                class="card-value"
+                id="cityCount">
+                —
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                TEMPERATURE RECORDS
+            </div>
+
+            <div
+                class="card-value"
+                id="tempRecords">
+                —
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                HUMIDITY RECORDS
+            </div>
+
+            <div
+                class="card-value"
+                id="humidityRecords">
+                —
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                TOTAL RECORDS
+            </div>
+
+            <div
+                class="card-value"
+                id="totalRecords">
+                —
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- FILTER -->
+
+    <div class="panel">
+
+        <h2>
+            Dataset Controls
+        </h2>
+
+        <div class="description">
+            Select a city and climate metric for interactive exploration
+        </div>
+
+
+        <div class="controls">
+
+            <select id="citySelect">
+
+                <option value="ALL">
+                    All Cities
+                </option>
+
+            </select>
+
+
+            <select id="metricSelect">
+
+                <option value="temperature">
+                    Temperature
+                </option>
+
+                <option value="humidity">
+                    Humidity
+                </option>
+
+            </select>
+
+
+            <input
+                type="text"
+                id="searchCity"
+                placeholder="Search city..."
+            >
+
+        </div>
+
+    </div>
+
+
+    <!-- CHARTS -->
+
+    <div class="grid">
+
+        <div class="panel">
+
+            <h2>
+                City Metric Comparison
+            </h2>
+
+            <div class="description">
+                Average values calculated from the available datasets
+            </div>
+
+            <div class="chart-container">
+
+                <canvas id="comparisonChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <h2>
+                Climate Relationship
+            </h2>
+
+            <div class="description">
+                Temperature and humidity relationship across cities
+            </div>
+
+            <div class="chart-container">
+
+                <canvas id="relationshipChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CITY DATA -->
+
+    <div class="panel">
+
+        <h2>
+            City Dataset Directory
+        </h2>
+
+        <div class="description">
+            Dataset statistics detected automatically from the data folder
+        </div>
+
+
+        <div
+            class="city-grid"
+            id="cityGrid">
+
+        </div>
+
+    </div>
+
+
+    <!-- TABLE -->
+
+    <div class="panel">
+
+        <h2>
+            Dataset Summary Table
+        </h2>
+
+        <div class="description">
+            Search and inspect the available city-level data
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>City</th>
+
+                        <th>Temperature</th>
+
+                        <th>Humidity</th>
+
+                        <th>Temperature Records</th>
+
+                        <th>Humidity Records</th>
+
+                        <th>Latitude</th>
+
+                        <th>Longitude</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="dataTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+let dashboardData = null;
+
+let comparisonChart = null;
+
+let relationshipChart = null;
+
+
+/* ============================================================
+   LOAD API
+============================================================ */
+
+async function loadData(){
+
+    try{
+
+        const response =
+            await fetch("/api/dashboard");
+
+        dashboardData =
+            await response.json();
+
+        initialize();
+
+    }
+
+    catch(error){
+
+        console.error(
+            "Unable to load dashboard data:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   INITIALIZE
+============================================================ */
+
+function initialize(){
+
+    const cities =
+        dashboardData.cities || [];
+
+    const summary =
+        dashboardData.summary || {};
+
+
+    document.getElementById(
+        "cityCount"
+    ).textContent =
+        summary.cityCount || 0;
+
+
+    document.getElementById(
+        "tempRecords"
+    ).textContent =
+        (summary.temperatureRecords || 0)
+        .toLocaleString();
+
+
+    document.getElementById(
+        "humidityRecords"
+    ).textContent =
+        (summary.humidityRecords || 0)
+        .toLocaleString();
+
+
+    document.getElementById(
+        "totalRecords"
+    ).textContent =
+        (summary.totalRecords || 0)
+        .toLocaleString();
+
+
+    const select =
+        document.getElementById(
+            "citySelect"
+        );
+
+
+    cities.forEach(
+        city => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                city.cityKey;
+
+            option.textContent =
+                city.city;
+
+            select.appendChild(option);
+
+        }
+    );
+
+
+    renderCharts();
+
+    renderCities();
+
+    renderTable();
+
+}
+
+
+/* ============================================================
+   GET FILTERED CITIES
+============================================================ */
+
+function getFilteredCities(){
+
+    const selectedCity =
+        document.getElementById(
+            "citySelect"
+        ).value;
+
+
+    const search =
+        document.getElementById(
+            "searchCity"
+        ).value
+        .toLowerCase();
+
+
+    let cities =
+        [...dashboardData.cities];
+
+
+    if(selectedCity !== "ALL"){
+
+        cities =
+            cities.filter(
+                city =>
+                    city.cityKey ===
+                    selectedCity
+            );
+
+    }
+
+
+    if(search){
+
+        cities =
+            cities.filter(
+                city =>
+                    city.city
+                    .toLowerCase()
+                    .includes(search)
+            );
+
+    }
+
+
+    return cities;
+
+}
+
+
+/* ============================================================
+   CHARTS
+============================================================ */
+
+function renderCharts(){
+
+    const cities =
+        getFilteredCities();
+
+
+    const metric =
+        document.getElementById(
+            "metricSelect"
+        ).value;
+
+
+    const labels =
+        cities.map(
+            city => city.city
+        );
+
+
+    const values =
+        cities.map(
+            city =>
+                metric === "temperature"
+                ? city.temperature
+                : city.humidity
+        );
+
+
+    if(comparisonChart){
+
+        comparisonChart.destroy();
+
+    }
+
+
+    comparisonChart =
+        new Chart(
+
+            document.getElementById(
+                "comparisonChart"
+            ),
+
+            {
+
+                type:"bar",
+
+                data:{
+
+                    labels:labels,
+
+                    datasets:[{
+
+                        label:
+                            metric === "temperature"
+                            ? "Average Temperature"
+                            : "Average Humidity",
+
+                        data:values,
+
+                        borderWidth:1
+
+                    }]
+
+                },
+
+                options:{
+
+                    responsive:true,
+
+                    maintainAspectRatio:false,
+
+                    plugins:{
+
+                        legend:{
+                            display:false
+                        }
+
+                    },
+
+                    scales:{
+
+                        x:{
+                            ticks:{
+                                color:"#8193a8"
+                            }
+                        },
+
+                        y:{
+                            ticks:{
+                                color:"#8193a8"
+                            }
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
+
+    if(relationshipChart){
+
+        relationshipChart.destroy();
+
+    }
+
+
+    relationshipChart =
+        new Chart(
+
+            document.getElementById(
+                "relationshipChart"
+            ),
+
+            {
+
+                type:"scatter",
+
+                data:{
+
+                    datasets:[{
+
+                        label:
+                            "City Climate Relationship",
+
+                        data:
+                            cities.map(
+                                city => ({
+
+                                    x:
+                                        city.temperature,
+
+                                    y:
+                                        city.humidity
+
+                                })
+                            ),
+
+                        pointRadius:7
+
+                    }]
+
+                },
+
+                options:{
+
+                    responsive:true,
+
+                    maintainAspectRatio:false,
+
+                    plugins:{
+
+                        tooltip:{
+
+                            callbacks:{
+
+                                label:function(context){
+
+                                    const city =
+                                        cities[
+                                            context.dataIndex
+                                        ];
+
+                                    return (
+
+                                        city.city +
+                                        ": " +
+                                        city.temperature +
+                                        "° / " +
+                                        city.humidity +
+                                        "%"
+
+                                    );
+
+                                }
+
+                            }
+
+                        }
+
+                    },
+
+                    scales:{
+
+                        x:{
+
+                            title:{
+                                display:true,
+                                text:"Temperature",
+                                color:"#8193a8"
+                            },
+
+                            ticks:{
+                                color:"#8193a8"
+                            }
+
+                        },
+
+                        y:{
+
+                            title:{
+                                display:true,
+                                text:"Humidity",
+                                color:"#8193a8"
+                            },
+
+                            ticks:{
+                                color:"#8193a8"
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
+}
+
+
+/* ============================================================
+   CITY CARDS
+============================================================ */
+
+function renderCities(){
+
+    const cities =
+        getFilteredCities();
+
+
+    const container =
+        document.getElementById(
+            "cityGrid"
+        );
+
+
+    container.innerHTML = "";
+
+
+    cities.forEach(
+        city => {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+            card.className =
+                "city-card";
+
+
+            card.innerHTML = `
+
+                <div class="city-name">
+                    ${city.city}
+                </div>
+
+                <div class="metric">
+                    <span>Temperature</span>
+                    <strong>
+                        ${city.temperature}°
+                    </strong>
+                </div>
+
+                <div class="metric">
+                    <span>Humidity</span>
+                    <strong>
+                        ${city.humidity}%
+                    </strong>
+                </div>
+
+                <div class="metric">
+                    <span>Temp Records</span>
+                    <strong>
+                        ${city.temperatureRecords.toLocaleString()}
+                    </strong>
+                </div>
+
+                <div class="metric">
+                    <span>Humidity Records</span>
+                    <strong>
+                        ${city.humidityRecords.toLocaleString()}
+                    </strong>
+                </div>
+
+            `;
+
+
+            container.appendChild(card);
+
+        }
+    );
+
+}
+
+
+/* ============================================================
+   TABLE
+============================================================ */
+
+function renderTable(){
+
+    const cities =
+        getFilteredCities();
+
+
+    const table =
+        document.getElementById(
+            "dataTable"
+        );
+
+
+    table.innerHTML = "";
+
+
+    cities.forEach(
+        city => {
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            row.innerHTML = `
+
+                <td>
+                    ${city.city}
+                </td>
+
+                <td>
+                    ${city.temperature}°
+                </td>
+
+                <td>
+                    ${city.humidity}%
+                </td>
+
+                <td>
+                    ${city.temperatureRecords.toLocaleString()}
+                </td>
+
+                <td>
+                    ${city.humidityRecords.toLocaleString()}
+                </td>
+
+                <td>
+                    ${city.latitude}
+                </td>
+
+                <td>
+                    ${city.longitude}
+                </td>
+
+            `;
+
+
+            table.appendChild(row);
+
+        }
+    );
+
+}
+
+
+/* ============================================================
+   FILTER EVENTS
+============================================================ */
+
+document
+    .getElementById("citySelect")
+    .addEventListener(
+        "change",
+        function(){
+
+            renderCharts();
+
+            renderCities();
+
+            renderTable();
+
+        }
+    );
+
+
+document
+    .getElementById("metricSelect")
+    .addEventListener(
+        "change",
+        renderCharts
+    );
+
+
+document
+    .getElementById("searchCity")
+    .addEventListener(
+        "input",
+        function(){
+
+            renderCharts();
+
+            renderCities();
+
+            renderTable();
+
+        }
+    );
+
+
+/* ============================================================
+   START
+============================================================ */
+
+loadData();
+
+</script>
+
+</body>
+
+</html>
