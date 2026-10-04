@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -16,15 +17,16 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial,Helvetica,sans-serif;
 }
 
 body{
-    background:#08111f;
+    font-family:Inter,Segoe UI,Arial,sans-serif;
+    background:#07111f;
     color:#e8f0f7;
+    min-height:100vh;
 }
 
-/* SIDEBAR */
+/* ================= SIDEBAR ================= */
 
 .sidebar{
     position:fixed;
@@ -32,112 +34,128 @@ body{
     top:0;
     width:245px;
     height:100vh;
-    background:#0b1728;
-    border-right:1px solid #1d3047;
-    padding:25px 16px;
+    background:#0a1727;
+    border-right:1px solid #20334a;
+    padding:25px 15px;
+    z-index:1000;
 }
 
 .logo{
-    font-size:24px;
-    font-weight:bold;
+    font-size:25px;
+    font-weight:800;
 }
 
 .logo span{
-    color:#36d399;
+    color:#31d6a5;
 }
 
 .subtitle{
-    color:#8193a8;
-    font-size:12px;
-    margin-top:5px;
-    margin-bottom:30px;
-}
-
-.section-title{
-    color:#62758b;
+    color:#7e93aa;
     font-size:11px;
-    margin:20px 10px 8px;
-    text-transform:uppercase;
+    margin-top:5px;
+    margin-bottom:35px;
 }
 
-.nav a{
+.nav-title{
+    color:#526b84;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+    margin:20px 12px 10px;
+}
+
+.nav-item{
     display:block;
     padding:13px 14px;
     margin:5px 0;
-    border-radius:8px;
-    color:#9fb0c3;
+    border-radius:10px;
+    color:#91a5b9;
     text-decoration:none;
     font-size:14px;
+    transition:.2s;
 }
 
-.nav a:hover{
-    background:#13263d;
-    color:white;
+.nav-item:hover{
+    background:#10253a;
+    color:#fff;
 }
 
-.nav a.active{
-    background:#17344a;
-    color:#36d399;
-    font-weight:bold;
+.nav-item.active{
+    background:#103c3b;
+    color:#43e1b1;
+    border-left:3px solid #35d5a3;
 }
 
-/* MAIN */
+/* ================= MAIN ================= */
 
 .main{
     margin-left:245px;
-    padding:30px;
+    padding:30px 35px;
 }
+
+/* ================= HEADER ================= */
 
 .header{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:25px;
+    margin-bottom:24px;
 }
 
-.header h1{
-    font-size:28px;
+.page-title{
+    font-size:29px;
+    font-weight:800;
 }
 
-.header p{
-    color:#8193a8;
+.page-description{
+    color:#8295a9;
+    font-size:13px;
     margin-top:6px;
 }
 
 .status{
-    background:#102b28;
-    color:#36d399;
     padding:9px 15px;
+    border:1px solid #1e4650;
     border-radius:20px;
-    font-size:12px;
-    border:1px solid #1b5748;
+    background:#0b2028;
+    color:#45ddb0;
+    font-size:11px;
+    font-weight:700;
 }
 
-/* KPI */
+/* ================= KPI ================= */
 
-.kpis{
+.kpi-grid{
     display:grid;
     grid-template-columns:repeat(5,1fr);
     gap:15px;
     margin-bottom:20px;
 }
 
-.card{
-    background:#0d1b2c;
-    border:1px solid #1d3047;
-    border-radius:12px;
-    padding:20px;
+.kpi{
+    background:linear-gradient(145deg,#0d1c2d,#0a1727);
+    border:1px solid #203249;
+    border-radius:15px;
+    padding:19px;
 }
 
-.card-title{
-    color:#8193a8;
-    font-size:11px;
-    margin-bottom:10px;
+.kpi-label{
+    color:#8095a9;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:.7px;
 }
 
-.card-value{
+.kpi-value{
     font-size:25px;
-    font-weight:bold;
+    font-weight:800;
+    margin-top:9px;
+}
+
+.kpi-note{
+    color:#60768b;
+    font-size:9px;
+    margin-top:6px;
 }
 
 .green{
@@ -156,145 +174,202 @@ body{
     color:#ff7777;
 }
 
-/* PANELS */
+/* ================= PANEL ================= */
 
 .panel{
-    background:#0d1b2c;
-    border:1px solid #1d3047;
-    border-radius:12px;
+    background:#0c1a2a;
+    border:1px solid #203249;
+    border-radius:15px;
     padding:20px;
     margin-bottom:20px;
 }
 
-.panel h2{
-    font-size:17px;
-    margin-bottom:6px;
+.panel-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:15px;
+    margin-bottom:17px;
 }
 
-.description{
-    color:#71859b;
+.panel-title{
+    font-size:15px;
+    font-weight:700;
+}
+
+.panel-description{
+    color:#71869b;
+    font-size:11px;
+    margin-top:5px;
+}
+
+/* ================= ENGINE STATUS ================= */
+
+.engine-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:11px;
+}
+
+.engine-box{
+    background:#091522;
+    border:1px solid #1c3045;
+    border-radius:11px;
+    padding:15px;
+}
+
+.engine-icon{
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#103b36;
+    color:#43ddb0;
     font-size:12px;
-    margin-bottom:18px;
+    font-weight:800;
+    margin-bottom:10px;
 }
 
-/* PIPELINE */
+.engine-name{
+    font-size:11px;
+    font-weight:700;
+}
+
+.engine-state{
+    color:#43ddb0;
+    font-size:9px;
+    margin-top:6px;
+}
+
+/* ================= PIPELINE ================= */
 
 .pipeline{
     display:grid;
     grid-template-columns:repeat(5,1fr);
-    gap:12px;
+    gap:10px;
 }
 
 .step{
-    background:#101f31;
-    border:1px solid #20354b;
-    border-radius:10px;
-    padding:17px;
+    background:#091522;
+    border:1px solid #203249;
+    border-radius:11px;
+    padding:16px;
     position:relative;
 }
 
 .step-number{
-    width:32px;
-    height:32px;
+    width:31px;
+    height:31px;
     border-radius:50%;
-    background:#17344a;
+    background:#12364b;
     color:#55b8ff;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-weight:bold;
-    margin-bottom:12px;
+    font-size:11px;
+    font-weight:800;
+    margin-bottom:11px;
 }
 
 .step-title{
-    font-size:13px;
-    font-weight:bold;
-    margin-bottom:7px;
+    font-size:12px;
+    font-weight:700;
+    margin-bottom:6px;
 }
 
 .step-text{
-    color:#8193a8;
-    font-size:11px;
-    line-height:1.5;
+    color:#71869b;
+    font-size:10px;
+    line-height:1.55;
 }
 
-/* CHART GRID */
+.step-state{
+    margin-top:11px;
+    font-size:9px;
+    color:#43ddb0;
+}
 
-.grid{
+/* ================= CHARTS ================= */
+
+.chart-grid{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:20px;
+    gap:18px;
 }
 
 .chart-container{
-    height:330px;
+    height:320px;
 }
 
-/* ANALYTICAL METRICS */
+/* ================= STATISTICS ================= */
 
-.metric-grid{
+.stat-grid{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:15px;
+    grid-template-columns:repeat(6,1fr);
+    gap:12px;
 }
 
-.metric-box{
-    background:#101f31;
-    border:1px solid #20354b;
-    border-radius:10px;
-    padding:18px;
+.stat-box{
+    background:#091522;
+    border:1px solid #203249;
+    border-radius:11px;
+    padding:15px;
 }
 
-.metric-name{
-    color:#8193a8;
-    font-size:11px;
+.stat-label{
+    color:#71869b;
+    font-size:9px;
     text-transform:uppercase;
-    margin-bottom:10px;
 }
 
-.metric-value{
-    font-size:22px;
-    font-weight:bold;
+.stat-value{
     color:#55b8ff;
-}
-
-.metric-info{
-    color:#71859b;
-    font-size:11px;
+    font-size:18px;
+    font-weight:800;
     margin-top:8px;
-    line-height:1.5;
 }
 
-/* RANKING */
+.stat-info{
+    color:#60768b;
+    font-size:9px;
+    line-height:1.45;
+    margin-top:6px;
+}
+
+/* ================= RANKING ================= */
 
 .ranking{
     display:flex;
     flex-direction:column;
-    gap:10px;
+    gap:9px;
 }
 
 .rank-row{
     display:grid;
-    grid-template-columns:35px 180px 1fr 70px;
+    grid-template-columns:35px 175px 1fr 70px;
     align-items:center;
-    gap:10px;
-    background:#101f31;
-    border:1px solid #20354b;
-    border-radius:8px;
+    gap:12px;
+    background:#091522;
+    border:1px solid #1c3045;
+    border-radius:9px;
     padding:11px;
 }
 
 .rank-number{
     color:#55b8ff;
-    font-weight:bold;
+    font-size:11px;
+    font-weight:800;
 }
 
 .rank-city{
-    font-size:13px;
+    font-size:12px;
+    font-weight:600;
 }
 
 .bar{
-    height:8px;
+    height:7px;
     background:#172a3e;
     border-radius:10px;
     overflow:hidden;
@@ -308,97 +383,145 @@ body{
 
 .rank-value{
     text-align:right;
-    font-size:12px;
     color:#aebdcb;
+    font-size:11px;
 }
 
-/* FORMULA */
+/* ================= SCORE ENGINE ================= */
+
+.score-layout{
+    display:grid;
+    grid-template-columns:1.4fr 1fr;
+    gap:16px;
+}
 
 .formula{
-    background:#101f31;
+    background:#091522;
     border:1px solid #263d55;
-    border-radius:9px;
+    border-radius:10px;
     padding:20px;
     text-align:center;
-    font-size:17px;
     color:#55b8ff;
-    margin-top:10px;
+    font-size:16px;
+    line-height:2;
 }
 
-/* INSIGHTS */
+.thresholds{
+    display:grid;
+    gap:9px;
+}
 
-.insights{
+.threshold{
+    background:#091522;
+    border:1px solid #203249;
+    border-radius:9px;
+    padding:13px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.threshold-name{
+    font-size:11px;
+    font-weight:700;
+}
+
+.threshold-value{
+    font-size:10px;
+    color:#71869b;
+}
+
+.high{
+    border-left:3px solid #ff7777;
+}
+
+.medium{
+    border-left:3px solid #f6c85f;
+}
+
+.low{
+    border-left:3px solid #55b8ff;
+}
+
+/* ================= INSIGHTS ================= */
+
+.insight-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:15px;
+    gap:14px;
 }
 
 .insight{
-    background:#101f31;
-    border:1px solid #20354b;
-    border-radius:10px;
-    padding:18px;
+    background:#091522;
+    border:1px solid #203249;
+    border-radius:11px;
+    padding:17px;
 }
 
-.insight-title{
+.insight-label{
     color:#55b8ff;
-    font-size:12px;
-    margin-bottom:9px;
+    font-size:10px;
+    font-weight:700;
+    text-transform:uppercase;
+}
+
+.insight-value{
+    font-size:16px;
+    font-weight:750;
+    margin-top:8px;
 }
 
 .insight-text{
-    color:#b4c1ce;
-    font-size:13px;
-    line-height:1.6;
+    color:#71869b;
+    font-size:10px;
+    line-height:1.55;
+    margin-top:7px;
 }
 
-/* STATUS */
+/* ================= FOOTER ================= */
 
-.engine-status{
-    display:flex;
-    gap:12px;
-    flex-wrap:wrap;
+.footer{
+    text-align:center;
+    color:#536a80;
+    font-size:10px;
+    padding:25px;
 }
 
-.status-box{
-    background:#101f31;
-    border:1px solid #20354b;
-    border-radius:8px;
-    padding:13px 16px;
-    color:#9fb0c3;
-    font-size:12px;
-}
-
-.status-box span{
-    color:#36d399;
-    font-weight:bold;
-}
-
-/* RESPONSIVE */
+/* ================= RESPONSIVE ================= */
 
 @media(max-width:1200px){
 
-    .kpis{
+    .sidebar{
+        width:205px;
+    }
+
+    .main{
+        margin-left:205px;
+    }
+
+    .kpi-grid{
         grid-template-columns:repeat(3,1fr);
     }
 
+    .engine-grid,
     .pipeline{
-        grid-template-columns:repeat(2,1fr);
+        grid-template-columns:repeat(3,1fr);
     }
 
-    .metric-grid{
-        grid-template-columns:repeat(2,1fr);
+    .stat-grid{
+        grid-template-columns:repeat(3,1fr);
     }
 
 }
 
 @media(max-width:900px){
 
-    .grid{
+    .chart-grid,
+    .score-layout{
         grid-template-columns:1fr;
     }
 
-    .insights{
+    .insight-grid{
         grid-template-columns:1fr;
     }
 
@@ -414,22 +537,24 @@ body{
 
     .main{
         margin-left:0;
+        padding:20px;
     }
 
-    .kpis{
-        grid-template-columns:1fr;
+    .header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
     }
 
-    .pipeline{
-        grid-template-columns:1fr;
-    }
-
-    .metric-grid{
+    .kpi-grid,
+    .engine-grid,
+    .pipeline,
+    .stat-grid{
         grid-template-columns:1fr;
     }
 
     .rank-row{
-        grid-template-columns:30px 110px 1fr 55px;
+        grid-template-columns:30px 100px 1fr 55px;
     }
 
 }
@@ -438,1177 +563,1215 @@ body{
 
 </head>
 
-
 <body>
 
+<!-- ================= SIDEBAR ================= -->
 
-<!-- SIDEBAR -->
+<aside class="sidebar">
 
-<div class="sidebar">
+<div class="logo">
+Atmo<span>Sync</span>
+</div>
 
-    <div class="logo">
-        Atmo<span>Sync</span>
-    </div>
+<div class="subtitle">
+MICRO-CLIMATE ARBITRAGE ANALYTICS
+</div>
 
-    <div class="subtitle">
-        Micro-Climate Analytics
-    </div>
+<div class="nav-title">
+Workspace
+</div>
 
+<a href="/" class="nav-item">
+◈ Dashboard
+</a>
 
-    <div class="section-title">
-        Workspace
-    </div>
+<a href="/climate" class="nav-item">
+◉ Climate Analysis
+</a>
 
-    <div class="nav">
+<a href="/locations" class="nav-item">
+⌖ Locations
+</a>
 
-        <a href="/">
-            ▣ Dashboard
-        </a>
+<a href="/opportunities" class="nav-item">
+◆ Opportunities
+</a>
 
-        <a href="/climate">
-            ◉ Climate Analysis
-        </a>
+<a href="/explorer" class="nav-item">
+▤ Data Explorer
+</a>
 
-        <a href="/locations">
-            ⌖ Locations
-        </a>
+<div class="nav-title">
+System
+</div>
 
-        <a href="/opportunities">
-            ◆ Opportunities
-        </a>
+<a href="/analytics" class="nav-item active">
+⚙ Analytics Engine
+</a>
 
-        <a href="/explorer">
-            ▤ Data Explorer
-        </a>
+<a href="/quality" class="nav-item">
+✓ Data Quality
+</a>
 
-    </div>
+</aside>
 
+<!-- ================= MAIN ================= -->
 
-    <div class="section-title">
-        System
-    </div>
+<main class="main">
 
-    <div class="nav">
+<div class="header">
 
-        <a href="/analytics" class="active">
-            ⚙ Analytics Engine
-        </a>
+<div>
 
-        <a href="/quality">
-            ✓ Data Quality
-        </a>
+<div class="page-title">
+Analytics Engine
+</div>
 
-    </div>
+<div class="page-description">
+Statistical processing, climate ranking and opportunity intelligence
+</div>
 
 </div>
 
-
-<!-- MAIN -->
-
-<div class="main">
-
-
-    <div class="header">
-
-        <div>
-
-            <h1>
-                Analytics Engine
-            </h1>
-
-            <p>
-                Advanced statistical processing and climate intelligence
-            </p>
-
-        </div>
-
-        <div class="status">
-            ENGINE ACTIVE
-        </div>
-
-    </div>
-
-
-    <!-- KPI -->
-
-    <div class="kpis">
-
-
-        <div class="card">
-
-            <div class="card-title">
-                CITIES PROCESSED
-            </div>
-
-            <div
-                class="card-value green"
-                id="cityCount">
-                —
-            </div>
-
-        </div>
-
-
-        <div class="card">
-
-            <div class="card-title">
-                DATA RECORDS
-            </div>
-
-            <div
-                class="card-value blue"
-                id="recordCount">
-                —
-            </div>
-
-        </div>
-
-
-        <div class="card">
-
-            <div class="card-title">
-                TEMPERATURE SPREAD
-            </div>
-
-            <div
-                class="card-value yellow"
-                id="temperatureSpread">
-                —
-            </div>
-
-        </div>
-
-
-        <div class="card">
-
-            <div class="card-title">
-                HUMIDITY SPREAD
-            </div>
-
-            <div
-                class="card-value blue"
-                id="humiditySpread">
-                —
-            </div>
-
-        </div>
-
-
-        <div class="card">
-
-            <div class="card-title">
-                OPPORTUNITY SIGNALS
-            </div>
-
-            <div
-                class="card-value red"
-                id="opportunityCount">
-                —
-            </div>
-
-        </div>
-
-
-    </div>
-
-
-    <!-- PROCESSING STATUS -->
-
-    <div class="panel">
-
-        <h2>
-            Analytical Engine Status
-        </h2>
-
-        <div class="description">
-            Current state of the AtmoSync analytical pipeline
-        </div>
-
-
-        <div class="engine-status">
-
-            <div class="status-box">
-                Dataset Detection:
-                <span>ACTIVE</span>
-            </div>
-
-            <div class="status-box">
-                Aggregation:
-                <span>ACTIVE</span>
-            </div>
-
-            <div class="status-box">
-                Statistical Analysis:
-                <span>ACTIVE</span>
-            </div>
-
-            <div class="status-box">
-                Climate Ranking:
-                <span>ACTIVE</span>
-            </div>
-
-            <div class="status-box">
-                Opportunity Engine:
-                <span>ACTIVE</span>
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- PIPELINE -->
-
-    <div class="panel">
-
-        <h2>
-            Analytical Processing Pipeline
-        </h2>
-
-        <div class="description">
-            Transformation of climate data into analytical intelligence
-        </div>
-
-
-        <div class="pipeline">
-
-
-            <div class="step">
-
-                <div class="step-number">
-                    1
-                </div>
-
-                <div class="step-title">
-                    Detect
-                </div>
-
-                <div class="step-text">
-                    Identify temperature and relative-humidity
-                    datasets automatically.
-                </div>
-
-            </div>
-
-
-            <div class="step">
-
-                <div class="step-number">
-                    2
-                </div>
-
-                <div class="step-title">
-                    Aggregate
-                </div>
-
-                <div class="step-text">
-                    Calculate city-level climate statistics
-                    from sensor observations.
-                </div>
-
-            </div>
-
-
-            <div class="step">
-
-                <div class="step-number">
-                    3
-                </div>
-
-                <div class="step-title">
-                    Measure
-                </div>
-
-                <div class="step-text">
-                    Measure temperature and humidity
-                    variation between locations.
-                </div>
-
-            </div>
-
-
-            <div class="step">
-
-                <div class="step-number">
-                    4
-                </div>
-
-                <div class="step-title">
-                    Rank
-                </div>
-
-                <div class="step-text">
-                    Rank locations according to their
-                    climate characteristics.
-                </div>
-
-            </div>
-
-
-            <div class="step">
-
-                <div class="step-number">
-                    5
-                </div>
-
-                <div class="step-title">
-                    Score
-                </div>
-
-                <div class="step-text">
-                    Generate prototype opportunity
-                    signals from city-pair differences.
-                </div>
-
-            </div>
-
-
-        </div>
-
-    </div>
-
-
-    <!-- DISTRIBUTION CHARTS -->
-
-    <div class="grid">
-
-
-        <div class="panel">
-
-            <h2>
-                Temperature Ranking
-            </h2>
-
-            <div class="description">
-                Cities ranked from coolest to hottest
-            </div>
-
-            <div class="chart-container">
-
-                <canvas id="temperatureChart"></canvas>
-
-            </div>
-
-        </div>
-
-
-        <div class="panel">
-
-            <h2>
-                Humidity Ranking
-            </h2>
-
-            <div class="description">
-                Cities ranked from driest to most humid
-            </div>
-
-            <div class="chart-container">
-
-                <canvas id="humidityChart"></canvas>
-
-            </div>
-
-        </div>
-
-
-    </div>
-
-
-    <!-- ADVANCED METRICS -->
-
-    <div class="panel">
-
-        <h2>
-            Statistical Intelligence
-        </h2>
-
-        <div class="description">
-            Derived statistics calculated from city-level climate values
-        </div>
-
-
-        <div class="metric-grid">
-
-
-            <div class="metric-box">
-
-                <div class="metric-name">
-                    Average Temperature
-                </div>
-
-                <div
-                    class="metric-value"
-                    id="avgTemp">
-                    —
-                </div>
-
-                <div class="metric-info">
-                    Mean temperature across detected cities.
-                </div>
-
-            </div>
-
-
-            <div class="metric-box">
-
-                <div class="metric-name">
-                    Average Humidity
-                </div>
-
-                <div
-                    class="metric-value"
-                    id="avgHumidity">
-                    —
-                </div>
-
-                <div class="metric-info">
-                    Mean relative humidity across detected cities.
-                </div>
-
-            </div>
-
-
-            <div class="metric-box">
-
-                <div class="metric-name">
-                    Hottest Location
-                </div>
-
-                <div
-                    class="metric-value"
-                    id="hottest">
-                    —
-                </div>
-
-                <div class="metric-info">
-                    Location with the highest average temperature.
-                </div>
-
-            </div>
-
-
-            <div class="metric-box">
-
-                <div class="metric-name">
-                    Coolest Location
-                </div>
-
-                <div
-                    class="metric-value"
-                    id="coolest">
-                    —
-                </div>
-
-                <div class="metric-info">
-                    Location with the lowest average temperature.
-                </div>
-
-            </div>
-
-
-            <div class="metric-box">
-
-                <div class="metric-name">
-                    Most Humid
-                </div>
-
-                <div
-                    class="metric-value"
-                    id="mostHumid">
-                    —
-                </div>
-
-                <div class="metric-info">
-                    Location with the highest average humidity.
-                </div>
-
-            </div>
-
-
-            <div class="metric-box">
-
-                <div class="metric-name">
-                    Least Humid
-                </div>
-
-                <div
-                    class="metric-value"
-                    id="leastHumid">
-                    —
-                </div>
-
-                <div class="metric-info">
-                    Location with the lowest average humidity.
-                </div>
-
-            </div>
-
-
-        </div>
-
-    </div>
-
-
-    <!-- CITY RANKING -->
-
-    <div class="panel">
-
-        <h2>
-            Climate Extremes Ranking
-        </h2>
-
-        <div class="description">
-            Relative temperature ranking calculated by the analytics engine
-        </div>
-
-
-        <div
-            class="ranking"
-            id="ranking">
-        </div>
-
-    </div>
-
-
-    <!-- OPPORTUNITY MODEL -->
-
-    <div class="panel">
-
-        <h2>
-            Opportunity Scoring Engine
-        </h2>
-
-        <div class="description">
-            Mathematical model used by AtmoSync to identify strong climate differences
-        </div>
-
-
-        <div class="formula">
-
-            Opportunity Score =
-            |Temperature Difference|
-            +
-            (|Humidity Difference| ÷ 10)
-
-        </div>
-
-
-        <div class="formula">
-
-            HIGH ≥ 8
-            &nbsp;&nbsp; | &nbsp;&nbsp;
-            MEDIUM ≥ 4
-            &nbsp;&nbsp; | &nbsp;&nbsp;
-            LOW &lt; 4
-
-        </div>
-
-    </div>
-
-
-    <!-- INSIGHTS -->
-
-    <div class="panel">
-
-        <h2>
-            Engine Intelligence
-        </h2>
-
-        <div class="description">
-            Automatically generated analytical observations
-        </div>
-
-
-        <div class="insights">
-
-
-            <div class="insight">
-
-                <div class="insight-title">
-                    TEMPERATURE EXTREME
-                </div>
-
-                <div
-                    class="insight-text"
-                    id="temperatureInsight">
-                    Loading...
-                </div>
-
-            </div>
-
-
-            <div class="insight">
-
-                <div class="insight-title">
-                    HUMIDITY EXTREME
-                </div>
-
-                <div
-                    class="insight-text"
-                    id="humidityInsight">
-                    Loading...
-                </div>
-
-            </div>
-
-
-            <div class="insight">
-
-                <div class="insight-title">
-                    OPPORTUNITY SIGNAL
-                </div>
-
-                <div
-                    class="insight-text"
-                    id="opportunityInsight">
-                    Loading...
-                </div>
-
-            </div>
-
-
-        </div>
-
-    </div>
-
+<div class="status">
+● ENGINE ACTIVE
+</div>
 
 </div>
 
+<!-- ================= KPI ================= -->
+
+<div class="kpi-grid">
+
+<div class="kpi">
+
+<div class="kpi-label">
+Cities Processed
+</div>
+
+<div
+class="kpi-value green"
+id="cityCount">
+--
+</div>
+
+<div class="kpi-note">
+Locations analyzed
+</div>
+
+</div>
+
+<div class="kpi">
+
+<div class="kpi-label">
+Data Records
+</div>
+
+<div
+class="kpi-value blue"
+id="recordCount">
+--
+</div>
+
+<div class="kpi-note">
+Combined observations
+</div>
+
+</div>
+
+<div class="kpi">
+
+<div class="kpi-label">
+Temperature Spread
+</div>
+
+<div
+class="kpi-value yellow"
+id="temperatureSpread">
+--
+</div>
+
+<div class="kpi-note">
+Maximum climate difference
+</div>
+
+</div>
+
+<div class="kpi">
+
+<div class="kpi-label">
+Humidity Spread
+</div>
+
+<div
+class="kpi-value blue"
+id="humiditySpread">
+--
+</div>
+
+<div class="kpi-note">
+Relative humidity range
+</div>
+
+</div>
+
+<div class="kpi">
+
+<div class="kpi-label">
+Opportunity Signals
+</div>
+
+<div
+class="kpi-value red"
+id="opportunityCount">
+--
+</div>
+
+<div class="kpi-note">
+City-pair signals generated
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= ENGINE STATUS ================= -->
+
+<div class="panel">
+
+<div class="panel-header">
+
+<div>
+
+<div class="panel-title">
+Analytical Engine Status
+</div>
+
+<div class="panel-description">
+Live state of the AtmoSync processing components
+</div>
+
+</div>
+
+</div>
+
+<div class="engine-grid">
+
+<div class="engine-box">
+
+<div class="engine-icon">
+01
+</div>
+
+<div class="engine-name">
+Dataset Detection
+</div>
+
+<div class="engine-state">
+● ACTIVE
+</div>
+
+</div>
+
+<div class="engine-box">
+
+<div class="engine-icon">
+02
+</div>
+
+<div class="engine-name">
+Data Aggregation
+</div>
+
+<div class="engine-state">
+● ACTIVE
+</div>
+
+</div>
+
+<div class="engine-box">
+
+<div class="engine-icon">
+03
+</div>
+
+<div class="engine-name">
+Statistical Analysis
+</div>
+
+<div class="engine-state">
+● ACTIVE
+</div>
+
+</div>
+
+<div class="engine-box">
+
+<div class="engine-icon">
+04
+</div>
+
+<div class="engine-name">
+Climate Ranking
+</div>
+
+<div class="engine-state">
+● ACTIVE
+</div>
+
+</div>
+
+<div class="engine-box">
+
+<div class="engine-icon">
+05
+</div>
+
+<div class="engine-name">
+Opportunity Engine
+</div>
+
+<div class="engine-state">
+● ACTIVE
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= PIPELINE ================= -->
+
+<div class="panel">
+
+<div class="panel-header">
+
+<div>
+
+<div class="panel-title">
+Analytical Processing Pipeline
+</div>
+
+<div class="panel-description">
+How raw climate observations are transformed into analytical intelligence
+</div>
+
+</div>
+
+</div>
+
+<div class="pipeline">
+
+<div class="step">
+
+<div class="step-number">
+01
+</div>
+
+<div class="step-title">
+Detect
+</div>
+
+<div class="step-text">
+Identify temperature and relative-humidity datasets automatically.
+</div>
+
+<div class="step-state">
+✓ COMPLETE
+</div>
+
+</div>
+
+<div class="step">
+
+<div class="step-number">
+02
+</div>
+
+<div class="step-title">
+Aggregate
+</div>
+
+<div class="step-text">
+Calculate city-level averages and observation counts.
+</div>
+
+<div class="step-state">
+✓ COMPLETE
+</div>
+
+</div>
+
+<div class="step">
+
+<div class="step-number">
+03
+</div>
+
+<div class="step-title">
+Measure
+</div>
+
+<div class="step-text">
+Calculate climate variation and differences between locations.
+</div>
+
+<div class="step-state">
+✓ COMPLETE
+</div>
+
+</div>
+
+<div class="step">
+
+<div class="step-number">
+04
+</div>
+
+<div class="step-title">
+Rank
+</div>
+
+<div class="step-text">
+Rank cities using temperature and humidity characteristics.
+</div>
+
+<div class="step-state">
+✓ COMPLETE
+</div>
+
+</div>
+
+<div class="step">
+
+<div class="step-number">
+05
+</div>
+
+<div class="step-title">
+Score
+</div>
+
+<div class="step-text">
+Generate city-pair opportunity signals from climate differences.
+</div>
+
+<div class="step-state">
+✓ COMPLETE
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= CHARTS ================= -->
+
+<div class="chart-grid">
+
+<div class="panel">
+
+<div class="panel-title">
+Temperature Ranking
+</div>
+
+<div class="panel-description">
+Cities ordered from coolest to hottest
+</div>
+
+<div class="chart-container">
+<canvas id="temperatureChart"></canvas>
+</div>
+
+</div>
+
+<div class="panel">
+
+<div class="panel-title">
+Humidity Ranking
+</div>
+
+<div class="panel-description">
+Cities ordered from driest to most humid
+</div>
+
+<div class="chart-container">
+<canvas id="humidityChart"></canvas>
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= STATISTICS ================= -->
+
+<div class="panel">
+
+<div class="panel-title">
+Statistical Intelligence
+</div>
+
+<div class="panel-description">
+Derived statistics calculated by the analytics engine
+</div>
+
+<br>
+
+<div class="stat-grid">
+
+<div class="stat-box">
+
+<div class="stat-label">
+Average Temperature
+</div>
+
+<div
+class="stat-value"
+id="avgTemp">
+--
+</div>
+
+<div class="stat-info">
+Mean temperature across detected locations.
+</div>
+
+</div>
+
+<div class="stat-box">
+
+<div class="stat-label">
+Average Humidity
+</div>
+
+<div
+class="stat-value"
+id="avgHumidity">
+--
+</div>
+
+<div class="stat-info">
+Mean relative humidity across locations.
+</div>
+
+</div>
+
+<div class="stat-box">
+
+<div class="stat-label">
+Hottest Location
+</div>
+
+<div
+class="stat-value"
+id="hottest">
+--
+</div>
+
+<div class="stat-info">
+Highest average temperature.
+</div>
+
+</div>
+
+<div class="stat-box">
+
+<div class="stat-label">
+Coolest Location
+</div>
+
+<div
+class="stat-value"
+id="coolest">
+--
+</div>
+
+<div class="stat-info">
+Lowest average temperature.
+</div>
+
+</div>
+
+<div class="stat-box">
+
+<div class="stat-label">
+Most Humid
+</div>
+
+<div
+class="stat-value"
+id="mostHumid">
+--
+</div>
+
+<div class="stat-info">
+Highest average humidity.
+</div>
+
+</div>
+
+<div class="stat-box">
+
+<div class="stat-label">
+Least Humid
+</div>
+
+<div
+class="stat-value"
+id="leastHumid">
+--
+</div>
+
+<div class="stat-info">
+Lowest average humidity.
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= RANKING ================= -->
+
+<div class="panel">
+
+<div class="panel-title">
+Climate Extremes Ranking
+</div>
+
+<div class="panel-description">
+Temperature-based ranking generated by the analytics engine
+</div>
+
+<br>
+
+<div
+class="ranking"
+id="ranking">
+</div>
+
+</div>
+
+<!-- ================= SCORE ENGINE ================= -->
+
+<div class="panel">
+
+<div class="panel-title">
+Opportunity Scoring Engine
+</div>
+
+<div class="panel-description">
+Prototype scoring model used to identify strong city-to-city climate differences
+</div>
+
+<br>
+
+<div class="score-layout">
+
+<div class="formula">
+
+Opportunity Score =
+|Temperature Difference|
++
+(|Humidity Difference| ÷ 10)
+
+</div>
+
+<div class="thresholds">
+
+<div class="threshold high">
+
+<div class="threshold-name">
+HIGH SIGNAL
+</div>
+
+<div class="threshold-value">
+Score ≥ 8
+</div>
+
+</div>
+
+<div class="threshold medium">
+
+<div class="threshold-name">
+MEDIUM SIGNAL
+</div>
+
+<div class="threshold-value">
+Score ≥ 4
+</div>
+
+</div>
+
+<div class="threshold low">
+
+<div class="threshold-name">
+LOW SIGNAL
+</div>
+
+<div class="threshold-value">
+Score &lt; 4
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= INSIGHTS ================= -->
+
+<div class="panel">
+
+<div class="panel-title">
+Engine Intelligence
+</div>
+
+<div class="panel-description">
+Automatically generated observations from the current analytical results
+</div>
+
+<br>
+
+<div class="insight-grid">
+
+<div class="insight">
+
+<div class="insight-label">
+Temperature Extreme
+</div>
+
+<div
+class="insight-value"
+id="temperatureInsight">
+Loading...
+</div>
+
+<div
+class="insight-text"
+id="temperatureInsightText">
+</div>
+
+</div>
+
+<div class="insight">
+
+<div class="insight-label">
+Humidity Extreme
+</div>
+
+<div
+class="insight-value"
+id="humidityInsight">
+Loading...
+</div>
+
+<div
+class="insight-text"
+id="humidityInsightText">
+</div>
+
+</div>
+
+<div class="insight">
+
+<div class="insight-label">
+Opportunity Signal
+</div>
+
+<div
+class="insight-value"
+id="opportunityInsight">
+Loading...
+</div>
+
+<div
+class="insight-text"
+id="opportunityInsightText">
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="footer">
+AtmoSync · Micro-Climate Arbitrage Analytics
+</div>
+
+</main>
 
 <script>
 
-
 let data = null;
-
 let temperatureChart = null;
-
 let humidityChart = null;
 
-
-/* ============================================================
-   LOAD DATA
-============================================================ */
+/* ================= LOAD DATA ================= */
 
 async function loadData(){
 
-    try{
+try{
 
-        const response =
-            await fetch("/api/dashboard");
+const response =
+await fetch("/api/dashboard");
 
-        data =
-            await response.json();
+if(!response.ok){
+throw new Error("API request failed");
+}
 
-        render();
+data =
+await response.json();
 
-    }
-
-    catch(error){
-
-        console.error(error);
-
-    }
+render();
 
 }
 
+catch(error){
 
-/* ============================================================
-   MAIN RENDER
-============================================================ */
+console.error(
+"Analytics engine error:",
+error
+);
+
+}
+
+}
+
+/* ================= MAIN RENDER ================= */
 
 function render(){
 
-    const cities =
-        data.cities || [];
+const cities =
+data.cities || [];
 
-    const summary =
-        data.summary || {};
+const summary =
+data.summary || {};
 
+if(!cities.length){
+return;
+}
 
-    if(!cities.length){
+/* KPI */
 
-        return;
+document.getElementById(
+"cityCount"
+).textContent =
+summary.cityCount || 0;
 
-    }
+document.getElementById(
+"recordCount"
+).textContent =
+(summary.totalRecords || 0)
+.toLocaleString();
 
+const temperatures =
+cities.map(
+city => city.temperature
+);
 
-    /* KPI */
+const humidities =
+cities.map(
+city => city.humidity
+);
 
-    document.getElementById(
-        "cityCount"
-    ).textContent =
-        summary.cityCount;
+const tempSpread =
+Math.max(...temperatures) -
+Math.min(...temperatures);
 
+const humiditySpread =
+Math.max(...humidities) -
+Math.min(...humidities);
 
-    document.getElementById(
-        "recordCount"
-    ).textContent =
-        summary.totalRecords.toLocaleString();
+document.getElementById(
+"temperatureSpread"
+).textContent =
+tempSpread.toFixed(2) + "°";
 
+document.getElementById(
+"humiditySpread"
+).textContent =
+humiditySpread.toFixed(2) + "%";
 
-    const temperatures =
-        cities.map(
-            x => x.temperature
-        );
+document.getElementById(
+"opportunityCount"
+).textContent =
+summary.opportunityCount || 0;
 
+/* STATISTICS */
 
-    const humidities =
-        cities.map(
-            x => x.humidity
-        );
+const avgTemp =
+temperatures.reduce(
+(a,b)=>a+b,
+0
+) / temperatures.length;
 
+const avgHumidity =
+humidities.reduce(
+(a,b)=>a+b,
+0
+) / humidities.length;
 
-    const tempSpread =
-        Math.max(...temperatures)
-        -
-        Math.min(...temperatures);
+const hottest =
+cities.reduce(
+(a,b) =>
+a.temperature > b.temperature
+? a
+: b
+);
 
+const coolest =
+cities.reduce(
+(a,b) =>
+a.temperature < b.temperature
+? a
+: b
+);
 
-    const humiditySpread =
-        Math.max(...humidities)
-        -
-        Math.min(...humidities);
+const mostHumid =
+cities.reduce(
+(a,b) =>
+a.humidity > b.humidity
+? a
+: b
+);
 
+const leastHumid =
+cities.reduce(
+(a,b) =>
+a.humidity < b.humidity
+? a
+: b
+);
 
-    document.getElementById(
-        "temperatureSpread"
-    ).textContent =
-        tempSpread.toFixed(2) + "°";
+document.getElementById(
+"avgTemp"
+).textContent =
+avgTemp.toFixed(2) + "°";
 
+document.getElementById(
+"avgHumidity"
+).textContent =
+avgHumidity.toFixed(2) + "%";
 
-    document.getElementById(
-        "humiditySpread"
-    ).textContent =
-        humiditySpread.toFixed(2) + "%";
+document.getElementById(
+"hottest"
+).textContent =
+hottest.city;
 
+document.getElementById(
+"coolest"
+).textContent =
+coolest.city;
 
-    document.getElementById(
-        "opportunityCount"
-    ).textContent =
-        summary.opportunityCount;
+document.getElementById(
+"mostHumid"
+).textContent =
+mostHumid.city;
 
+document.getElementById(
+"leastHumid"
+).textContent =
+leastHumid.city;
 
-    /* STATISTICS */
-
-    const avgTemp =
-        temperatures.reduce(
-            (a,b)=>a+b,
-            0
-        )
-        /
-        temperatures.length;
-
-
-    const avgHumidity =
-        humidities.reduce(
-            (a,b)=>a+b,
-            0
-        )
-        /
-        humidities.length;
-
-
-    const hottest =
-        [...cities].sort(
-            (a,b)=>
-                b.temperature-a.temperature
-        )[0];
-
-
-    const coolest =
-        [...cities].sort(
-            (a,b)=>
-                a.temperature-b.temperature
-        )[0];
-
-
-    const mostHumid =
-        [...cities].sort(
-            (a,b)=>
-                b.humidity-a.humidity
-        )[0];
-
-
-    const leastHumid =
-        [...cities].sort(
-            (a,b)=>
-                a.humidity-b.humidity
-        )[0];
-
-
-    document.getElementById(
-        "avgTemp"
-    ).textContent =
-        avgTemp.toFixed(2) + "°";
-
-
-    document.getElementById(
-        "avgHumidity"
-    ).textContent =
-        avgHumidity.toFixed(2) + "%";
-
-
-    document.getElementById(
-        "hottest"
-    ).textContent =
-        hottest.city;
-
-
-    document.getElementById(
-        "coolest"
-    ).textContent =
-        coolest.city;
-
-
-    document.getElementById(
-        "mostHumid"
-    ).textContent =
-        mostHumid.city;
-
-
-    document.getElementById(
-        "leastHumid"
-    ).textContent =
-        leastHumid.city;
-
-
-    createCharts(cities);
-
-    createRanking(cities);
-
-    createInsights(
-        hottest,
-        coolest,
-        mostHumid,
-        leastHumid,
-        summary
-    );
+createCharts(cities);
+createRanking(cities);
+createInsights(
+hottest,
+coolest,
+mostHumid,
+leastHumid,
+summary
+);
 
 }
 
-
-/* ============================================================
-   CHARTS
-============================================================ */
+/* ================= CHARTS ================= */
 
 function createCharts(cities){
 
-    const tempCities =
-        [...cities].sort(
-            (a,b)=>
-                a.temperature-b.temperature
-        );
+const tempCities =
+[...cities].sort(
+(a,b) =>
+a.temperature - b.temperature
+);
 
+const humidityCities =
+[...cities].sort(
+(a,b) =>
+a.humidity - b.humidity
+);
 
-    const humidityCities =
-        [...cities].sort(
-            (a,b)=>
-                a.humidity-b.humidity
-        );
+if(temperatureChart){
+temperatureChart.destroy();
+}
 
+temperatureChart =
+new Chart(
+document.getElementById(
+"temperatureChart"
+),
+{
 
-    if(temperatureChart){
+type:"bar",
 
-        temperatureChart.destroy();
+data:{
 
-    }
+labels:
+tempCities.map(
+city => city.city
+),
 
+datasets:[{
 
-    temperatureChart =
-        new Chart(
+label:"Temperature",
 
-            document.getElementById(
-                "temperatureChart"
-            ),
+data:
+tempCities.map(
+city => city.temperature
+),
 
-            {
+borderWidth:1
 
-                type:"bar",
+}]
 
-                data:{
+},
 
-                    labels:
-                        tempCities.map(
-                            x=>x.city
-                        ),
+options:{
 
-                    datasets:[{
+responsive:true,
+maintainAspectRatio:false,
 
-                        label:
-                            "Temperature",
+plugins:{
+legend:{
+display:false
+}
+},
 
-                        data:
-                            tempCities.map(
-                                x=>x.temperature
-                            ),
+scales:{
 
-                        borderWidth:1
+x:{
+ticks:{
+color:"#8193a8"
+},
+grid:{
+display:false
+}
+},
 
-                    }]
-
-                },
-
-                options:{
-
-                    responsive:true,
-
-                    maintainAspectRatio:false,
-
-                    plugins:{
-
-                        legend:{
-                            display:false
-                        }
-
-                    },
-
-                    scales:{
-
-                        x:{
-                            ticks:{
-                                color:"#8193a8"
-                            }
-                        },
-
-                        y:{
-                            ticks:{
-                                color:"#8193a8"
-                            }
-                        }
-
-                    }
-
-                }
-
-            }
-
-        );
-
-
-    if(humidityChart){
-
-        humidityChart.destroy();
-
-    }
-
-
-    humidityChart =
-        new Chart(
-
-            document.getElementById(
-                "humidityChart"
-            ),
-
-            {
-
-                type:"bar",
-
-                data:{
-
-                    labels:
-                        humidityCities.map(
-                            x=>x.city
-                        ),
-
-                    datasets:[{
-
-                        label:
-                            "Humidity",
-
-                        data:
-                            humidityCities.map(
-                                x=>x.humidity
-                            ),
-
-                        borderWidth:1
-
-                    }]
-
-                },
-
-                options:{
-
-                    responsive:true,
-
-                    maintainAspectRatio:false,
-
-                    plugins:{
-
-                        legend:{
-                            display:false
-                        }
-
-                    },
-
-                    scales:{
-
-                        x:{
-                            ticks:{
-                                color:"#8193a8"
-                            }
-                        },
-
-                        y:{
-                            ticks:{
-                                color:"#8193a8"
-                            }
-                        }
-
-                    }
-
-                }
-
-            }
-
-        );
+y:{
+ticks:{
+color:"#8193a8"
+}
+}
 
 }
 
+}
 
-/* ============================================================
-   RANKING
-============================================================ */
+}
+);
+
+if(humidityChart){
+humidityChart.destroy();
+}
+
+humidityChart =
+new Chart(
+document.getElementById(
+"humidityChart"
+),
+{
+
+type:"bar",
+
+data:{
+
+labels:
+humidityCities.map(
+city => city.city
+),
+
+datasets:[{
+
+label:"Humidity",
+
+data:
+humidityCities.map(
+city => city.humidity
+),
+
+borderWidth:1
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+maintainAspectRatio:false,
+
+plugins:{
+legend:{
+display:false
+}
+},
+
+scales:{
+
+x:{
+ticks:{
+color:"#8193a8"
+},
+grid:{
+display:false
+}
+},
+
+y:{
+ticks:{
+color:"#8193a8"
+}
+}
+
+}
+
+}
+
+}
+);
+
+}
+
+/* ================= RANKING ================= */
 
 function createRanking(cities){
 
-    const container =
-        document.getElementById(
-            "ranking"
-        );
+const container =
+document.getElementById(
+"ranking"
+);
 
+container.innerHTML = "";
 
-    container.innerHTML = "";
+const sorted =
+[...cities].sort(
+(a,b) =>
+b.temperature - a.temperature
+);
 
+const max =
+Math.max(
+...sorted.map(
+city => city.temperature
+)
+);
 
-    const sorted =
-        [...cities].sort(
-            (a,b)=>
-                b.temperature-a.temperature
-        );
+sorted.forEach(
+(city,index) => {
 
+const percentage =
+max > 0
+? (city.temperature / max) * 100
+: 0;
 
-    const max =
-        sorted[0].temperature;
+const row =
+document.createElement("div");
 
+row.className =
+"rank-row";
 
-    sorted.forEach(
-        (city,index)=>{
+row.innerHTML = `
 
-            const percentage =
-                (city.temperature/max)
-                *100;
+<div class="rank-number">
+#${index + 1}
+</div>
 
+<div class="rank-city">
+${city.city}
+</div>
 
-            const row =
-                document.createElement(
-                    "div"
-                );
+<div class="bar">
 
+<div
+class="bar-fill"
+style="width:${percentage}%">
+</div>
 
-            row.className =
-                "rank-row";
+</div>
 
+<div class="rank-value">
+${city.temperature}°
+</div>
 
-            row.innerHTML = `
+`;
 
-                <div class="rank-number">
-                    #${index+1}
-                </div>
+container.appendChild(row);
 
-                <div class="rank-city">
-                    ${city.city}
-                </div>
-
-                <div class="bar">
-
-                    <div
-                        class="bar-fill"
-                        style="width:${percentage}%">
-                    </div>
-
-                </div>
-
-                <div class="rank-value">
-                    ${city.temperature}°
-                </div>
-
-            `;
-
-
-            container.appendChild(row);
-
-        }
-    );
+}
+);
 
 }
 
-
-/* ============================================================
-   INSIGHTS
-============================================================ */
+/* ================= INSIGHTS ================= */
 
 function createInsights(
-    hottest,
-    coolest,
-    mostHumid,
-    leastHumid,
-    summary
+hottest,
+coolest,
+mostHumid,
+leastHumid,
+summary
 ){
 
-    document.getElementById(
-        "temperatureInsight"
-    ).textContent =
+const temperatureDifference =
+(
+hottest.temperature -
+coolest.temperature
+).toFixed(2);
 
-        `${hottest.city} is the hottest
-        detected location at
-        ${hottest.temperature}°, while
-        ${coolest.city} is the coolest at
-        ${coolest.temperature}°.`;
+document.getElementById(
+"temperatureInsight"
+).textContent =
+hottest.city;
 
+document.getElementById(
+"temperatureInsightText"
+).textContent =
+`Highest average temperature at ${hottest.temperature}°. ${coolest.city} records the lowest value at ${coolest.temperature}°, creating a ${temperatureDifference}° climate spread.`;
 
-    document.getElementById(
-        "humidityInsight"
-    ).textContent =
+document.getElementById(
+"humidityInsight"
+).textContent =
+mostHumid.city;
 
-        `${mostHumid.city} has the highest
-        average humidity at
-        ${mostHumid.humidity}%, while
-        ${leastHumid.city} has the lowest
-        at ${leastHumid.humidity}%.`;
+document.getElementById(
+"humidityInsightText"
+).textContent =
+`Highest average humidity at ${mostHumid.humidity}%. ${leastHumid.city} has the lowest at ${leastHumid.humidity}%.`;
 
+document.getElementById(
+"opportunityInsight"
+).textContent =
+summary.highestOpportunity
+? `${summary.highestOpportunity.cityA} ↔ ${summary.highestOpportunity.cityB}`
+: "No signal";
 
-    let opportunityText =
-        "No opportunity signals detected.";
-
-
-    if(
-        summary.highestOpportunity
-    ){
-
-        const top =
-            summary.highestOpportunity;
-
-
-        opportunityText =
-
-            `${top.cityA} ↔ ${top.cityB}
-            currently produces the highest
-            analytical score of ${top.score}.`;
-
-    }
-
-
-    document.getElementById(
-        "opportunityInsight"
-    ).textContent =
-        opportunityText;
+document.getElementById(
+"opportunityInsightText"
+).textContent =
+summary.highestOpportunity
+? `Highest opportunity score: ${summary.highestOpportunity.score}. Signal classification: ${summary.highestOpportunity.status}.`
+: "The engine did not identify an opportunity signal.";
 
 }
 
-
-/* ============================================================
-   START
-============================================================ */
+/* ================= START ================= */
 
 loadData();
 
