@@ -1,23 +1,17 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>AtmoSync | Locations</title>
 
-<link
-rel="stylesheet"
-href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-/>
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
-<script
-src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
-</script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <style>
 
@@ -94,7 +88,6 @@ body{
     border-left:3px solid #35d5a3;
 }
 
-
 /* ================= MAIN ================= */
 
 .main{
@@ -102,61 +95,76 @@ body{
     padding:30px 35px;
 }
 
-
 /* ================= HEADER ================= */
 
 .topbar{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:22px;
+    margin-bottom:24px;
 }
 
 .page-title{
-    font-size:28px;
-    font-weight:750;
+    font-size:29px;
+    font-weight:800;
 }
 
 .page-description{
     color:#8295a9;
     font-size:13px;
-    margin-top:5px;
+    margin-top:6px;
 }
 
 .status{
-    padding:9px 14px;
+    padding:9px 15px;
     border:1px solid #1e4650;
     border-radius:20px;
     background:#0b2028;
     color:#45ddb0;
-    font-size:12px;
+    font-size:11px;
+    font-weight:700;
 }
-
 
 /* ================= KPI ================= */
 
 .kpi-grid{
     display:grid;
     grid-template-columns:repeat(4,1fr);
-    gap:18px;
+    gap:16px;
     margin-bottom:20px;
 }
 
 .kpi{
-    background:#0c1a2a;
+    background:linear-gradient(145deg,#0d1c2d,#0a1727);
     border:1px solid #203249;
-    border-radius:14px;
-    padding:19px;
+    border-radius:15px;
+    padding:20px;
+    position:relative;
+    overflow:hidden;
+}
+
+.kpi:after{
+    content:"";
+    position:absolute;
+    right:-25px;
+    top:-25px;
+    width:75px;
+    height:75px;
+    border-radius:50%;
+    background:#123d3b;
+    opacity:.35;
 }
 
 .kpi-label{
     color:#8095a9;
-    font-size:12px;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.6px;
 }
 
 .kpi-value{
-    font-size:27px;
-    font-weight:750;
+    font-size:28px;
+    font-weight:800;
     margin-top:9px;
 }
 
@@ -166,27 +174,41 @@ body{
     margin-top:6px;
 }
 
-
-/* ================= MAP ================= */
+/* ================= CARDS ================= */
 
 .card{
     background:#0c1a2a;
     border:1px solid #203249;
-    border-radius:14px;
+    border-radius:15px;
     padding:20px;
     margin-bottom:20px;
 }
 
+.card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:4px;
+}
+
 .card-title{
     font-size:15px;
-    font-weight:650;
+    font-weight:700;
 }
 
 .card-subtitle{
     color:#71869b;
     font-size:11px;
     margin-top:4px;
-    margin-bottom:16px;
+    margin-bottom:17px;
+}
+
+/* ================= MAP ================= */
+
+.map-layout{
+    display:grid;
+    grid-template-columns:1fr 260px;
+    gap:18px;
 }
 
 #map{
@@ -195,26 +217,98 @@ body{
     overflow:hidden;
 }
 
+.map-info{
+    background:#091522;
+    border:1px solid #1c3045;
+    border-radius:12px;
+    padding:17px;
+}
 
-/* ================= LOCATION GRID ================= */
+.info-title{
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:15px;
+}
+
+.info-row{
+    display:flex;
+    justify-content:space-between;
+    padding:11px 0;
+    border-bottom:1px solid #1a2b3d;
+    font-size:11px;
+}
+
+.info-row:last-child{
+    border-bottom:none;
+}
+
+.info-label{
+    color:#71869b;
+}
+
+.info-value{
+    font-weight:700;
+    color:#dbe7ef;
+}
+
+.map-status{
+    margin-top:16px;
+    padding:11px;
+    border-radius:8px;
+    background:#0c2528;
+    border:1px solid #1c4b4c;
+    color:#49dcae;
+    font-size:10px;
+    line-height:1.6;
+}
+
+/* ================= LOCATION DIRECTORY ================= */
+
+.directory-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:18px;
+}
+
+.search-box{
+    width:300px;
+    background:#07111f;
+    border:1px solid #294058;
+    border-radius:9px;
+    padding:11px 13px;
+    color:white;
+    outline:none;
+}
+
+.search-box:focus{
+    border-color:#32d5a4;
+}
+
+.location-count{
+    color:#70869b;
+    font-size:11px;
+}
 
 .location-grid{
     display:grid;
     grid-template-columns:repeat(2,1fr);
-    gap:18px;
+    gap:16px;
 }
 
 .location-card{
-    background:#0c1a2a;
+    background:#091522;
     border:1px solid #203249;
-    border-radius:14px;
-    padding:19px;
+    border-radius:13px;
+    padding:18px;
     transition:.2s;
 }
 
 .location-card:hover{
     transform:translateY(-2px);
     border-color:#2d5262;
+    background:#0b1929;
 }
 
 .location-header{
@@ -226,13 +320,13 @@ body{
 
 .city-name{
     font-size:17px;
-    font-weight:700;
+    font-weight:750;
 }
 
 .city-index{
-    font-size:10px;
+    font-size:9px;
     color:#587087;
-    background:#091522;
+    background:#07111f;
     padding:5px 8px;
     border-radius:6px;
 }
@@ -244,7 +338,8 @@ body{
 }
 
 .metric{
-    background:#091522;
+    background:#07111f;
+    border:1px solid #16283b;
     border-radius:9px;
     padding:12px;
 }
@@ -256,7 +351,7 @@ body{
 
 .metric-value{
     font-size:19px;
-    font-weight:700;
+    font-weight:750;
     margin-top:5px;
 }
 
@@ -264,27 +359,48 @@ body{
     margin-top:13px;
     color:#63798e;
     font-size:10px;
-    line-height:1.7;
+    line-height:1.8;
 }
 
+/* ================= CLIMATE BAR ================= */
 
-/* ================= SEARCH ================= */
-
-.search-box{
-    width:100%;
-    background:#07111f;
-    border:1px solid #294058;
-    border-radius:9px;
-    padding:11px 13px;
-    color:white;
-    outline:none;
-    margin-bottom:18px;
+.climate-profile{
+    margin-top:15px;
 }
 
-.search-box:focus{
-    border-color:#32d5a4;
+.profile-row{
+    margin-bottom:10px;
 }
 
+.profile-top{
+    display:flex;
+    justify-content:space-between;
+    font-size:10px;
+    color:#7d92a7;
+    margin-bottom:5px;
+}
+
+.profile-track{
+    height:6px;
+    background:#16283a;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.profile-fill{
+    height:100%;
+    border-radius:10px;
+    background:#31d6a5;
+}
+
+/* ================= EMPTY STATE ================= */
+
+.empty{
+    text-align:center;
+    padding:35px;
+    color:#63798e;
+    font-size:12px;
+}
 
 /* ================= FOOTER ================= */
 
@@ -295,30 +411,29 @@ body{
     padding:25px;
 }
 
-
 /* ================= RESPONSIVE ================= */
 
-@media(max-width:1000px){
+@media(max-width:1100px){
 
     .sidebar{
-        width:200px;
+        width:205px;
     }
 
     .main{
-        margin-left:200px;
+        margin-left:205px;
     }
 
     .kpi-grid{
         grid-template-columns:repeat(2,1fr);
     }
 
-    .location-grid{
+    .map-layout{
         grid-template-columns:1fr;
     }
 
 }
 
-@media(max-width:700px){
+@media(max-width:800px){
 
     .sidebar{
         position:relative;
@@ -328,10 +443,30 @@ body{
 
     .main{
         margin-left:0;
+        padding:20px;
+    }
+
+    .topbar{
+        align-items:flex-start;
+        gap:15px;
+        flex-direction:column;
     }
 
     .kpi-grid{
         grid-template-columns:1fr;
+    }
+
+    .location-grid{
+        grid-template-columns:1fr;
+    }
+
+    .directory-header{
+        align-items:stretch;
+        flex-direction:column;
+    }
+
+    .search-box{
+        width:100%;
     }
 
 }
@@ -340,13 +475,9 @@ body{
 
 </head>
 
-
 <body>
 
-
-<!-- =====================================================
-     SIDEBAR
-===================================================== -->
+<!-- ================= SIDEBAR ================= -->
 
 <aside class="sidebar">
 
@@ -358,49 +489,37 @@ Atmo<span>Sync</span>
 MICRO-CLIMATE ARBITRAGE ANALYTICS
 </div>
 
-
 <div class="nav-title">
 Workspace
 </div>
-
 
 <a href="/" class="nav-item">
 ◈ Dashboard
 </a>
 
-
 <a href="/climate" class="nav-item">
 ◉ Climate Analysis
 </a>
 
-
-<a href="/locations"
-class="nav-item active">
-
+<a href="/locations" class="nav-item active">
 ⌖ Locations
-
 </a>
-
 
 <a href="/opportunities" class="nav-item">
 ◆ Opportunities
 </a>
 
-
 <a href="/explorer" class="nav-item">
 ▤ Data Explorer
 </a>
-
 
 <div class="nav-title">
 System
 </div>
 
-
 <a href="/analytics" class="nav-item">
 ⚙ Analytics Engine
 </a>
-
 
 <a href="/quality" class="nav-item">
 ✓ Data Quality
@@ -408,14 +527,9 @@ System
 
 </aside>
 
-
-
-<!-- =====================================================
-     MAIN
-===================================================== -->
+<!-- ================= MAIN ================= -->
 
 <main class="main">
-
 
 <div class="topbar">
 
@@ -426,148 +540,169 @@ Locations
 </div>
 
 <div class="page-description">
-Geographic distribution of the AtmoSync climate dataset
+Geographic distribution and climate intelligence across monitored locations
 </div>
 
 </div>
-
 
 <div class="status">
-● 8 LOCATIONS DETECTED
+● LIVE DATASET
 </div>
 
 </div>
 
-
-
-<!-- =====================================================
-     KPI
-===================================================== -->
+<!-- ================= KPI ================= -->
 
 <div class="kpi-grid">
 
-
 <div class="kpi">
+<div class="kpi-label">Detected Cities</div>
 
-<div class="kpi-label">
-Detected Cities
-</div>
-
-<div
-class="kpi-value"
-id="cityCount">
+<div class="kpi-value" id="cityCount">
 --
 </div>
 
 <div class="kpi-small">
-Automatically detected from dataset
+Active locations in dataset
 </div>
-
 </div>
-
 
 <div class="kpi">
+<div class="kpi-label">Average Temperature</div>
 
-<div class="kpi-label">
-Average Temperature
-</div>
-
-<div
-class="kpi-value"
-id="avgTemp">
+<div class="kpi-value" id="avgTemp">
 --
 </div>
 
 <div class="kpi-small">
-Across all locations
+Across all monitored locations
 </div>
-
 </div>
-
 
 <div class="kpi">
+<div class="kpi-label">Average Humidity</div>
 
-<div class="kpi-label">
-Average Humidity
-</div>
-
-<div
-class="kpi-value"
-id="avgHumidity">
+<div class="kpi-value" id="avgHumidity">
 --
 </div>
 
 <div class="kpi-small">
-Relative humidity
+Relative humidity average
 </div>
-
 </div>
-
 
 <div class="kpi">
+<div class="kpi-label">Total Records</div>
 
-<div class="kpi-label">
-Total Records
-</div>
-
-<div
-class="kpi-value"
-id="totalRecords">
+<div class="kpi-value" id="totalRecords">
 --
 </div>
 
 <div class="kpi-small">
-Temperature + humidity
+Temperature + humidity observations
+</div>
 </div>
 
 </div>
 
-</div>
-
-
-
-<!-- =====================================================
-     MAP
-===================================================== -->
+<!-- ================= MAP ================= -->
 
 <div class="card">
 
+<div class="card-header">
+
+<div>
 <div class="card-title">
-Interactive Climate Map
+Geographic Climate Intelligence
 </div>
 
 <div class="card-subtitle">
-Click any city marker to inspect its climate statistics
+Interactive map of all detected AtmoSync locations
 </div>
+</div>
+
+</div>
+
+<div class="map-layout">
 
 <div id="map"></div>
 
+<div class="map-info">
+
+<div class="info-title">
+Location Intelligence
 </div>
 
+<div class="info-row">
+<span class="info-label">Locations</span>
+<span class="info-value" id="mapCities">--</span>
+</div>
 
+<div class="info-row">
+<span class="info-label">Hottest</span>
+<span class="info-value" id="mapHottest">--</span>
+</div>
 
-<!-- =====================================================
-     CITY DIRECTORY
-===================================================== -->
+<div class="info-row">
+<span class="info-label">Coolest</span>
+<span class="info-value" id="mapCoolest">--</span>
+</div>
+
+<div class="info-row">
+<span class="info-label">Most Humid</span>
+<span class="info-value" id="mapHumid">--</span>
+</div>
+
+<div class="info-row">
+<span class="info-label">Climate Spread</span>
+<span class="info-value" id="mapSpread">--</span>
+</div>
+
+<div class="map-status">
+● LOCATION ENGINE ACTIVE<br>
+Coordinates are linked with the AtmoSync dataset for geographic comparison.
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= CITY DIRECTORY ================= -->
 
 <div class="card">
 
+<div class="directory-header">
+
+<div>
+
 <div class="card-title">
-City Directory
+City Intelligence Directory
 </div>
 
 <div class="card-subtitle">
-Search and explore detected locations
+Explore temperature, humidity, records and geographic coordinates for every detected city
 </div>
 
+</div>
 
+<div>
 <input
 type="text"
 id="searchBox"
 class="search-box"
 placeholder="Search city..."
 >
+</div>
 
+</div>
+
+<div class="location-count" id="locationCount">
+Loading locations...
+</div>
+
+<br>
 
 <div
 class="location-grid"
@@ -576,48 +711,35 @@ id="locationGrid">
 
 </div>
 
-
-
 <div class="footer">
-
 AtmoSync · Micro-Climate Arbitrage Analytics
-
 </div>
-
 
 </main>
 
-
-
 <script>
 
-
 let dashboardData = null;
-
 let map = null;
 
-
-/* =====================================================
-   LOAD DATA
-===================================================== */
+/* ================= LOAD DATA ================= */
 
 async function loadData(){
 
 try{
 
-const response =
-await fetch("/api/dashboard");
+const response = await fetch("/api/dashboard");
 
-dashboardData =
-await response.json();
+if(!response.ok){
+throw new Error("API request failed");
+}
+
+dashboardData = await response.json();
 
 updateKPIs();
-
+updateMapIntelligence();
 createMap();
-
-displayCities(
-dashboardData.cities
-);
+displayCities(dashboardData.cities);
 
 }
 
@@ -628,137 +750,144 @@ console.error(
 error
 );
 
-}
+document.getElementById("locationGrid").innerHTML =
+`
+<div class="empty">
+Unable to load location data.
+Please check the AtmoSync backend.
+</div>
+`;
 
 }
 
+}
 
-/* =====================================================
-   KPI
-===================================================== */
+/* ================= KPI ================= */
 
 function updateKPIs(){
 
-const summary =
-dashboardData.summary;
+const summary = dashboardData.summary;
 
-
-document.getElementById(
-"cityCount"
-).textContent =
+document.getElementById("cityCount").textContent =
 summary.cityCount;
 
+document.getElementById("avgTemp").textContent =
+summary.averageTemperature + "°";
 
-document.getElementById(
-"avgTemp"
-).textContent =
-summary.averageTemperature
-+
-"°";
+document.getElementById("avgHumidity").textContent =
+summary.averageHumidity + "%";
 
-
-document.getElementById(
-"avgHumidity"
-).textContent =
-summary.averageHumidity
-+
-"%";
-
-
-document.getElementById(
-"totalRecords"
-).textContent =
+document.getElementById("totalRecords").textContent =
 summary.totalRecords.toLocaleString();
 
 }
 
+/* ================= MAP INTELLIGENCE ================= */
 
-/* =====================================================
-   MAP
-===================================================== */
+function updateMapIntelligence(){
+
+const cities = dashboardData.cities;
+
+if(!cities.length){
+return;
+}
+
+const hottest = cities.reduce(
+(a,b) =>
+a.temperature > b.temperature ? a : b
+);
+
+const coolest = cities.reduce(
+(a,b) =>
+a.temperature < b.temperature ? a : b
+);
+
+const humid = cities.reduce(
+(a,b) =>
+a.humidity > b.humidity ? a : b
+);
+
+const temperatures = cities.map(
+city => city.temperature
+);
+
+const spread =
+Math.max(...temperatures) -
+Math.min(...temperatures);
+
+document.getElementById("mapCities").textContent =
+cities.length;
+
+document.getElementById("mapHottest").textContent =
+hottest.city;
+
+document.getElementById("mapCoolest").textContent =
+coolest.city;
+
+document.getElementById("mapHumid").textContent =
+humid.city;
+
+document.getElementById("mapSpread").textContent =
+spread.toFixed(2) + "°";
+
+}
+
+/* ================= MAP ================= */
 
 function createMap(){
 
-map =
-L.map(
-"map"
-).setView(
+map = L.map("map").setView(
 [37,-100],
 4
 );
 
-
 L.tileLayer(
-
 "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-
 {
-
 attribution:
 "&copy; OpenStreetMap contributors"
-
 }
-
-).addTo(
-map
-);
-
-
-/* =====================================================
-   MARKERS
-===================================================== */
+).addTo(map);
 
 const markerBounds = [];
 
-
-dashboardData.cities
-.forEach(city=>{
-
+dashboardData.cities.forEach(city => {
 
 if(
-city.latitude === 0
-&&
+city.latitude === 0 &&
 city.longitude === 0
 ){
-
 return;
-
 }
-
 
 const marker =
 L.marker([
-
 city.latitude,
 city.longitude
-
-])
-.addTo(map);
-
+]).addTo(map);
 
 marker.bindPopup(`
 
 <div style="
 font-family:Arial;
-min-width:180px;
+min-width:190px;
 ">
 
 <h3 style="
 margin-bottom:10px;
+color:#17212b;
 ">
-
 ${city.city}
-
 </h3>
 
-<div>
+<div style="margin-bottom:6px;">
 🌡️ Temperature:
 <strong>
 ${city.temperature}°
 </strong>
 </div>
 
-<div>
+<div style="margin-bottom:6px;">
 💧 Humidity:
 <strong>
 ${city.humidity}%
@@ -771,30 +900,32 @@ border:0;
 border-top:1px solid #ddd;
 ">
 
-<div>
+<div style="font-size:12px;">
 Temperature records:
 ${city.temperatureRecords.toLocaleString()}
 </div>
 
-<div>
+<div style="font-size:12px;margin-top:4px;">
 Humidity records:
 ${city.humidityRecords.toLocaleString()}
+</div>
+
+<div style="font-size:12px;margin-top:4px;">
+Coordinates:
+${city.latitude.toFixed(4)},
+${city.longitude.toFixed(4)}
 </div>
 
 </div>
 
 `);
 
-
 markerBounds.push([
-
 city.latitude,
 city.longitude
-
 ]);
 
 });
-
 
 if(markerBounds.length){
 
@@ -809,33 +940,58 @@ padding:[30,30]
 
 }
 
-
-/* =====================================================
-   CITY CARDS
-===================================================== */
+/* ================= CITY CARDS ================= */
 
 function displayCities(cities){
 
 const container =
-document.getElementById(
-"locationGrid"
-);
+document.getElementById("locationGrid");
+
+const count =
+document.getElementById("locationCount");
 
 container.innerHTML = "";
 
+count.textContent =
+cities.length +
+(cities.length === 1
+? " location found"
+: " locations found");
 
-cities.forEach(
-(city,index)=>{
+if(!cities.length){
 
+container.innerHTML = `
+<div class="empty">
+No matching city found.
+</div>
+`;
+
+return;
+
+}
+
+const maxTemperature =
+Math.max(
+...dashboardData.cities.map(
+city => city.temperature
+)
+);
+
+cities.forEach((city,index) => {
+
+const temperaturePercentage =
+maxTemperature > 0
+? Math.min(
+100,
+(city.temperature / maxTemperature) * 100
+)
+: 0;
 
 const card =
-document.createElement(
-"div"
-);
+document.createElement("div");
 
 card.className =
 "location-card";
-
 
 card.innerHTML = `
 
@@ -853,9 +1009,7 @@ index+1
 
 </div>
 
-
 <div class="metrics">
-
 
 <div class="metric">
 
@@ -868,7 +1022,6 @@ ${city.temperature}°
 </div>
 
 </div>
-
 
 <div class="metric">
 
@@ -884,6 +1037,34 @@ ${city.humidity}%
 
 </div>
 
+<div class="climate-profile">
+
+<div class="profile-row">
+
+<div class="profile-top">
+
+<span>
+Temperature Profile
+</span>
+
+<span>
+${city.temperature}°
+</span>
+
+</div>
+
+<div class="profile-track">
+
+<div
+class="profile-fill"
+style="width:${temperaturePercentage}%">
+</div>
+
+</div>
+
+</div>
+
+</div>
 
 <div class="records">
 
@@ -905,30 +1086,27 @@ ${city.longitude.toFixed(4)}
 
 `;
 
-container.appendChild(
-card
-);
+container.appendChild(card);
 
 });
 
 }
 
+/* ================= SEARCH ================= */
 
-/* =====================================================
-   SEARCH
-===================================================== */
-
-document.getElementById(
-"searchBox"
-).addEventListener(
+document.getElementById("searchBox")
+.addEventListener(
 "input",
 function(){
+
+if(!dashboardData){
+return;
+}
 
 const search =
 this.value
 .toLowerCase()
 .trim();
-
 
 const filtered =
 dashboardData.cities.filter(
@@ -938,17 +1116,12 @@ city.city
 .includes(search)
 );
 
+displayCities(filtered);
 
-displayCities(
-filtered
+}
 );
 
-});
-
-
-/* =====================================================
-   START
-===================================================== */
+/* ================= START ================= */
 
 loadData();
 
