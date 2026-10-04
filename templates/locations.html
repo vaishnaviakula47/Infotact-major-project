@@ -1,1132 +1,247 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>AtmoSync | Locations</title>
-
-<link rel="stylesheet"
-href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
 <style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-    font-family:Inter,Segoe UI,Arial,sans-serif;
-    background:#07111f;
-    color:#e8f0f7;
-    min-height:100vh;
-}
-
-/* ================= SIDEBAR ================= */
-
-.sidebar{
-    position:fixed;
-    left:0;
-    top:0;
-    width:245px;
-    height:100vh;
-    background:#0a1727;
-    border-right:1px solid #20334a;
-    padding:25px 15px;
-    z-index:1000;
-}
-
-.logo{
-    font-size:25px;
-    font-weight:800;
-    margin-bottom:5px;
-}
-
-.logo span{
-    color:#31d6a5;
-}
-
-.subtitle{
-    color:#7e93aa;
-    font-size:11px;
-    margin-bottom:35px;
-}
-
-.nav-title{
-    color:#526b84;
-    font-size:10px;
-    text-transform:uppercase;
-    letter-spacing:1.5px;
-    margin:20px 12px 10px;
-}
-
-.nav-item{
-    display:block;
-    padding:13px 14px;
-    margin:5px 0;
-    border-radius:10px;
-    color:#91a5b9;
-    text-decoration:none;
-    font-size:14px;
-    transition:.2s;
-}
-
-.nav-item:hover{
-    background:#10253a;
-    color:#fff;
-}
-
-.nav-item.active{
-    background:#103c3b;
-    color:#43e1b1;
-    border-left:3px solid #35d5a3;
-}
-
-/* ================= MAIN ================= */
-
-.main{
-    margin-left:245px;
-    padding:30px 35px;
-}
-
-/* ================= HEADER ================= */
-
-.topbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:24px;
-}
-
-.page-title{
-    font-size:29px;
-    font-weight:800;
-}
-
-.page-description{
-    color:#8295a9;
-    font-size:13px;
-    margin-top:6px;
-}
-
-.status{
-    padding:9px 15px;
-    border:1px solid #1e4650;
-    border-radius:20px;
-    background:#0b2028;
-    color:#45ddb0;
-    font-size:11px;
-    font-weight:700;
-}
-
-/* ================= KPI ================= */
-
-.kpi-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:16px;
-    margin-bottom:20px;
-}
-
-.kpi{
-    background:linear-gradient(145deg,#0d1c2d,#0a1727);
-    border:1px solid #203249;
-    border-radius:15px;
-    padding:20px;
-    position:relative;
-    overflow:hidden;
-}
-
-.kpi:after{
-    content:"";
-    position:absolute;
-    right:-25px;
-    top:-25px;
-    width:75px;
-    height:75px;
-    border-radius:50%;
-    background:#123d3b;
-    opacity:.35;
-}
-
-.kpi-label{
-    color:#8095a9;
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:.6px;
-}
-
-.kpi-value{
-    font-size:28px;
-    font-weight:800;
-    margin-top:9px;
-}
-
-.kpi-small{
-    color:#60768b;
-    font-size:10px;
-    margin-top:6px;
-}
-
-/* ================= CARDS ================= */
-
-.card{
-    background:#0c1a2a;
-    border:1px solid #203249;
-    border-radius:15px;
-    padding:20px;
-    margin-bottom:20px;
-}
-
-.card-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:4px;
-}
-
-.card-title{
-    font-size:15px;
-    font-weight:700;
-}
-
-.card-subtitle{
-    color:#71869b;
-    font-size:11px;
-    margin-top:4px;
-    margin-bottom:17px;
-}
-
-/* ================= MAP ================= */
-
-.map-layout{
-    display:grid;
-    grid-template-columns:1fr 260px;
-    gap:18px;
-}
-
-#map{
-    height:500px;
-    border-radius:11px;
-    overflow:hidden;
-}
-
-.map-info{
-    background:#091522;
-    border:1px solid #1c3045;
-    border-radius:12px;
-    padding:17px;
-}
-
-.info-title{
-    font-size:13px;
-    font-weight:700;
-    margin-bottom:15px;
-}
-
-.info-row{
-    display:flex;
-    justify-content:space-between;
-    padding:11px 0;
-    border-bottom:1px solid #1a2b3d;
-    font-size:11px;
-}
-
-.info-row:last-child{
-    border-bottom:none;
-}
-
-.info-label{
-    color:#71869b;
-}
-
-.info-value{
-    font-weight:700;
-    color:#dbe7ef;
-}
-
-.map-status{
-    margin-top:16px;
-    padding:11px;
-    border-radius:8px;
-    background:#0c2528;
-    border:1px solid #1c4b4c;
-    color:#49dcae;
-    font-size:10px;
-    line-height:1.6;
-}
-
-/* ================= LOCATION DIRECTORY ================= */
-
-.directory-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:15px;
-    margin-bottom:18px;
-}
-
-.search-box{
-    width:300px;
-    background:#07111f;
-    border:1px solid #294058;
-    border-radius:9px;
-    padding:11px 13px;
-    color:white;
-    outline:none;
-}
-
-.search-box:focus{
-    border-color:#32d5a4;
-}
-
-.location-count{
-    color:#70869b;
-    font-size:11px;
-}
-
-.location-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:16px;
-}
-
-.location-card{
-    background:#091522;
-    border:1px solid #203249;
-    border-radius:13px;
-    padding:18px;
-    transition:.2s;
-}
-
-.location-card:hover{
-    transform:translateY(-2px);
-    border-color:#2d5262;
-    background:#0b1929;
-}
-
-.location-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:15px;
-}
-
-.city-name{
-    font-size:17px;
-    font-weight:750;
-}
-
-.city-index{
-    font-size:9px;
-    color:#587087;
-    background:#07111f;
-    padding:5px 8px;
-    border-radius:6px;
-}
-
-.metrics{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-}
-
-.metric{
-    background:#07111f;
-    border:1px solid #16283b;
-    border-radius:9px;
-    padding:12px;
-}
-
-.metric-label{
-    color:#71869b;
-    font-size:10px;
-}
-
-.metric-value{
-    font-size:19px;
-    font-weight:750;
-    margin-top:5px;
-}
-
-.records{
-    margin-top:13px;
-    color:#63798e;
-    font-size:10px;
-    line-height:1.8;
-}
-
-/* ================= CLIMATE BAR ================= */
-
-.climate-profile{
-    margin-top:15px;
-}
-
-.profile-row{
-    margin-bottom:10px;
-}
-
-.profile-top{
-    display:flex;
-    justify-content:space-between;
-    font-size:10px;
-    color:#7d92a7;
-    margin-bottom:5px;
-}
-
-.profile-track{
-    height:6px;
-    background:#16283a;
-    border-radius:10px;
-    overflow:hidden;
-}
-
-.profile-fill{
-    height:100%;
-    border-radius:10px;
-    background:#31d6a5;
-}
-
-/* ================= EMPTY STATE ================= */
-
-.empty{
-    text-align:center;
-    padding:35px;
-    color:#63798e;
-    font-size:12px;
-}
-
-/* ================= FOOTER ================= */
-
-.footer{
-    text-align:center;
-    color:#536a80;
-    font-size:10px;
-    padding:25px;
-}
-
-/* ================= RESPONSIVE ================= */
-
-@media(max-width:1100px){
-
-    .sidebar{
-        width:205px;
-    }
-
-    .main{
-        margin-left:205px;
-    }
-
-    .kpi-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .map-layout{
-        grid-template-columns:1fr;
-    }
-
-}
-
-@media(max-width:800px){
-
-    .sidebar{
-        position:relative;
-        width:100%;
-        height:auto;
-    }
-
-    .main{
-        margin-left:0;
-        padding:20px;
-    }
-
-    .topbar{
-        align-items:flex-start;
-        gap:15px;
-        flex-direction:column;
-    }
-
-    .kpi-grid{
-        grid-template-columns:1fr;
-    }
-
-    .location-grid{
-        grid-template-columns:1fr;
-    }
-
-    .directory-header{
-        align-items:stretch;
-        flex-direction:column;
-    }
-
-    .search-box{
-        width:100%;
-    }
-
-}
-
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,"Segoe UI",Arial,sans-serif}
+
+/* ALWAYS-VISIBLE SCROLLBAR (background color) */
+html{overflow-y:scroll;scrollbar-width:thin;scrollbar-color:#243c52 #07111f}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:#07111f}
+::-webkit-scrollbar-thumb{background:#243c52;border-radius:10px;border:2px solid #07111f}
+::-webkit-scrollbar-thumb:hover{background:#31506b}
+::-webkit-scrollbar-corner{background:#07111f}
+
+body{background:radial-gradient(circle at 85% 0%,#123044 0%,transparent 28%),#07111f;background-attachment:fixed;color:#e8f0f7;min-height:100vh;font-size:14px}
+
+/* SIDEBAR */
+.sidebar{position:fixed;left:0;top:0;width:260px;height:100vh;background:rgba(8,21,36,.97);border-right:1px solid #20334a;padding:28px 16px;z-index:1000;overflow-y:auto}
+.logo{font-size:28px;font-weight:800;letter-spacing:.5px;margin-bottom:6px}
+.logo span{color:#31d6a5}
+.subtitle{color:#7e93aa;font-size:12px;line-height:1.5;margin-bottom:35px;text-transform:uppercase;letter-spacing:.5px}
+.nav-title{color:#526b84;font-size:12px;text-transform:uppercase;letter-spacing:1.5px;margin:22px 12px 10px}
+.nav-item{display:block;padding:14px 16px;margin:5px 0;border-radius:10px;color:#91a5b9;text-decoration:none;font-size:14px;transition:.2s;border-left:3px solid transparent}
+.nav-item:hover{background:#10253a;color:#fff;transform:translateX(2px)}
+.nav-item.active{background:linear-gradient(90deg,#103c3b,#102b3b);color:#43e1b1;border-left:3px solid #35d5a3}
+
+/* MAIN + HEADER */
+.main{margin-left:260px;padding:32px 38px}
+.topbar{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;gap:20px}
+.page-title{font-size:32px;font-weight:800;letter-spacing:-.5px}
+.page-description{color:#8fa3b8;font-size:14px;margin-top:8px}
+.status{display:flex;align-items:center;gap:8px;padding:10px 16px;border:1px solid #1e4650;border-radius:20px;background:#0b2028;color:#45ddb0;font-size:12px;font-weight:700;white-space:nowrap}
+.status-dot{width:9px;height:9px;border-radius:50%;background:#43dfae;box-shadow:0 0 10px #43dfae}
+
+/* CARDS */
+.card{background:rgba(12,26,42,.94);border:1px solid #203249;border-radius:15px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.12);margin-bottom:20px}
+.card-title{font-size:18px;font-weight:700}
+.card-subtitle{color:#8fa3b8;font-size:14px;margin-top:5px;margin-bottom:20px;line-height:1.5}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:20px}
+.kpi{background:linear-gradient(145deg,#0d1d30,#0a1727);border:1px solid #203249;border-radius:15px;padding:22px;position:relative;overflow:hidden;transition:.25s}
+.kpi:hover{transform:translateY(-3px);border-color:#2c5c6b}
+.kpi::after{content:"";position:absolute;right:-30px;bottom:-40px;width:110px;height:110px;border-radius:50%;background:#15364b;opacity:.3}
+.kpi-label{color:#8fa3b8;font-size:12px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px}
+.kpi-value{font-size:32px;font-weight:800}
+.kpi-small{color:#6f869b;font-size:12px;margin-top:8px}
+
+/* MAP */
+.map-layout{display:grid;grid-template-columns:1fr 290px;gap:20px}
+#map{height:500px;border-radius:12px;overflow:hidden}
+.map-info{background:#091522;border:1px solid #1c3045;border-radius:12px;padding:20px}
+.info-title{font-size:16px;font-weight:700;margin-bottom:12px}
+.info-row{display:flex;justify-content:space-between;gap:10px;padding:13px 0;border-bottom:1px solid #1a2b3d;font-size:14px}
+.info-row:last-of-type{border-bottom:none}
+.info-label{color:#8fa3b8}
+.info-value{font-weight:700;color:#e8f0f7;text-align:right}
+.map-status{margin-top:16px;padding:14px;border-radius:10px;background:#0c2528;border:1px solid #1c4b4c;color:#49dcae;font-size:13px;line-height:1.6}
+
+/* DIRECTORY */
+.directory-header{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:6px}
+.search-box{width:300px;background:#101f31;border:1px solid #2a4058;border-radius:9px;padding:11px 13px;color:#dbe7f2;outline:none;font-size:14px}
+.search-box:focus{border-color:#31d6a5}
+.location-count{color:#8fa3b8;font-size:14px;margin-bottom:18px}
+.location-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.location-card{background:#091522;border:1px solid #203249;border-radius:13px;padding:20px;transition:.2s}
+.location-card:hover{transform:translateY(-2px);border-color:#2d5262;background:#0b1929}
+.location-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:10px}
+.city-name{font-size:18px;font-weight:700}
+.city-index{font-size:12px;color:#8197ac;background:#07111f;padding:6px 10px;border-radius:7px;white-space:nowrap}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.metric{background:#07111f;border:1px solid #16283b;border-radius:10px;padding:14px}
+.metric-label{color:#8fa3b8;font-size:12px;text-transform:uppercase;letter-spacing:.6px}
+.metric-value{font-size:24px;font-weight:800;margin-top:6px}
+.profile-row{margin-top:16px}
+.profile-top{display:flex;justify-content:space-between;font-size:14px;color:#8fa3b8;margin-bottom:7px}
+.profile-track{height:8px;background:#16283a;border-radius:10px;overflow:hidden}
+.profile-fill{height:100%;border-radius:10px;background:#31d6a5}
+.records{margin-top:15px;color:#8fa3b8;font-size:14px;line-height:1.9}
+.empty{text-align:center;padding:35px;color:#8fa3b8;font-size:14px;grid-column:1/-1}
+
+.footer{text-align:center;color:#6a8197;font-size:12px;padding:28px 0 10px}
+
+/* RESPONSIVE */
+@media(max-width:1300px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:1100px){.sidebar{width:225px}.main{margin-left:225px}.map-layout{grid-template-columns:1fr}}
+@media(max-width:800px){.sidebar{position:relative;width:100%;height:auto}.main{margin-left:0;padding:22px 16px}.topbar{flex-direction:column}.page-title{font-size:26px}.kpi-grid,.location-grid{grid-template-columns:1fr}.directory-header{flex-direction:column;align-items:stretch}.search-box{width:100%}}
 </style>
-
 </head>
-
 <body>
 
-<!-- ================= SIDEBAR ================= -->
-
 <aside class="sidebar">
-
-<div class="logo">
-Atmo<span>Sync</span>
-</div>
-
-<div class="subtitle">
-MICRO-CLIMATE ARBITRAGE ANALYTICS
-</div>
-
-<div class="nav-title">
-Workspace
-</div>
-
-<a href="/" class="nav-item">
-◈ Dashboard
-</a>
-
-<a href="/climate" class="nav-item">
-◉ Climate Analysis
-</a>
-
-<a href="/locations" class="nav-item active">
-⌖ Locations
-</a>
-
-<a href="/opportunities" class="nav-item">
-◆ Opportunities
-</a>
-
-<a href="/explorer" class="nav-item">
-▤ Data Explorer
-</a>
-
-<div class="nav-title">
-System
-</div>
-
-<a href="/analytics" class="nav-item">
-⚙ Analytics Engine
-</a>
-
-<a href="/quality" class="nav-item">
-✓ Data Quality
-</a>
-
+<div class="logo">Atmo<span>Sync</span></div>
+<div class="subtitle">MICRO-CLIMATE ARBITRAGE ANALYTICS</div>
+<div class="nav-title">Workspace</div>
+<a href="/" class="nav-item">◈ Dashboard</a>
+<a href="/climate" class="nav-item">◉ Climate Analysis</a>
+<a href="/locations" class="nav-item active">⌖ Locations</a>
+<a href="/opportunities" class="nav-item">◆ Opportunities</a>
+<a href="/explorer" class="nav-item">▤ Data Explorer</a>
+<div class="nav-title">System</div>
+<a href="/analytics" class="nav-item">⚙ Analytics Engine</a>
+<a href="/quality" class="nav-item">✓ Data Quality</a>
 </aside>
-
-<!-- ================= MAIN ================= -->
 
 <main class="main">
 
 <div class="topbar">
-
 <div>
-
-<div class="page-title">
-Locations
+<div class="page-title">Locations</div>
+<div class="page-description">Geographic distribution and climate intelligence across monitored locations</div>
 </div>
-
-<div class="page-description">
-Geographic distribution and climate intelligence across monitored locations
+<div class="status"><span class="status-dot"></span>LIVE DATASET</div>
 </div>
-
-</div>
-
-<div class="status">
-● LIVE DATASET
-</div>
-
-</div>
-
-<!-- ================= KPI ================= -->
 
 <div class="kpi-grid">
-
-<div class="kpi">
-<div class="kpi-label">Detected Cities</div>
-
-<div class="kpi-value" id="cityCount">
---
+<div class="kpi"><div class="kpi-label">Detected Cities</div><div class="kpi-value" id="cityCount">--</div><div class="kpi-small">Active locations in dataset</div></div>
+<div class="kpi"><div class="kpi-label">Average Temperature</div><div class="kpi-value" id="avgTemp">--</div><div class="kpi-small">Across all monitored locations</div></div>
+<div class="kpi"><div class="kpi-label">Average Humidity</div><div class="kpi-value" id="avgHumidity">--</div><div class="kpi-small">Relative humidity average</div></div>
+<div class="kpi"><div class="kpi-label">Total Records</div><div class="kpi-value" id="totalRecords">--</div><div class="kpi-small">Temperature + humidity observations</div></div>
 </div>
-
-<div class="kpi-small">
-Active locations in dataset
-</div>
-</div>
-
-<div class="kpi">
-<div class="kpi-label">Average Temperature</div>
-
-<div class="kpi-value" id="avgTemp">
---
-</div>
-
-<div class="kpi-small">
-Across all monitored locations
-</div>
-</div>
-
-<div class="kpi">
-<div class="kpi-label">Average Humidity</div>
-
-<div class="kpi-value" id="avgHumidity">
---
-</div>
-
-<div class="kpi-small">
-Relative humidity average
-</div>
-</div>
-
-<div class="kpi">
-<div class="kpi-label">Total Records</div>
-
-<div class="kpi-value" id="totalRecords">
---
-</div>
-
-<div class="kpi-small">
-Temperature + humidity observations
-</div>
-</div>
-
-</div>
-
-<!-- ================= MAP ================= -->
 
 <div class="card">
-
-<div class="card-header">
-
-<div>
-<div class="card-title">
-Geographic Climate Intelligence
-</div>
-
-<div class="card-subtitle">
-Interactive map of all detected AtmoSync locations
-</div>
-</div>
-
-</div>
-
+<div class="card-title">Geographic Climate Intelligence</div>
+<div class="card-subtitle">Interactive map of all detected AtmoSync locations</div>
 <div class="map-layout">
-
 <div id="map"></div>
-
 <div class="map-info">
-
-<div class="info-title">
-Location Intelligence
+<div class="info-title">Location Intelligence</div>
+<div class="info-row"><span class="info-label">Locations</span><span class="info-value" id="mapCities">--</span></div>
+<div class="info-row"><span class="info-label">Hottest</span><span class="info-value" id="mapHottest">--</span></div>
+<div class="info-row"><span class="info-label">Coolest</span><span class="info-value" id="mapCoolest">--</span></div>
+<div class="info-row"><span class="info-label">Most Humid</span><span class="info-value" id="mapHumid">--</span></div>
+<div class="info-row"><span class="info-label">Climate Spread</span><span class="info-value" id="mapSpread">--</span></div>
+<div class="map-status">● LOCATION ENGINE ACTIVE<br>Coordinates are linked with the AtmoSync dataset for geographic comparison.</div>
 </div>
-
-<div class="info-row">
-<span class="info-label">Locations</span>
-<span class="info-value" id="mapCities">--</span>
 </div>
-
-<div class="info-row">
-<span class="info-label">Hottest</span>
-<span class="info-value" id="mapHottest">--</span>
 </div>
-
-<div class="info-row">
-<span class="info-label">Coolest</span>
-<span class="info-value" id="mapCoolest">--</span>
-</div>
-
-<div class="info-row">
-<span class="info-label">Most Humid</span>
-<span class="info-value" id="mapHumid">--</span>
-</div>
-
-<div class="info-row">
-<span class="info-label">Climate Spread</span>
-<span class="info-value" id="mapSpread">--</span>
-</div>
-
-<div class="map-status">
-● LOCATION ENGINE ACTIVE<br>
-Coordinates are linked with the AtmoSync dataset for geographic comparison.
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- ================= CITY DIRECTORY ================= -->
 
 <div class="card">
-
 <div class="directory-header">
-
 <div>
-
-<div class="card-title">
-City Intelligence Directory
+<div class="card-title">City Intelligence Directory</div>
+<div class="card-subtitle">Explore temperature, humidity, records and geographic coordinates for every detected city</div>
+</div>
+<input type="text" id="searchBox" class="search-box" placeholder="Search city...">
+</div>
+<div class="location-count" id="locationCount">Loading locations...</div>
+<div class="location-grid" id="locationGrid"></div>
 </div>
 
-<div class="card-subtitle">
-Explore temperature, humidity, records and geographic coordinates for every detected city
-</div>
-
-</div>
-
-<div>
-<input
-type="text"
-id="searchBox"
-class="search-box"
-placeholder="Search city..."
->
-</div>
-
-</div>
-
-<div class="location-count" id="locationCount">
-Loading locations...
-</div>
-
-<br>
-
-<div
-class="location-grid"
-id="locationGrid">
-</div>
-
-</div>
-
-<div class="footer">
-AtmoSync · Micro-Climate Arbitrage Analytics
-</div>
-
+<div class="footer">AtmoSync · Micro-Climate Arbitrage Analytics<br>Location Intelligence Engine</div>
 </main>
 
 <script>
-
-let dashboardData = null;
-let map = null;
-
-/* ================= LOAD DATA ================= */
+const $=id=>document.getElementById(id);
+let D=null;
 
 async function loadData(){
-
-try{
-
-const response = await fetch("/api/dashboard");
-
-if(!response.ok){
-throw new Error("API request failed");
+ try{
+  const r=await fetch("/api/dashboard");
+  if(!r.ok)throw new Error("API request failed");
+  D=await r.json();
+  kpis();mapInfo();createMap();display(D.cities);
+ }catch(e){
+  console.error("Unable to load location data:",e);
+  $("locationCount").textContent="";
+  $("locationGrid").innerHTML='<div class="empty">Unable to load location data. Please check the AtmoSync backend.</div>';
+ }
 }
 
-dashboardData = await response.json();
-
-updateKPIs();
-updateMapIntelligence();
-createMap();
-displayCities(dashboardData.cities);
-
+function kpis(){
+ const s=D.summary;
+ $("cityCount").textContent=s.cityCount;
+ $("avgTemp").textContent=s.averageTemperature+"°";
+ $("avgHumidity").textContent=s.averageHumidity+"%";
+ $("totalRecords").textContent=s.totalRecords.toLocaleString();
 }
 
-catch(error){
-
-console.error(
-"Unable to load location data:",
-error
-);
-
-document.getElementById("locationGrid").innerHTML =
-`
-<div class="empty">
-Unable to load location data.
-Please check the AtmoSync backend.
-</div>
-`;
-
+function mapInfo(){
+ const c=D.cities;if(!c.length)return;
+ const hot=c.reduce((a,b)=>a.temperature>b.temperature?a:b);
+ const cool=c.reduce((a,b)=>a.temperature<b.temperature?a:b);
+ const wet=c.reduce((a,b)=>a.humidity>b.humidity?a:b);
+ const T=c.map(x=>x.temperature);
+ $("mapCities").textContent=c.length;
+ $("mapHottest").textContent=hot.city;
+ $("mapCoolest").textContent=cool.city;
+ $("mapHumid").textContent=wet.city;
+ $("mapSpread").textContent=(Math.max(...T)-Math.min(...T)).toFixed(2)+"°";
 }
-
-}
-
-/* ================= KPI ================= */
-
-function updateKPIs(){
-
-const summary = dashboardData.summary;
-
-document.getElementById("cityCount").textContent =
-summary.cityCount;
-
-document.getElementById("avgTemp").textContent =
-summary.averageTemperature + "°";
-
-document.getElementById("avgHumidity").textContent =
-summary.averageHumidity + "%";
-
-document.getElementById("totalRecords").textContent =
-summary.totalRecords.toLocaleString();
-
-}
-
-/* ================= MAP INTELLIGENCE ================= */
-
-function updateMapIntelligence(){
-
-const cities = dashboardData.cities;
-
-if(!cities.length){
-return;
-}
-
-const hottest = cities.reduce(
-(a,b) =>
-a.temperature > b.temperature ? a : b
-);
-
-const coolest = cities.reduce(
-(a,b) =>
-a.temperature < b.temperature ? a : b
-);
-
-const humid = cities.reduce(
-(a,b) =>
-a.humidity > b.humidity ? a : b
-);
-
-const temperatures = cities.map(
-city => city.temperature
-);
-
-const spread =
-Math.max(...temperatures) -
-Math.min(...temperatures);
-
-document.getElementById("mapCities").textContent =
-cities.length;
-
-document.getElementById("mapHottest").textContent =
-hottest.city;
-
-document.getElementById("mapCoolest").textContent =
-coolest.city;
-
-document.getElementById("mapHumid").textContent =
-humid.city;
-
-document.getElementById("mapSpread").textContent =
-spread.toFixed(2) + "°";
-
-}
-
-/* ================= MAP ================= */
 
 function createMap(){
-
-map = L.map("map").setView(
-[37,-100],
-4
-);
-
-L.tileLayer(
-"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-{
-attribution:
-"&copy; OpenStreetMap contributors"
-}
-).addTo(map);
-
-const markerBounds = [];
-
-dashboardData.cities.forEach(city => {
-
-if(
-city.latitude === 0 &&
-city.longitude === 0
-){
-return;
+ const map=L.map("map").setView([37,-100],4);
+ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"&copy; OpenStreetMap contributors"}).addTo(map);
+ const bounds=[];
+ D.cities.forEach(c=>{
+  if(c.latitude===0&&c.longitude===0)return;
+  L.marker([c.latitude,c.longitude]).addTo(map).bindPopup(`
+   <div style="font-size:14px;line-height:1.7;min-width:190px">
+   <strong style="font-size:16px">${c.city}</strong><br>
+   🌡️ Temperature: <b>${c.temperature}°</b><br>
+   💧 Humidity: <b>${c.humidity}%</b><hr style="margin:8px 0;border:0;border-top:1px solid #ddd">
+   Temperature records: ${c.temperatureRecords.toLocaleString()}<br>
+   Humidity records: ${c.humidityRecords.toLocaleString()}<br>
+   Coordinates: ${c.latitude.toFixed(4)}, ${c.longitude.toFixed(4)}</div>`);
+  bounds.push([c.latitude,c.longitude]);
+ });
+ if(bounds.length)map.fitBounds(bounds,{padding:[30,30]});
 }
 
-const marker =
-L.marker([
-city.latitude,
-city.longitude
-]).addTo(map);
+function display(cities){
+ $("locationCount").textContent=cities.length+(cities.length===1?" location found":" locations found");
+ if(!cities.length){$("locationGrid").innerHTML='<div class="empty">No matching city found.</div>';return;}
+ const max=Math.max(...D.cities.map(c=>c.temperature));
+ $("locationGrid").innerHTML=cities.map((c,i)=>{
+  const pct=max>0?Math.min(100,c.temperature/max*100):0;
+  return `<div class="location-card">
+   <div class="location-header"><div class="city-name">${c.city}</div><div class="city-index">LOCATION ${String(i+1).padStart(2,"0")}</div></div>
+   <div class="metrics">
+    <div class="metric"><div class="metric-label">Temperature</div><div class="metric-value">${c.temperature}°</div></div>
+    <div class="metric"><div class="metric-label">Humidity</div><div class="metric-value">${c.humidity}%</div></div>
+   </div>
+   <div class="profile-row"><div class="profile-top"><span>Temperature Profile</span><span>${c.temperature}°</span></div>
+    <div class="profile-track"><div class="profile-fill" style="width:${pct}%"></div></div></div>
+   <div class="records">📊 Temperature records: ${c.temperatureRecords.toLocaleString()}<br>
+    💧 Humidity records: ${c.humidityRecords.toLocaleString()}<br>
+    📍 Coordinates: ${c.latitude.toFixed(4)}, ${c.longitude.toFixed(4)}</div>
+  </div>`;
+ }).join("");
+}
 
-marker.bindPopup(`
-
-<div style="
-font-family:Arial;
-min-width:190px;
-">
-
-<h3 style="
-margin-bottom:10px;
-color:#17212b;
-">
-${city.city}
-</h3>
-
-<div style="margin-bottom:6px;">
-🌡️ Temperature:
-<strong>
-${city.temperature}°
-</strong>
-</div>
-
-<div style="margin-bottom:6px;">
-💧 Humidity:
-<strong>
-${city.humidity}%
-</strong>
-</div>
-
-<hr style="
-margin:10px 0;
-border:0;
-border-top:1px solid #ddd;
-">
-
-<div style="font-size:12px;">
-Temperature records:
-${city.temperatureRecords.toLocaleString()}
-</div>
-
-<div style="font-size:12px;margin-top:4px;">
-Humidity records:
-${city.humidityRecords.toLocaleString()}
-</div>
-
-<div style="font-size:12px;margin-top:4px;">
-Coordinates:
-${city.latitude.toFixed(4)},
-${city.longitude.toFixed(4)}
-</div>
-
-</div>
-
-`);
-
-markerBounds.push([
-city.latitude,
-city.longitude
-]);
-
+$("searchBox").addEventListener("input",function(){
+ if(!D)return;
+ const q=this.value.toLowerCase().trim();
+ display(D.cities.filter(c=>c.city.toLowerCase().includes(q)));
 });
-
-if(markerBounds.length){
-
-map.fitBounds(
-markerBounds,
-{
-padding:[30,30]
-}
-);
-
-}
-
-}
-
-/* ================= CITY CARDS ================= */
-
-function displayCities(cities){
-
-const container =
-document.getElementById("locationGrid");
-
-const count =
-document.getElementById("locationCount");
-
-container.innerHTML = "";
-
-count.textContent =
-cities.length +
-(cities.length === 1
-? " location found"
-: " locations found");
-
-if(!cities.length){
-
-container.innerHTML = `
-<div class="empty">
-No matching city found.
-</div>
-`;
-
-return;
-
-}
-
-const maxTemperature =
-Math.max(
-...dashboardData.cities.map(
-city => city.temperature
-)
-);
-
-cities.forEach((city,index) => {
-
-const temperaturePercentage =
-maxTemperature > 0
-? Math.min(
-100,
-(city.temperature / maxTemperature) * 100
-)
-: 0;
-
-const card =
-document.createElement("div");
-
-card.className =
-"location-card";
-
-card.innerHTML = `
-
-<div class="location-header">
-
-<div class="city-name">
-${city.city}
-</div>
-
-<div class="city-index">
-LOCATION ${String(
-index+1
-).padStart(2,"0")}
-</div>
-
-</div>
-
-<div class="metrics">
-
-<div class="metric">
-
-<div class="metric-label">
-Temperature
-</div>
-
-<div class="metric-value">
-${city.temperature}°
-</div>
-
-</div>
-
-<div class="metric">
-
-<div class="metric-label">
-Humidity
-</div>
-
-<div class="metric-value">
-${city.humidity}%
-</div>
-
-</div>
-
-</div>
-
-<div class="climate-profile">
-
-<div class="profile-row">
-
-<div class="profile-top">
-
-<span>
-Temperature Profile
-</span>
-
-<span>
-${city.temperature}°
-</span>
-
-</div>
-
-<div class="profile-track">
-
-<div
-class="profile-fill"
-style="width:${temperaturePercentage}%">
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="records">
-
-📊 Temperature records:
-${city.temperatureRecords.toLocaleString()}
-
-<br>
-
-💧 Humidity records:
-${city.humidityRecords.toLocaleString()}
-
-<br>
-
-📍 Coordinates:
-${city.latitude.toFixed(4)},
-${city.longitude.toFixed(4)}
-
-</div>
-
-`;
-
-container.appendChild(card);
-
-});
-
-}
-
-/* ================= SEARCH ================= */
-
-document.getElementById("searchBox")
-.addEventListener(
-"input",
-function(){
-
-if(!dashboardData){
-return;
-}
-
-const search =
-this.value
-.toLowerCase()
-.trim();
-
-const filtered =
-dashboardData.cities.filter(
-city =>
-city.city
-.toLowerCase()
-.includes(search)
-);
-
-displayCities(filtered);
-
-}
-);
-
-/* ================= START ================= */
 
 loadData();
-
 </script>
-
 </body>
-
 </html>
