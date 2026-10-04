@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,9 +14,7 @@ rel="stylesheet"
 href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
 />
 
-<script
-src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
-</script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <style>
 
@@ -27,7 +26,9 @@ src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
 
 body{
     font-family:Inter,Segoe UI,Arial,sans-serif;
-    background:#07111f;
+    background:
+        radial-gradient(circle at 80% 0%,#102d3b 0%,transparent 30%),
+        #07111f;
     color:#e8f0f7;
     min-height:100vh;
 }
@@ -40,7 +41,7 @@ body{
     top:0;
     width:245px;
     height:100vh;
-    background:#0a1727;
+    background:rgba(8,21,36,.96);
     border-right:1px solid #20334a;
     padding:25px 15px;
     z-index:1000;
@@ -59,7 +60,8 @@ body{
 
 .subtitle{
     color:#7e93aa;
-    font-size:11px;
+    font-size:10px;
+    line-height:1.5;
     margin-bottom:35px;
 }
 
@@ -78,7 +80,6 @@ body{
     border-radius:10px;
     color:#91a5b9;
     text-decoration:none;
-    cursor:pointer;
     transition:.2s;
     font-size:14px;
 }
@@ -86,14 +87,11 @@ body{
 .nav-item:hover{
     background:#10253a;
     color:#fff;
+    transform:translateX(2px);
 }
 
 .nav-item.active{
-    background:linear-gradient(
-        90deg,
-        #103c3b,
-        #102b3b
-    );
+    background:linear-gradient(90deg,#103c3b,#102b3b);
     color:#43e1b1;
     border-left:3px solid #35d5a3;
 }
@@ -110,19 +108,26 @@ body{
 .topbar{
     display:flex;
     justify-content:space-between;
-    align-items:center;
-    margin-bottom:28px;
+    align-items:flex-start;
+    margin-bottom:25px;
 }
 
 .page-title{
-    font-size:28px;
-    font-weight:750;
+    font-size:30px;
+    font-weight:800;
+    letter-spacing:-.5px;
 }
 
 .page-description{
     color:#8295a9;
     font-size:13px;
-    margin-top:5px;
+    margin-top:7px;
+}
+
+.header-meta{
+    display:flex;
+    gap:10px;
+    align-items:center;
 }
 
 .status{
@@ -134,7 +139,8 @@ body{
     border-radius:20px;
     background:#0b2028;
     color:#45ddb0;
-    font-size:12px;
+    font-size:11px;
+    font-weight:700;
 }
 
 .status-dot{
@@ -142,25 +148,31 @@ body{
     height:8px;
     border-radius:50%;
     background:#43dfae;
+    box-shadow:0 0 10px #43dfae;
 }
 
 /* ================= KPI ================= */
 
 .kpi-grid{
     display:grid;
-    grid-template-columns:
-        repeat(4,1fr);
-    gap:18px;
-    margin-bottom:22px;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+    margin-bottom:18px;
 }
 
 .kpi{
-    background:#0c1a2a;
+    background:linear-gradient(145deg,#0d1d30,#0a1727);
     border:1px solid #203249;
-    border-radius:14px;
+    border-radius:15px;
     padding:20px;
     position:relative;
     overflow:hidden;
+    transition:.25s;
+}
+
+.kpi:hover{
+    transform:translateY(-3px);
+    border-color:#2c5c6b;
 }
 
 .kpi::after{
@@ -168,42 +180,98 @@ body{
     position:absolute;
     right:-30px;
     bottom:-40px;
-    width:100px;
-    height:100px;
+    width:110px;
+    height:110px;
     border-radius:50%;
     background:#15364b;
-    opacity:.25;
+    opacity:.3;
+}
+
+.kpi-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
 }
 
 .kpi-label{
     color:#8095a9;
-    font-size:12px;
-    margin-bottom:10px;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.8px;
+}
+
+.kpi-icon{
+    width:32px;
+    height:32px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:9px;
+    background:#102d3a;
+    color:#43dfae;
+    font-size:15px;
 }
 
 .kpi-value{
     font-size:29px;
-    font-weight:750;
+    font-weight:800;
 }
 
 .kpi-small{
     color:#5d7389;
-    font-size:11px;
+    font-size:10px;
     margin-top:7px;
+}
+
+/* ================= QUICK SUMMARY ================= */
+
+.quick-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+    margin-bottom:18px;
+}
+
+.quick-card{
+    background:#0b1929;
+    border:1px solid #1d3146;
+    border-radius:13px;
+    padding:15px 17px;
+}
+
+.quick-label{
+    color:#627b92;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    margin-bottom:7px;
+}
+
+.quick-value{
+    font-size:17px;
+    font-weight:700;
+}
+
+.quick-detail{
+    color:#71869b;
+    font-size:10px;
+    margin-top:4px;
 }
 
 /* ================= CARDS ================= */
 
 .card{
-    background:#0c1a2a;
+    background:rgba(12,26,42,.92);
     border:1px solid #203249;
-    border-radius:14px;
+    border-radius:15px;
     padding:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.12);
 }
 
 .card-title{
     font-size:15px;
-    font-weight:650;
+    font-weight:700;
 }
 
 .card-subtitle{
@@ -217,8 +285,7 @@ body{
 
 .chart-grid{
     display:grid;
-    grid-template-columns:
-        1.4fr 1fr;
+    grid-template-columns:1.45fr 1fr;
     gap:18px;
     margin-bottom:18px;
 }
@@ -233,9 +300,24 @@ body{
     margin-bottom:18px;
 }
 
+.map-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.map-badge{
+    font-size:10px;
+    color:#43dfae;
+    background:#0b2929;
+    border:1px solid #174b46;
+    padding:6px 10px;
+    border-radius:15px;
+}
+
 #map{
-    height:400px;
-    border-radius:10px;
+    height:390px;
+    border-radius:11px;
     overflow:hidden;
 }
 
@@ -243,8 +325,7 @@ body{
 
 .lower-grid{
     display:grid;
-    grid-template-columns:
-        1fr 1fr;
+    grid-template-columns:1fr 1fr;
     gap:18px;
     margin-bottom:18px;
 }
@@ -254,19 +335,35 @@ body{
 .city-list{
     max-height:330px;
     overflow:auto;
+    padding-right:4px;
+}
+
+.city-list::-webkit-scrollbar{
+    width:5px;
+}
+
+.city-list::-webkit-scrollbar-thumb{
+    background:#243c52;
+    border-radius:10px;
 }
 
 .city-row{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:13px 5px;
+    padding:13px 7px;
     border-bottom:1px solid #1c2d40;
+    transition:.2s;
+}
+
+.city-row:hover{
+    background:#0d2032;
+    border-radius:8px;
 }
 
 .city-name{
     font-size:13px;
-    font-weight:600;
+    font-weight:650;
 }
 
 .city-meta{
@@ -277,7 +374,7 @@ body{
 
 .city-temp{
     font-size:15px;
-    font-weight:700;
+    font-weight:750;
 }
 
 .city-humidity{
@@ -295,8 +392,18 @@ body{
     background:#0a1523;
     border-left:3px solid #31d6a5;
     color:#a8b9c9;
-    font-size:12px;
+    font-size:11px;
     line-height:1.5;
+    transition:.2s;
+}
+
+.insight:hover{
+    background:#0e1d2d;
+    transform:translateX(2px);
+}
+
+.insight strong{
+    color:#dce9f3;
 }
 
 /* ================= FOOTER ================= */
@@ -310,19 +417,18 @@ body{
 
 /* ================= RESPONSIVE ================= */
 
-@media(max-width:1000px){
+@media(max-width:1100px){
 
     .sidebar{
-        width:200px;
+        width:210px;
     }
 
     .main{
-        margin-left:200px;
+        margin-left:210px;
     }
 
     .kpi-grid{
-        grid-template-columns:
-            repeat(2,1fr);
+        grid-template-columns:repeat(2,1fr);
     }
 
     .chart-grid,
@@ -331,7 +437,7 @@ body{
     }
 }
 
-@media(max-width:700px){
+@media(max-width:750px){
 
     .sidebar{
         position:relative;
@@ -341,10 +447,21 @@ body{
 
     .main{
         margin-left:0;
+        padding:22px 16px;
     }
 
-    .kpi-grid{
+    .topbar{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .kpi-grid,
+    .quick-grid{
         grid-template-columns:1fr;
+    }
+
+    .page-title{
+        font-size:24px;
     }
 
 }
@@ -354,9 +471,7 @@ body{
 
 <body>
 
-<!-- ======================================================
-     SIDEBAR
-====================================================== -->
+<!-- ================= SIDEBAR ================= -->
 
 <aside class="sidebar">
 
@@ -372,38 +487,23 @@ body{
         Workspace
     </div>
 
-    <a
-        href="/"
-        class="nav-item active"
-    >
+    <a href="/" class="nav-item active">
         ◈ Dashboard
     </a>
 
-    <a
-        href="/climate"
-        class="nav-item"
-    >
+    <a href="/climate" class="nav-item">
         ◉ Climate Analysis
     </a>
 
-    <a
-        href="/locations"
-        class="nav-item"
-    >
+    <a href="/locations" class="nav-item">
         ⌖ Locations
     </a>
 
-    <a
-        href="/opportunities"
-        class="nav-item"
-    >
+    <a href="/opportunities" class="nav-item">
         ◆ Opportunities
     </a>
 
-    <a
-        href="/explorer"
-        class="nav-item"
-    >
+    <a href="/explorer" class="nav-item">
         ▤ Data Explorer
     </a>
 
@@ -411,26 +511,18 @@ body{
         System
     </div>
 
-    <a
-        href="/analytics"
-        class="nav-item"
-    >
+    <a href="/analytics" class="nav-item">
         ⚙ Analytics Engine
     </a>
 
-    <a
-        href="/quality"
-        class="nav-item"
-    >
+    <a href="/quality" class="nav-item">
         ✓ Data Quality
     </a>
 
 </aside>
 
 
-<!-- ======================================================
-     MAIN
-====================================================== -->
+<!-- ================= MAIN ================= -->
 
 <main class="main">
 
@@ -450,30 +542,37 @@ body{
 
         </div>
 
-        <div class="status">
-            <span class="status-dot"></span>
-            ANALYTICS ACTIVE
+        <div class="header-meta">
+
+            <div class="status">
+                <span class="status-dot"></span>
+                ANALYTICS ACTIVE
+            </div>
+
         </div>
 
     </div>
 
 
-    <!-- ==================================================
-         KPI CARDS
-    ================================================== -->
+    <!-- ================= KPI CARDS ================= -->
 
     <div class="kpi-grid">
 
         <div class="kpi">
 
-            <div class="kpi-label">
-                Average Temperature
+            <div class="kpi-top">
+
+                <div class="kpi-label">
+                    Average Temperature
+                </div>
+
+                <div class="kpi-icon">
+                    🌡
+                </div>
+
             </div>
 
-            <div
-                class="kpi-value"
-                id="avgTemp"
-            >
+            <div class="kpi-value" id="avgTemp">
                 --
             </div>
 
@@ -486,14 +585,19 @@ body{
 
         <div class="kpi">
 
-            <div class="kpi-label">
-                Average Humidity
+            <div class="kpi-top">
+
+                <div class="kpi-label">
+                    Average Humidity
+                </div>
+
+                <div class="kpi-icon">
+                    💧
+                </div>
+
             </div>
 
-            <div
-                class="kpi-value"
-                id="avgHumidity"
-            >
+            <div class="kpi-value" id="avgHumidity">
                 --
             </div>
 
@@ -506,14 +610,19 @@ body{
 
         <div class="kpi">
 
-            <div class="kpi-label">
-                Climate Difference
+            <div class="kpi-top">
+
+                <div class="kpi-label">
+                    Climate Difference
+                </div>
+
+                <div class="kpi-icon">
+                    ◐
+                </div>
+
             </div>
 
-            <div
-                class="kpi-value"
-                id="climateDifference"
-            >
+            <div class="kpi-value" id="climateDifference">
                 --
             </div>
 
@@ -526,14 +635,19 @@ body{
 
         <div class="kpi">
 
-            <div class="kpi-label">
-                Opportunity Signals
+            <div class="kpi-top">
+
+                <div class="kpi-label">
+                    Opportunity Signals
+                </div>
+
+                <div class="kpi-icon">
+                    ⚡
+                </div>
+
             </div>
 
-            <div
-                class="kpi-value"
-                id="opportunityCount"
-            >
+            <div class="kpi-value" id="opportunityCount">
                 --
             </div>
 
@@ -546,9 +660,64 @@ body{
     </div>
 
 
-    <!-- ==================================================
-         CHARTS
-    ================================================== -->
+    <!-- ================= QUICK INTELLIGENCE ================= -->
+
+    <div class="quick-grid">
+
+        <div class="quick-card">
+
+            <div class="quick-label">
+                Hottest Location
+            </div>
+
+            <div class="quick-value" id="hottestCity">
+                --
+            </div>
+
+            <div class="quick-detail" id="hottestValue">
+                Waiting for analytics
+            </div>
+
+        </div>
+
+
+        <div class="quick-card">
+
+            <div class="quick-label">
+                Most Humid
+            </div>
+
+            <div class="quick-value" id="humidCity">
+                --
+            </div>
+
+            <div class="quick-detail" id="humidValue">
+                Waiting for analytics
+            </div>
+
+        </div>
+
+
+        <div class="quick-card">
+
+            <div class="quick-label">
+                Highest Opportunity
+            </div>
+
+            <div class="quick-value" id="topOpportunity">
+                --
+            </div>
+
+            <div class="quick-detail" id="topOpportunityValue">
+                Waiting for analytics
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= CHARTS ================= -->
 
     <div class="chart-grid">
 
@@ -564,9 +733,7 @@ body{
 
             <div class="chart-container">
 
-                <canvas
-                    id="climateChart"
-                ></canvas>
+                <canvas id="climateChart"></canvas>
 
             </div>
 
@@ -585,9 +752,7 @@ body{
 
             <div class="chart-container">
 
-                <canvas
-                    id="temperatureChart"
-                ></canvas>
+                <canvas id="temperatureChart"></canvas>
 
             </div>
 
@@ -596,18 +761,28 @@ body{
     </div>
 
 
-    <!-- ==================================================
-         MAP
-    ================================================== -->
+    <!-- ================= MAP ================= -->
 
     <div class="card map-card">
 
-        <div class="card-title">
-            Global City Climate Map
-        </div>
+        <div class="map-header">
 
-        <div class="card-subtitle">
-            Geographic distribution of detected dataset locations
+            <div>
+
+                <div class="card-title">
+                    Global City Climate Map
+                </div>
+
+                <div class="card-subtitle">
+                    Geographic distribution of detected dataset locations
+                </div>
+
+            </div>
+
+            <div class="map-badge">
+                LIVE DATASET
+            </div>
+
         </div>
 
         <div id="map"></div>
@@ -615,9 +790,7 @@ body{
     </div>
 
 
-    <!-- ==================================================
-         CITY INTELLIGENCE + INSIGHTS
-    ================================================== -->
+    <!-- ================= CITY + INSIGHTS ================= -->
 
     <div class="lower-grid">
 
@@ -628,14 +801,10 @@ body{
             </div>
 
             <div class="card-subtitle">
-                Current dataset-level climate profile
+                Dataset-level climate profile
             </div>
 
-            <div
-                class="city-list"
-                id="cityList"
-            >
-            </div>
+            <div class="city-list" id="cityList"></div>
 
         </div>
 
@@ -650,8 +819,7 @@ body{
                 Generated from current dataset
             </div>
 
-            <div id="insights">
-            </div>
+            <div id="insights"></div>
 
         </div>
 
@@ -687,14 +855,18 @@ async function loadDashboard(){
     try{
 
         const response =
-            await fetch(
-                "/api/dashboard"
-            );
+            await fetch("/api/dashboard");
+
+        if(!response.ok){
+            throw new Error("API request failed");
+        }
 
         dashboardData =
             await response.json();
 
         updateKPIs();
+
+        updateQuickIntelligence();
 
         createClimateChart();
 
@@ -732,20 +904,17 @@ function updateKPIs(){
     document.getElementById(
         "avgTemp"
     ).textContent =
-        summary.averageTemperature
-        + "°";
+        summary.averageTemperature + "°";
 
     document.getElementById(
         "avgHumidity"
     ).textContent =
-        summary.averageHumidity
-        + "%";
+        summary.averageHumidity + "%";
 
     document.getElementById(
         "climateDifference"
     ).textContent =
-        summary.climateDifference
-        + "°";
+        summary.climateDifference + "°";
 
     document.getElementById(
         "opportunityCount"
@@ -756,7 +925,69 @@ function updateKPIs(){
 
 
 /* =========================================================
-   CLIMATE BAR CHART
+   QUICK INTELLIGENCE
+========================================================= */
+
+function updateQuickIntelligence(){
+
+    const summary =
+        dashboardData.summary;
+
+    if(summary.hottestCity){
+
+        document.getElementById(
+            "hottestCity"
+        ).textContent =
+            summary.hottestCity.city;
+
+        document.getElementById(
+            "hottestValue"
+        ).textContent =
+            summary.hottestCity.temperature
+            + "° average temperature";
+
+    }
+
+    if(summary.mostHumidCity){
+
+        document.getElementById(
+            "humidCity"
+        ).textContent =
+            summary.mostHumidCity.city;
+
+        document.getElementById(
+            "humidValue"
+        ).textContent =
+            summary.mostHumidCity.humidity
+            + "% average humidity";
+
+    }
+
+    if(summary.highestOpportunity){
+
+        document.getElementById(
+            "topOpportunity"
+        ).textContent =
+            summary.highestOpportunity.cityA
+            +
+            " ↔ "
+            +
+            summary.highestOpportunity.cityB;
+
+        document.getElementById(
+            "topOpportunityValue"
+        ).textContent =
+            "Score: "
+            +
+            summary.highestOpportunity.score;
+
+    }
+
+}
+
+
+/* =========================================================
+   CLIMATE CHART
 ========================================================= */
 
 function createClimateChart(){
@@ -798,13 +1029,15 @@ function createClimateChart(){
                     {
                         label:"Temperature",
                         data:temperatures,
-                        borderWidth:1
+                        borderWidth:1,
+                        borderRadius:5
                     },
 
                     {
                         label:"Humidity",
                         data:humidity,
-                        borderWidth:1
+                        borderWidth:1,
+                        borderRadius:5
                     }
 
                 ]
@@ -817,11 +1050,19 @@ function createClimateChart(){
 
                 maintainAspectRatio:false,
 
+                interaction:{
+                    mode:"index",
+                    intersect:false
+                },
+
                 plugins:{
 
                     legend:{
                         labels:{
-                            color:"#a9bacb"
+                            color:"#a9bacb",
+                            font:{
+                                size:11
+                            }
                         }
                     }
 
@@ -831,7 +1072,10 @@ function createClimateChart(){
 
                     x:{
                         ticks:{
-                            color:"#71869b"
+                            color:"#71869b",
+                            font:{
+                                size:10
+                            }
                         },
 
                         grid:{
@@ -904,7 +1148,8 @@ function createTemperatureChart(){
                     {
                         label:"Temperature",
                         data:values,
-                        borderWidth:1
+                        borderWidth:1,
+                        borderRadius:5
                     }
 
                 ]
@@ -941,7 +1186,10 @@ function createTemperatureChart(){
 
                     y:{
                         ticks:{
-                            color:"#71869b"
+                            color:"#71869b",
+                            font:{
+                                size:10
+                            }
                         },
 
                         grid:{
@@ -1016,9 +1264,7 @@ function createCityList(){
 
         `;
 
-        container.appendChild(
-            row
-        );
+        container.appendChild(row);
 
     });
 
@@ -1059,7 +1305,6 @@ function createInsights(){
 
     }
 
-
     if(summary.mostHumidCity){
 
         addInsight(
@@ -1077,7 +1322,6 @@ function createInsights(){
         );
 
     }
-
 
     if(summary.highestOpportunity){
 
@@ -1100,7 +1344,6 @@ function createInsights(){
         );
 
     }
-
 
     addInsight(
 
@@ -1139,9 +1382,7 @@ function addInsight(title,text){
         +
         text;
 
-    insights.appendChild(
-        div
-    );
+    insights.appendChild(div);
 
 }
 
@@ -1160,7 +1401,6 @@ function createMap(){
             4
         );
 
-
     L.tileLayer(
 
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -1172,9 +1412,7 @@ function createMap(){
 
         }
 
-    ).addTo(
-        map
-    );
+    ).addTo(map);
 
 
     dashboardData.cities
@@ -1188,17 +1426,13 @@ function createMap(){
             return;
         }
 
-
         const marker =
             L.marker(
                 [
                     city.latitude,
                     city.longitude
                 ]
-            ).addTo(
-                map
-            );
-
+            ).addTo(map);
 
         marker.bindPopup(`
 
@@ -1251,3 +1485,4 @@ loadDashboard();
 
 </body>
 </html>
+```
