@@ -11,7 +11,8 @@ app = Flask(__name__)
 # MICRO-CLIMATE ARBITRAGE ANALYTICS
 # ============================================================
 
-DATA_DIR = r"C:\Users\q\Desktop\infotact project\Infotact-major-project\data"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, "data")
 
 
 # ============================================================
